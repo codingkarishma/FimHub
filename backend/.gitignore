@@ -1,0 +1,20 @@
+node_modules/
+.env
+.env.local
+.env.*.local
+*.log
+npm-debug.log*
+.DS_Store
+.vscode
+.idea
+dist/
+build/
+
+# Data files
+data/Human_*_PDBs/
+data/Porcine_*_PDBs/
+data/*.csv
+data/*.unknown
+
+# OS files
+Thumbs.db

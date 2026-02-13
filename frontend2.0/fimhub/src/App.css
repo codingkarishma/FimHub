@@ -1,0 +1,12 @@
+/* Global App Styles */
+/* All styling is handled through Tailwind CSS */
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f5f7fa;
+}
+
+html {
+  scroll-behavior: smooth;
+}

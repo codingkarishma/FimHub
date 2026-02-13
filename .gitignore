@@ -1,0 +1,29 @@
+node_modules/
+.env
+.env.local
+*.log
+npm-debug.log*
+.DS_Store
+.vscode
+.idea
+dist/
+build/
+coverage/
+
+# Exclude markdown documentation files
+*.md
+!README.md
+!LICENSE.md
+
+# Exclude old frontend
+frontend/
+
+# Exclude large PDB files and data
+data/Human_*_PDBs/
+data/Porcine_*_PDBs/
+data/*.csv
+data/*.unknown
+
+# OS files
+Thumbs.db
+.env.production
