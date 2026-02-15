@@ -2,106 +2,188 @@ import { useEffect, useRef, useState } from 'react';
 import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+
 export default function StructurePage() {
   const containerRef = useRef(null);
-  const [displayStyle, setDisplayStyle] = useState('cartoon');
-  const [colorScheme, setColorScheme] = useState('ss');
+  const [structures, setStructures] = useState([]);
+  const [selectedStructure, setSelectedStructure] = useState(null);
+  const [selectedDataset, setSelectedDataset] = useState('om3');
   const [isLoading, setIsLoading] = useState(true);
-  const viewerRef = useRef(null);
+  const pluginRef = useRef(null);
 
+  // Load structure list from backend
   useEffect(() => {
-    // Load 3Dmol.js
-    const script = document.createElement('script');
-    script.src = 'https://3Dmol.csb.pitt.edu/build/3Dmol-min.js';
-    script.onload = initializeViewer;
-    document.head.appendChild(script);
-
-    return () => {
-      if (document.head.contains(script)) {
-        document.head.removeChild(script);
+    const fetchStructures = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/mutations/human/${selectedDataset}`);
+        if (!response.ok) throw new Error(`API error: ${response.status}`);
+        const data = await response.json();
+        
+        // Filter out wild-type mutations where original amino acid equals mutant (e.g., F1F)
+        const filteredData = data.filter(mutation => {
+          const m = mutation.mutation || '';
+          if (m.length < 3) return false; // Need at least 3 chars (e.g., F1C)
+          const original = m[0];
+          const mutant = m[m.length - 1];
+          return original !== mutant; // Only keep where they differ
+        });
+        
+        console.log(`Loaded ${filteredData.length} mutations for ${selectedDataset} (filtered from ${data.length})`);
+        setStructures(filteredData.slice(0, 100)); // Show first 100
+        if (filteredData.length > 0) {
+          setSelectedStructure(filteredData[0]);
+        }
+      } catch (error) {
+        console.error('Error fetching structures:', error);
+        setStructures([]);
+      } finally {
+        setIsLoading(false);
       }
     };
-  }, []);
 
-  const initializeViewer = async () => {
-    if (!window.$3Dmol || !containerRef.current) {
-      console.error('3Dmol not loaded or container missing');
-      setIsLoading(false);
-      return;
-    }
+    fetchStructures();
+  }, [selectedDataset]);
 
-    try {
-      // Create viewer
-      const viewer = window.$3Dmol.createViewer(containerRef.current, {
-        backgroundColor: '#f3f4f6',
-        antialias: true,
-      });
-      viewerRef.current = viewer;
+  // Load 3Dmol viewer
+  useEffect(() => {
+    if (!selectedStructure) return;
 
-      // Fetch PDB file
-      const response = await fetch('https://files.rcsb.org/download/1UVE.pdb');
-      const pdbData = await response.text();
+    const loadViewer = async () => {
+      if (!containerRef.current) return;
 
-      // Add model
-      viewer.addModel(pdbData, 'pdb');
-      
-      // Set initial style
-      viewer.setStyle({}, { cartoon: { color: 'spectrum' } });
-      viewer.zoomTo();
-      viewer.render();
-
-      setIsLoading(false);
-    } catch (error) {
-      console.error('Error initializing viewer:', error);
-      setIsLoading(false);
-    }
-  };
-
-  const updateStyle = (style) => {
-    if (!viewerRef.current) return;
-    
-    const styles = {
-      cartoon: { cartoon: { color: 'spectrum' } },
-      stick: { stick: {} },
-      ballstick: { sphere: {}, stick: { radius: 0.15 } },
-      surface: { cartoon: { color: 'spectrum' }, surface: { opacity: 0.9 } },
+      try {
+        // Load 3Dmol.js library
+        if (!window.$3Dmol) {
+          const script = document.createElement('script');
+          script.src = 'https://3Dmol.csb.pitt.edu/build/3Dmol-min.js';
+          script.async = true;
+          
+          script.onload = () => initializeViewer();
+          script.onerror = () => {
+            console.error('Failed to load 3Dmol library');
+            if (containerRef.current) {
+              containerRef.current.innerHTML = '<p style="color: #999; padding: 2rem; text-align: center;">Error loading 3D viewer</p>';
+            }
+          };
+          
+          document.head.appendChild(script);
+        } else {
+          initializeViewer();
+        }
+      } catch (error) {
+        console.error('Error loading viewer:', error);
+      }
     };
 
-    viewerRef.current.setStyle({}, styles[style] || styles.cartoon);
-    viewerRef.current.render();
-    setDisplayStyle(style);
-  };
+    const initializeViewer = async () => {
+      if (!containerRef.current || !window.$3Dmol) return;
 
-  const updateColor = (scheme) => {
-    if (!viewerRef.current) return;
-    
-    const colorSchemes = {
-      ss: { cartoon: { color: 'spectrum' } },
-      bfactor: { cartoon: { colorfunc: () => 'orange' } },
-      hydro: { cartoon: { color: 'spectrum' } },
-      charge: { cartoon: { color: 'spectrum' } },
+      try {
+        const viewer = window.$3Dmol.createViewer(containerRef.current, {
+          backgroundColor: '#f3f4f6'
+        });
+
+        // Build PDB filename from mutation name (e.g., F1C -> F1C.pdb)
+        const mutationName = selectedStructure.mutation || 'F1C';
+        const pdbFilename = `${mutationName}.pdb`;
+        const dir = selectedDataset === 'om3' ? 'Human_OM3_PDBs' : 'Human_OM6_PDBs';
+        const pdbUrl = `${API_BASE_URL}/pdb/${dir}/${pdbFilename}`;
+        
+        console.log(`Loading: ${pdbUrl}`);
+
+        try {
+          const response = await fetch(pdbUrl);
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const pdbData = await response.text();
+          
+          viewer.addModel(pdbData, 'pdb');
+          viewer.setStyle({}, { cartoon: { color: 'spectrum' } });
+          viewer.zoomTo();
+          viewer.render();
+        } catch (err) {
+          console.error('Error loading PDB:', err);
+          if (containerRef.current) {
+            containerRef.current.innerHTML = '<p style="color: #999; padding: 2rem; text-align: center;">Cannot load: ' + pdbFilename + '</p>';
+          }
+        }
+      } catch (error) {
+        console.error('Error initializing viewer:', error);
+      }
     };
 
-    viewerRef.current.setStyle({}, colorSchemes[scheme] || colorSchemes.ss);
-    viewerRef.current.render();
-    setColorScheme(scheme);
-  };
+    loadViewer();
+  }, [selectedStructure, selectedDataset]);
+
   return (
     <div>
       <section className="bg-white border-b-4 border-primary-600 py-12">
         <div className="container-max">
           <h1 className="text-5xl font-bold mb-4">3D Structure Viewer</h1>
-          <p className="text-xl text-gray-600">Explore FimH protein structure and mutations in interactive 3D</p>
+          <p className="text-xl text-gray-600">Explore FimH protein structures from your dataset</p>
         </div>
       </section>
 
       <section className="py-12 bg-white">
         <div className="container-max">
-          <div className="grid lg:grid-cols-3 gap-8">
-            {/* Viewer Area */}
-            <div className="lg:col-span-2">
+          <div className="grid lg:grid-cols-4 gap-8">
+            {/* Sidebar Controls */}
+            <div className="lg:col-span-1 space-y-6">
               <Card hoverable={false}>
-                <h3 className="text-lg font-bold mb-4">3D Protein Structure</h3>
+                <h3 className="text-lg font-bold mb-4 text-primary-600">Dataset</h3>
+                <div className="space-y-2">
+                  <button
+                    onClick={() => setSelectedDataset('om3')}
+                    className={`w-full p-2 rounded text-left font-semibold transition-colors ${
+                      selectedDataset === 'om3'
+                        ? 'bg-primary-600 text-white'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    OM3
+                  </button>
+                  <button
+                    onClick={() => setSelectedDataset('om6')}
+                    className={`w-full p-2 rounded text-left font-semibold transition-colors ${
+                      selectedDataset === 'om6'
+                        ? 'bg-primary-600 text-white'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    OM6
+                  </button>
+                </div>
+              </Card>
+
+              <Card hoverable={false}>
+                <h3 className="text-lg font-bold mb-4 text-accent-600">Mutations</h3>
+                <div className="space-y-2 max-h-[600px] overflow-y-auto border border-gray-200 rounded p-2">
+                  {structures.length === 0 ? (
+                    <p className="text-gray-500 text-sm p-4">No mutations loaded</p>
+                  ) : (
+                    structures.map((struct, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setSelectedStructure(struct)}
+                        className={`w-full p-2 rounded text-left text-sm transition-colors ${
+                          selectedStructure?.mutation === struct.mutation
+                            ? 'bg-accent-600 text-white'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                      >
+                        {struct.mutation || `Mutation ${idx + 1}`}
+                      </button>
+                    ))
+                  )}
+                </div>
+              </Card>
+            </div>
+
+            {/* Viewer Area */}
+            <div className="lg:col-span-3">
+              <Card hoverable={false}>
+                <h3 className="text-lg font-bold mb-4">3D Structure</h3>
                 {isLoading && (
                   <div className="bg-gray-50 rounded-lg h-96 mb-4 flex items-center justify-center">
                     <div className="text-center">
@@ -110,76 +192,34 @@ export default function StructurePage() {
                     </div>
                   </div>
                 )}
-                <div 
+                <div
                   ref={containerRef}
                   className="bg-gray-50 rounded-lg h-96 mb-4"
-                  style={{ position: 'relative', width: '100%', height: '400px' }}
+                  style={{ position: 'relative', width: '100%' }}
                 />
-                
+
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <p className="text-sm text-gray-600 mb-2">Display Style</p>
-                    <select 
-                      value={displayStyle}
-                      onChange={(e) => updateStyle(e.target.value)}
-                      className="w-full p-2 border border-gray-300 rounded-lg text-sm"
-                    >
-                      <option value="cartoon">Cartoon</option>
-                      <option value="stick">Stick</option>
-                      <option value="ballstick">Ball & Stick</option>
-                      <option value="surface">Surface</option>
-                    </select>
+                    <p className="text-sm font-semibold text-gray-700 mb-2">Mutation Info</p>
+                    {selectedStructure && (
+                      <div className="bg-primary-50 p-3 rounded text-sm space-y-1">
+                        <p><span className="font-semibold">Name:</span> {selectedStructure.mutation}</p>
+                        <p><span className="font-semibold">Affinity:</span> {selectedStructure.Affinity?.toFixed(2)}</p>
+                        <p><span className="font-semibold">Stability:</span> {selectedStructure.Stability?.toExponential(2)}</p>
+                      </div>
+                    )}
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600 mb-2">Color Scheme</p>
-                    <select 
-                      value={colorScheme}
-                      onChange={(e) => updateColor(e.target.value)}
-                      className="w-full p-2 border border-gray-300 rounded-lg text-sm"
-                    >
-                      <option value="ss">Secondary Structure</option>
-                      <option value="bfactor">B-Factor</option>
-                      <option value="hydro">Hydrophobicity</option>
-                      <option value="charge">Charge</option>
-                    </select>
+                    <p className="text-sm font-semibold text-gray-700 mb-2">Actions</p>
+                    <div className="space-y-2">
+                      <Button variant="secondary" className="w-full" size="sm">
+                        Download PDB
+                      </Button>
+                      <Button variant="secondary" className="w-full" size="sm">
+                        Export View
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              </Card>
-            </div>
-
-            {/* Controls Panel */}
-            <div className="lg:col-span-1 space-y-6">
-              <Card hoverable={false}>
-                <h3 className="text-lg font-bold mb-4 text-primary-600">Structures</h3>
-                <div className="space-y-2 text-sm text-gray-600">
-                  <p>Displaying: FimH (PDB: 1UVE)</p>
-                  <p className="text-xs mt-2">Wild-type FimH adhesin protein with bound carbohydrate ligands</p>
-                </div>
-              </Card>
-
-              <Card hoverable={false}>
-                <h3 className="text-lg font-bold mb-4 text-accent-600">Highlighting</h3>
-                <div className="space-y-2">
-                  <label className="flex items-center gap-2">
-                    <input type="checkbox" defaultChecked className="cursor-pointer" />
-                    <span className="text-gray-700 text-sm">Active Site</span>
-                  </label>
-                  <label className="flex items-center gap-2">
-                    <input type="checkbox" className="cursor-pointer" />
-                    <span className="text-gray-700 text-sm">Mutation Site</span>
-                  </label>
-                  <label className="flex items-center gap-2">
-                    <input type="checkbox" className="cursor-pointer" />
-                    <span className="text-gray-700 text-sm">Glycan Binding</span>
-                  </label>
-                </div>
-              </Card>
-
-              <Card hoverable={false}>
-                <h3 className="text-lg font-bold mb-4 text-primary-600">Actions</h3>
-                <div className="space-y-2">
-                  <Button variant="secondary" className="w-full" size="sm">Download PDB</Button>
-                  <Button variant="secondary" className="w-full" size="sm">Screenshot</Button>
                 </div>
               </Card>
             </div>
@@ -189,101 +229,30 @@ export default function StructurePage() {
 
       <section className="py-12 bg-bg">
         <div className="container-max">
-          <h2 className="text-3xl font-bold mb-8">Protein Features</h2>
+          <h2 className="text-3xl font-bold mb-8">Structure Information</h2>
           
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-3 gap-8">
             <Card>
               <h3 className="text-xl font-bold mb-4 text-primary-600">Lectin Domain</h3>
-              <p className="text-gray-700 mb-4">
-                N-terminal domain (residues 1-150) containing the carbohydrate-binding site.
+              <p className="text-gray-700">
+                N-terminal carbohydrate-binding domain containing the FimH binding site.
               </p>
-              <div className="bg-primary-50 p-3 rounded text-sm">
-                <p className="font-semibold text-primary-900 mb-2">Key Residues:</p>
-                <ul className="text-gray-700 space-y-1">
-                  <li>• Y48 - Mannose gate</li>
-                  <li>• Y137 - Mannose gate</li>
-                  <li>• D54 - Metal coordination</li>
-                </ul>
-              </div>
             </Card>
 
             <Card>
-              <h3 className="text-xl font-bold mb-4 text-primary-600">Pilin Domain</h3>
-              <p className="text-gray-700 mb-4">
-                C-terminal domain (residues 160-279) anchoring FimH to the fimbrial rod.
+              <h3 className="text-xl font-bold mb-4 text-accent-600">Pilin Domain</h3>
+              <p className="text-gray-700">
+                C-terminal domain responsible for anchoring FimH to the pilus.
               </p>
-              <div className="bg-primary-50 p-3 rounded text-sm">
-                <p className="font-semibold text-primary-900 mb-2">Characteristics:</p>
-                <ul className="text-gray-700 space-y-1">
-                  <li>• Pilin fold structure</li>
-                  <li>• Force transmission</li>
-                  <li>• Catch-bond regulation</li>
-                </ul>
-              </div>
             </Card>
 
             <Card>
-              <h3 className="text-xl font-bold mb-4 text-accent-600">Linker Region</h3>
-              <p className="text-gray-700 mb-4">
-                Flexible connector enabling domain movement and catch-bond mechanism.
+              <h3 className="text-xl font-bold mb-4 text-orange-500">Mutations</h3>
+              <p className="text-gray-700">
+                Explore how mutations affect protein structure and function.
               </p>
-              <div className="bg-accent-50 p-3 rounded text-sm">
-                <p className="font-semibold text-accent-900 mb-2">Function:</p>
-                <ul className="text-gray-700 space-y-1">
-                  <li>• Conformational flexibility</li>
-                  <li>• Stress sensing</li>
-                  <li>• State transitions</li>
-                </ul>
-              </div>
-            </Card>
-
-            <Card>
-              <h3 className="text-xl font-bold mb-4 text-accent-600">Binding Pocket</h3>
-              <p className="text-gray-700 mb-4">
-                High-affinity recognition site for mannose residues on uroplakin.
-              </p>
-              <div className="bg-accent-50 p-3 rounded text-sm">
-                <p className="font-semibold text-accent-900 mb-2">Architecture:</p>
-                <ul className="text-gray-700 space-y-1">
-                  <li>• Tyrosine gate (Y48/Y137)</li>
-                  <li>• Metal coordination sites</li>
-                  <li>• Mannose-binding cleft</li>
-                </ul>
-              </div>
             </Card>
           </div>
-        </div>
-      </section>
-
-      <section className="py-12 bg-white">
-        <div className="container-max">
-          <h2 className="text-3xl font-bold mb-8">Comparison Tools</h2>
-          
-          <Card>
-            <h3 className="text-xl font-bold mb-6 text-primary-600">Structure Alignment</h3>
-            
-            <div className="grid md:grid-cols-2 gap-8 mb-8">
-              <div>
-                <p className="font-semibold text-gray-900 mb-3">Structure 1</p>
-                <select className="w-full p-2 border border-gray-300 rounded-lg mb-3">
-                  <option>Wild-type (Human)</option>
-                  <option>Y48A</option>
-                  <option>Y137A</option>
-                </select>
-              </div>
-              <div>
-                <p className="font-semibold text-gray-900 mb-3">Structure 2</p>
-                <select className="w-full p-2 border border-gray-300 rounded-lg mb-3">
-                  <option>Select mutation...</option>
-                  <option>Y48A</option>
-                  <option>Y137A</option>
-                  <option>Y48F</option>
-                </select>
-              </div>
-            </div>
-
-            <Button variant="primary" className="w-full">Align & Compare</Button>
-          </Card>
         </div>
       </section>
     </div>
