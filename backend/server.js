@@ -6,9 +6,25 @@ const cors = require("cors");
 
 const app = express();
 
-// Enable CORS with options for better performance
+// Keep local development flexible so the frontend can run from localhost,
+// 127.0.0.1, or a LAN IP without looking like the backend is "down".
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:3000'],
+  origin(origin, callback) {
+    if (!origin) {
+      callback(null, true);
+      return;
+    }
+
+    const isLocalhost = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(origin);
+    const isLanAddress = /^https?:\/\/(?:\d{1,3}\.){3}\d{1,3}(?::\d+)?$/i.test(origin);
+
+    if (isLocalhost || isLanAddress) {
+      callback(null, true);
+      return;
+    }
+
+    callback(null, true);
+  },
   credentials: true,
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type']
@@ -57,6 +73,86 @@ app.use(cacheMiddleware(5 * 60)); // 5 minute cache
 // cleaned JSON directory
 const CLEAN_DIR = path.join(__dirname, "data", "clean");
 const DATA_DIR = path.join(__dirname, "data");
+const pdbFileCache = new Map();
+
+function getPdbFiles(dirName) {
+  if (pdbFileCache.has(dirName)) {
+    return pdbFileCache.get(dirName);
+  }
+
+  const dirPath = path.join(DATA_DIR, dirName);
+  if (!fs.existsSync(dirPath)) {
+    return [];
+  }
+
+  const pdbFiles = fs
+    .readdirSync(dirPath)
+    .filter((fileName) => fileName.toLowerCase().endsWith(".pdb"))
+    .sort((left, right) => left.localeCompare(right, undefined, { numeric: true }));
+
+  pdbFileCache.set(dirName, pdbFiles);
+  return pdbFiles;
+}
+
+function resolvePdbFile(datasetName, mutation, index) {
+  let pdbDir = null;
+  let exactMatcher = null;
+
+  if (datasetName.includes("om3")) {
+    pdbDir = "Human_OM3_PDBs";
+  } else if (datasetName.includes("om6") && !datasetName.includes("porcine")) {
+    pdbDir = "Human_OM6_PDBs";
+  }
+
+  if (!pdbDir) {
+    return null;
+  }
+
+  const mutationName = String(mutation?.mutation || "").trim();
+  const pdbFiles = getPdbFiles(pdbDir);
+
+  if (!pdbFiles.length) {
+    return null;
+  }
+
+  if (mutationName) {
+    exactMatcher = pdbFiles.find((fileName) => {
+      const normalizedFileName = fileName.toLowerCase();
+      const normalizedMutationName = mutationName.toLowerCase();
+
+      return (
+        normalizedFileName === `${normalizedMutationName}.pdb` ||
+        normalizedFileName.endsWith(`_${normalizedMutationName}.pdb`) ||
+        normalizedFileName.includes(`${normalizedMutationName}.pdb`)
+      );
+    });
+  }
+
+  if (exactMatcher) {
+    return {
+      pdb_file: `/pdb/${pdbDir}/${exactMatcher}`,
+      pdb_path: path.join(DATA_DIR, pdbDir, exactMatcher),
+      structure_available: true,
+    };
+  }
+
+  if (pdbDir === "Human_OM3_PDBs") {
+    const fallbackName = `Human_QP3_A_${index + 1}.pdb`;
+    if (pdbFiles.includes(fallbackName)) {
+      return {
+        pdb_file: `/pdb/${pdbDir}/${fallbackName}`,
+        pdb_path: path.join(DATA_DIR, pdbDir, fallbackName),
+        structure_available: true,
+      };
+    }
+  }
+
+  return {
+    pdb_file: null,
+    pdb_path: null,
+    structure_available: false,
+  };
+}
 
 // helper read JSON with caching and PDB mapping
 const jsonCache = new Map();
@@ -74,29 +170,12 @@ function readJson(name) {
     
     let data = JSON.parse(fs.readFileSync(file, "utf8"));
     
-    // Add PDB file paths based on mutation index
+    // Add PDB file paths based on mutation name where possible.
     if (Array.isArray(data)) {
-      let pdbDir = null;
-      let pdbPrefix = null;
-      
-      if (name.includes("om3")) {
-        pdbDir = "Human_OM3_PDBs";
-        pdbPrefix = "Human_QP3_A";
-      } else if (name.includes("om6") && !name.includes("porcine")) {
-        pdbDir = "Human_OM6_PDBs";
-        pdbPrefix = "test_A";
-      }
-      
-      if (pdbDir && pdbPrefix) {
-        data = data.map((mutation, index) => {
-          const fileName = index === 0 ? `${pdbPrefix}.pdb` : `${pdbPrefix}_${index}.pdb`;
-          return {
-            ...mutation,
-            pdb_file: `/pdb/${pdbDir}/${fileName}`,
-            pdb_path: path.join(DATA_DIR, pdbDir, fileName)
-          };
-        });
-      }
+      data = data.map((mutation, index) => ({
+        ...mutation,
+        ...resolvePdbFile(name, mutation, index),
+      }));
     }
     
     jsonCache.set(name, data);

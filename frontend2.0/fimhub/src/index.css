@@ -1,52 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+  :root {
+    color-scheme: light;
+    --fh-bg: #f7f2e9;
+    --fh-paper: #fffaf2;
+    --fh-ink: #10201c;
+    --fh-teal: #0f766e;
+    --fh-mint: #7dd3c7;
+    --fh-amber: #f59e0b;
+  }
+}
+
+@layer base {
   body {
-    @apply bg-bg text-gray-900 font-sans;
+    @apply min-h-screen text-slate-900 font-sans antialiased;
+    background-color: var(--fh-bg);
+    background-image:
+      radial-gradient(circle at top left, rgba(125, 211, 199, 0.28), transparent 28%),
+      radial-gradient(circle at top right, rgba(245, 158, 11, 0.16), transparent 24%),
+      linear-gradient(180deg, #fbf8f1 0%, #f7f2e9 45%, #fcfaf4 100%);
+    font-family: 'Sora', 'Segoe UI', sans-serif;
   }
 
   h1 {
-    @apply text-4xl font-bold;
+    @apply text-4xl font-bold tracking-tight font-serif;
   }
 
   h2 {
-    @apply text-3xl font-bold;
+    @apply text-3xl font-bold tracking-tight font-serif;
   }
 
   h3 {
-    @apply text-2xl font-bold;
+    @apply text-2xl font-bold tracking-tight font-serif;
   }
 
   h4 {
-    @apply text-xl font-semibold;
+    @apply text-xl font-semibold font-serif;
   }
 
   p {
-    @apply text-gray-700 leading-relaxed;
+    @apply text-slate-600 leading-7;
   }
 
   a {
-    @apply text-primary-600 hover:text-primary-700 transition-colors;
+    @apply transition-colors;
+  }
+
+  ::selection {
+    @apply bg-primary-200 text-slate-950;
   }
 }
 
 @layer components {
   .container-max {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+    @apply mx-auto max-w-[88rem] px-5 sm:px-6 lg:px-8;
   }
 
-  .btn-primary {
-    @apply px-6 py-3 bg-primary-600 text-white rounded-lg font-semibold hover:bg-primary-700 transition-colors;
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.28em];
   }
 
-  .btn-secondary {
-    @apply px-6 py-3 bg-white border border-primary-200 text-primary-600 rounded-lg font-semibold hover:bg-primary-50 transition-colors;
+  .page-backdrop {
+    @apply relative overflow-hidden;
   }
 
-  .card {
-    @apply bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100;
+  .page-backdrop::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(148, 163, 184, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(148, 163, 184, 0.05) 1px, transparent 1px);
+    background-size: 52px 52px;
+    opacity: 0.42;
+    pointer-events: none;
+  }
+
+  .surface-panel {
+    @apply rounded-[2rem] border shadow-[0_26px_80px_-46px_rgba(15,23,42,0.28)] backdrop-blur;
+    border-color: rgba(226, 232, 240, 0.8);
+    background-color: rgba(255, 255, 255, 0.88);
+  }
+
+  .surface-panel-dark {
+    @apply rounded-[2rem] border border-white/10 bg-[#0d1f1c] text-white shadow-[0_26px_80px_-42px_rgba(15,23,42,0.58)];
+  }
+
+  .section-shell {
+    @apply py-16 md:py-24;
+  }
+
+  .soft-grid {
+    background-image:
+      linear-gradient(to right, rgba(148, 163, 184, 0.1) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(148, 163, 184, 0.1) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .info-chip {
+    @apply inline-flex items-center rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-700;
+    background-color: rgba(255, 255, 255, 0.92);
+  }
+
+  .metric-tile {
+    @apply rounded-[1.75rem] border p-5 shadow-[0_20px_70px_-46px_rgba(15,23,42,0.32)];
+    border-color: rgba(226, 232, 240, 0.8);
+    background-color: rgba(255, 255, 255, 0.92);
+  }
+
+  .inset-panel {
+    @apply rounded-[1.75rem] border p-5;
+    border-color: rgba(226, 232, 240, 0.8);
+    background-color: rgba(250, 246, 238, 0.94);
+  }
+
+  .hero-visual-frame {
+    @apply rounded-[2.35rem] border p-4 shadow-[0_34px_100px_-56px_rgba(15,23,42,0.72)] backdrop-blur;
+    border-color: rgba(255, 255, 255, 0.12);
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .story-card {
+    @apply p-7 md:p-8;
+  }
+
+  .story-card-lg {
+    @apply p-8 md:p-10;
+  }
+
+  .flow-pill {
+    @apply inline-flex items-center rounded-full border border-[#0f766e]/15 bg-[#f8faf7] px-5 py-3 text-sm font-semibold tracking-[0.04em] text-slate-800;
   }
 }
 
@@ -56,4 +144,21 @@
 
 html {
   scroll-behavior: smooth;
+}
+
+#root {
+  @apply min-h-screen overflow-x-hidden;
+}
+
+.molstar-shell,
+.molstar-shell .msp-plugin {
+  width: 100%;
+  height: 100%;
+}
+
+.molstar-shell .msp-plugin-content,
+.molstar-shell .msp-layout-standard,
+.molstar-shell .msp-layout-main {
+  width: 100%;
+  height: 100%;
 }
