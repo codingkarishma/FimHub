@@ -42,8 +42,9 @@ export default {
         neutral: '#64748b',
       },
       fontFamily: {
-        sans: ['Sora', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        serif: ['"Source Serif 4"', 'Georgia', 'serif'],
+        sans: ['"Source Sans 3"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        serif: ['"Source Serif 4"', 'Georgia', 'ui-serif', 'serif'],
+        mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
       },
     },
   },

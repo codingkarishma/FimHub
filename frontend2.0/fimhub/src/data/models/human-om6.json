@@ -1,0 +1,22 @@
+﻿{
+    "modelId":  "human-om6",
+    "displayName":  "Human OM6",
+    "species":  "human",
+    "glycanType":  "Oligomannose-6 (Man6GlcNAc2)",
+    "pdbRef":  "1KIU",
+    "ligand":  {
+                   "chainId":  "A",
+                   "structuralClass":  "high-mannose N-glycan",
+                   "notation":  "Man6GlcNAc2",
+                   "notes":  "Model-level binding summary derived from the source mutation dataset."
+               },
+    "referenceMutation":  "F1F",
+    "referenceAffinity":  1182.44812,
+    "referenceStability":  62352428.06,
+    "testedMutationCount":  157,
+    "enhancedBindingCount":  32,
+    "weakenedBindingCount":  106,
+    "strongestBinder":  "Q133Q",
+    "weakestBinder":  "Q133Q",
+    "lastUpdated":  "2026-04-28"
+}

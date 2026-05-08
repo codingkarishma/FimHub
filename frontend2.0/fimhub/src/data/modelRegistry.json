@@ -1,0 +1,102 @@
+﻿{
+    "models":  [
+                   {
+                       "id":  "human-om3",
+                       "displayName":  "Human OM3",
+                       "species":  "human",
+                       "glycanType":  "Oligomannose-3 (Man3GlcNAc2)",
+                       "shortCode":  "hOM3",
+                       "description":  "Human FimH model scored against the OM3 oligomannose glycan context.",
+                       "pdbRef":  "1KIU",
+                       "status":  "published",
+                       "dataFile":  "human-om3.json",
+                       "mutationFile":  "human-om3-mutations.json",
+                       "color":  "#0E6B6B",
+                       "icon":  "om3"
+                   },
+                   {
+                       "id":  "human-om6",
+                       "displayName":  "Human OM6",
+                       "species":  "human",
+                       "glycanType":  "Oligomannose-6 (Man6GlcNAc2)",
+                       "shortCode":  "hOM6",
+                       "description":  "Human FimH model scored against the longer OM6 oligomannose glycan context.",
+                       "pdbRef":  "1KIU",
+                       "status":  "published",
+                       "dataFile":  "human-om6.json",
+                       "mutationFile":  "human-om6-mutations.json",
+                       "color":  "#2563EB",
+                       "icon":  "om6"
+                   },
+                   {
+                       "id":  "porcine-om3",
+                       "displayName":  "Porcine OM3",
+                       "species":  "porcine",
+                       "glycanType":  "Oligomannose-3 (Man3GlcNAc2)",
+                       "shortCode":  "pOM3",
+                       "description":  "Porcine FimH comparison model for the OM3 glycan context.",
+                       "pdbRef":  "1KIU",
+                       "status":  "published",
+                       "dataFile":  "porcine-om3.json",
+                       "mutationFile":  "porcine-om3-mutations.json",
+                       "color":  "#B45309",
+                       "icon":  "om3"
+                   },
+                   {
+                       "id":  "porcine-om6",
+                       "displayName":  "Porcine OM6",
+                       "species":  "porcine",
+                       "glycanType":  "Oligomannose-6 (Man6GlcNAc2)",
+                       "shortCode":  "pOM6",
+                       "description":  "Porcine FimH comparison model for the OM6 glycan context.",
+                       "pdbRef":  "1KIU",
+                       "status":  "published",
+                       "dataFile":  "porcine-om6.json",
+                       "mutationFile":  "porcine-om6-mutations.json",
+                       "color":  "#7C3AED",
+                       "icon":  "om6"
+                   },
+                   {
+                       "id":  "human-om7",
+                       "displayName":  "Human OM7",
+                       "species":  "human",
+                       "glycanType":  "Oligomannose-7 (Man7GlcNAc2)",
+                       "shortCode":  "hOM7",
+                       "description":  "Planned human OM7 model for extended oligomannose comparison.",
+                       "pdbRef":  "1KIU",
+                       "status":  "coming-soon",
+                       "dataFile":  "human-om7.json",
+                       "mutationFile":  "human-om7-mutations.json",
+                       "color":  "#0E6B6B",
+                       "icon":  "om7"
+                   },
+                   {
+                       "id":  "human-om8",
+                       "displayName":  "Human OM8",
+                       "species":  "human",
+                       "glycanType":  "Oligomannose-8 (Man8GlcNAc2)",
+                       "shortCode":  "hOM8",
+                       "description":  "Planned human OM8 model for extended oligomannose comparison.",
+                       "pdbRef":  "1KIU",
+                       "status":  "coming-soon",
+                       "dataFile":  "human-om8.json",
+                       "mutationFile":  "human-om8-mutations.json",
+                       "color":  "#0E6B6B",
+                       "icon":  "om8"
+                   },
+                   {
+                       "id":  "human-om9",
+                       "displayName":  "Human OM9",
+                       "species":  "human",
+                       "glycanType":  "Oligomannose-9 (Man9GlcNAc2)",
+                       "shortCode":  "hOM9",
+                       "description":  "Planned human OM9 model for extended oligomannose comparison.",
+                       "pdbRef":  "1KIU",
+                       "status":  "coming-soon",
+                       "dataFile":  "human-om9.json",
+                       "mutationFile":  "human-om9-mutations.json",
+                       "color":  "#0E6B6B",
+                       "icon":  "om9"
+                   }
+               ]
+}

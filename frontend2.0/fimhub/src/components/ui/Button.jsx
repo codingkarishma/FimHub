@@ -5,19 +5,19 @@ export default function Button({
   className = '',
   ...props 
 }) {
-  const baseStyles = 'inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 font-sans focus:outline-none focus:ring-2 focus:ring-primary-300 disabled:cursor-not-allowed disabled:opacity-60';
+  const baseStyles = 'inline-flex items-center justify-center gap-2 border font-medium tracking-[0.01em] transition-colors duration-200 font-sans focus:outline-none focus:ring-2 focus:ring-[#cde5e3] disabled:cursor-not-allowed disabled:opacity-60';
   
   const variants = {
-    primary: 'bg-[#0f766e] text-white shadow-[0_18px_45px_-24px_rgba(15,118,110,0.75)] hover:-translate-y-0.5 hover:bg-[#115e59]',
-    secondary: 'bg-[#f59e0b] text-slate-950 shadow-[0_18px_45px_-24px_rgba(245,158,11,0.65)] hover:-translate-y-0.5 hover:bg-[#fbbf24]',
-    outline: 'border border-slate-300 bg-white/92 text-slate-800 hover:-translate-y-0.5 hover:border-slate-400 hover:bg-slate-50',
-    ghost: 'bg-transparent text-[#0f766e] hover:bg-[#ecf8f6]',
+    primary: 'border-[color:var(--fh-accent)] bg-[color:var(--fh-accent)] text-white hover:border-[#0a5656] hover:bg-[#0a5656]',
+    secondary: 'border-[color:var(--fh-border)] bg-[color:var(--fh-mid)] text-[color:var(--fh-text)] hover:border-[color:var(--fh-border-strong)]',
+    outline: 'border-[color:var(--fh-border)] bg-[color:var(--fh-surface)] text-[color:var(--fh-text)] hover:border-[color:var(--fh-border-strong)] hover:bg-[color:var(--fh-mid)]',
+    ghost: 'border-transparent bg-transparent text-[color:var(--fh-accent)] hover:bg-[color:var(--fh-accent-soft)]',
   };
 
   const sizes = {
-    sm: 'px-4 py-2.5 text-sm',
-    md: 'px-6 py-3 text-base',
-    lg: 'px-8 py-4 text-base md:text-lg',
+    sm: 'px-4 py-2 text-sm',
+    md: 'px-5 py-2.5 text-[0.95rem]',
+    lg: 'px-6 py-3 text-base',
   };
 
   return (

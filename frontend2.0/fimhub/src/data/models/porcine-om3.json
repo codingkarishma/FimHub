@@ -1,0 +1,22 @@
+﻿{
+    "modelId":  "porcine-om3",
+    "displayName":  "Porcine OM3",
+    "species":  "porcine",
+    "glycanType":  "Oligomannose-3 (Man3GlcNAc2)",
+    "pdbRef":  "1KIU",
+    "ligand":  {
+                   "chainId":  "A",
+                   "structuralClass":  "high-mannose N-glycan",
+                   "notation":  "Man3GlcNAc2",
+                   "notes":  "Model-level binding summary derived from the source mutation dataset."
+               },
+    "referenceMutation":  "10:F1C",
+    "referenceAffinity":  -160.9069142,
+    "referenceStability":  30404669780,
+    "testedMutationCount":  147,
+    "enhancedBindingCount":  81,
+    "weakenedBindingCount":  66,
+    "strongestBinder":  "10:Q133L",
+    "weakestBinder":  "10:Q133L",
+    "lastUpdated":  "2026-04-28"
+}

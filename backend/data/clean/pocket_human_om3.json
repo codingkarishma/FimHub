@@ -1,0 +1,454 @@
+[
+  {
+    "species": "human",
+    "om": "om3",
+    "chain": "6:Human_QP3.Y",
+    "residue_name": "Phe",
+    "residue_code": "F",
+    "position": 1,
+    "uid": 1,
+    "mutation_codes": [
+      "C",
+      "I",
+      "L",
+      "S",
+      "Y",
+      "V"
+    ],
+    "mutations": [
+      "F1C",
+      "F1I",
+      "F1L",
+      "F1S",
+      "F1Y",
+      "F1V"
+    ],
+    "mutation_pattern": "CILSYV"
+  },
+  {
+    "species": "human",
+    "om": "om3",
+    "chain": "6:Human_QP3.Y",
+    "residue_name": "Ile",
+    "residue_code": "I",
+    "position": 13,
+    "uid": 13,
+    "mutation_codes": [
+      "R",
+      "N",
+      "L",
+      "K",
+      "M",
+      "F",
+      "S",
+      "T",
+      "V"
+    ],
+    "mutations": [
+      "I13R",
+      "I13N",
+      "I13L",
+      "I13K",
+      "I13M",
+      "I13F",
+      "I13S",
+      "I13T",
+      "I13V"
+    ],
+    "mutation_pattern": "RNLKMFSTV"
+  },
+  {
+    "species": "human",
+    "om": "om3",
+    "chain": "6:Human_QP3.Y",
+    "residue_name": "Gly",
+    "residue_code": "G",
+    "position": 14,
+    "uid": 14,
+    "mutation_codes": [
+      "A",
+      "R",
+      "D",
+      "C",
+      "E",
+      "S",
+      "W",
+      "V"
+    ],
+    "mutations": [
+      "G14A",
+      "G14R",
+      "G14D",
+      "G14C",
+      "G14E",
+      "G14S",
+      "G14W",
+      "G14V"
+    ],
+    "mutation_pattern": "ARDCESWV"
+  },
+  {
+    "species": "human",
+    "om": "om3",
+    "chain": "6:Human_QP3.Y",
+    "residue_name": "Asn",
+    "residue_code": "N",
+    "position": 46,
+    "uid": 46,
+    "mutation_codes": [
+      "D",
+      "H",
+      "I",
+      "K",
+      "S",
+      "T",
+      "Y"
+    ],
+    "mutations": [
+      "N46D",
+      "N46H",
+      "N46I",
+      "N46K",
+      "N46S",
+      "N46T",
+      "N46Y"
+    ],
+    "mutation_pattern": "DHIKSTY"
+  },
+  {
+    "species": "human",
+    "om": "om3",
+    "chain": "6:Human_QP3.Y",
+    "residue_name": "Asp",
+    "residue_code": "D",
+    "position": 47,
+    "uid": 47,
+    "mutation_codes": [
+      "A",
+      "N",
+      "E",
+      "G",
+      "H",
+      "Y",
+      "V"
+    ],
+    "mutations": [
+      "D47A",
+      "D47N",
+      "D47E",
+      "D47G",
+      "D47H",
+      "D47Y",
+      "D47V"
+    ],
+    "mutation_pattern": "ANEGHYV"
+  },
+  {
+    "species": "human",
+    "om": "om3",
+    "chain": "6:Human_QP3.Y",
+    "residue_name": "Tyr",
+    "residue_code": "Y",
+    "position": 48,
+    "uid": 48,
+    "mutation_codes": [
+      "N",
+      "D",
+      "C",
+      "H",
+      "F",
+      "S"
+    ],
+    "mutations": [
+      "Y48N",
+      "Y48D",
+      "Y48C",
+      "Y48H",
+      "Y48F",
+      "Y48S"
+    ],
+    "mutation_pattern": "NDCHFS"
+  },
+  {
+    "species": "human",
+    "om": "om3",
+    "chain": "6:Human_QP3.Y",
+    "residue_name": "Thr",
+    "residue_code": "T",
+    "position": 51,
+    "uid": 51,
+    "mutation_codes": [
+      "A",
+      "R",
+      "N",
+      "I",
+      "K",
+      "M",
+      "P",
+      "S"
+    ],
+    "mutations": [
+      "T51A",
+      "T51R",
+      "T51N",
+      "T51I",
+      "T51K",
+      "T51M",
+      "T51P",
+      "T51S"
+    ],
+    "mutation_pattern": "ARNIKMPS"
+  },
+  {
+    "species": "human",
+    "om": "om3",
+    "chain": "6:Human_QP3.Y",
+    "residue_name": "Ile",
+    "residue_code": "I",
+    "position": 52,
+    "uid": 52,
+    "mutation_codes": [
+      "R",
+      "N",
+      "L",
+      "K",
+      "M",
+      "F",
+      "S",
+      "T",
+      "V"
+    ],
+    "mutations": [
+      "I52R",
+      "I52N",
+      "I52L",
+      "I52K",
+      "I52M",
+      "I52F",
+      "I52S",
+      "I52T",
+      "I52V"
+    ],
+    "mutation_pattern": "RNLKMFSTV"
+  },
+  {
+    "species": "human",
+    "om": "om3",
+    "chain": "6:Human_QP3.Y",
+    "residue_name": "Thr",
+    "residue_code": "T",
+    "position": 53,
+    "uid": 53,
+    "mutation_codes": [
+      "A",
+      "R",
+      "N",
+      "I",
+      "K",
+      "M",
+      "P",
+      "S"
+    ],
+    "mutations": [
+      "T53A",
+      "T53R",
+      "T53N",
+      "T53I",
+      "T53K",
+      "T53M",
+      "T53P",
+      "T53S"
+    ],
+    "mutation_pattern": "ARNIKMPS"
+  },
+  {
+    "species": "human",
+    "om": "om3",
+    "chain": "6:Human_QP3.Y",
+    "residue_name": "Asp",
+    "residue_code": "D",
+    "position": 54,
+    "uid": 54,
+    "mutation_codes": [
+      "A",
+      "N",
+      "E",
+      "G",
+      "H",
+      "Y",
+      "V"
+    ],
+    "mutations": [
+      "D54A",
+      "D54N",
+      "D54E",
+      "D54G",
+      "D54H",
+      "D54Y",
+      "D54V"
+    ],
+    "mutation_pattern": "ANEGHYV"
+  },
+  {
+    "species": "human",
+    "om": "om3",
+    "chain": "6:Human_QP3.Y",
+    "residue_name": "Gln",
+    "residue_code": "Q",
+    "position": 133,
+    "uid": 133,
+    "mutation_codes": [
+      "R",
+      "E",
+      "H",
+      "L",
+      "K",
+      "P"
+    ],
+    "mutations": [
+      "Q133R",
+      "Q133E",
+      "Q133H",
+      "Q133L",
+      "Q133K",
+      "Q133P"
+    ],
+    "mutation_pattern": "REHLKP"
+  },
+  {
+    "species": "human",
+    "om": "om3",
+    "chain": "6:Human_QP3.Y",
+    "residue_name": "Asn",
+    "residue_code": "N",
+    "position": 135,
+    "uid": 135,
+    "mutation_codes": [
+      "D",
+      "H",
+      "I",
+      "K",
+      "S",
+      "T",
+      "Y"
+    ],
+    "mutations": [
+      "N135D",
+      "N135H",
+      "N135I",
+      "N135K",
+      "N135S",
+      "N135T",
+      "N135Y"
+    ],
+    "mutation_pattern": "DHIKSTY"
+  },
+  {
+    "species": "human",
+    "om": "om3",
+    "chain": "6:Human_QP3.Y",
+    "residue_name": "Asn",
+    "residue_code": "N",
+    "position": 136,
+    "uid": 136,
+    "mutation_codes": [
+      "D",
+      "H",
+      "I",
+      "K",
+      "S",
+      "T",
+      "Y"
+    ],
+    "mutations": [
+      "N136D",
+      "N136H",
+      "N136I",
+      "N136K",
+      "N136S",
+      "N136T",
+      "N136Y"
+    ],
+    "mutation_pattern": "DHIKSTY"
+  },
+  {
+    "species": "human",
+    "om": "om3",
+    "chain": "6:Human_QP3.Y",
+    "residue_name": "Tyr",
+    "residue_code": "Y",
+    "position": 137,
+    "uid": 137,
+    "mutation_codes": [
+      "N",
+      "D",
+      "C",
+      "H",
+      "F",
+      "S"
+    ],
+    "mutations": [
+      "Y137N",
+      "Y137D",
+      "Y137C",
+      "Y137H",
+      "Y137F",
+      "Y137S"
+    ],
+    "mutation_pattern": "NDCHFS"
+  },
+  {
+    "species": "human",
+    "om": "om3",
+    "chain": "6:Human_QP3.Y",
+    "residue_name": "Asp",
+    "residue_code": "D",
+    "position": 140,
+    "uid": 140,
+    "mutation_codes": [
+      "A",
+      "N",
+      "E",
+      "G",
+      "H",
+      "Y",
+      "V"
+    ],
+    "mutations": [
+      "D140A",
+      "D140N",
+      "D140E",
+      "D140G",
+      "D140H",
+      "D140Y",
+      "D140V"
+    ],
+    "mutation_pattern": "ANEGHYV"
+  },
+  {
+    "species": "human",
+    "om": "om3",
+    "chain": "6:Human_QP3.Y",
+    "residue_name": "Phe",
+    "residue_code": "F",
+    "position": 142,
+    "uid": 142,
+    "mutation_codes": [
+      "C",
+      "I",
+      "L",
+      "S",
+      "Y",
+      "V"
+    ],
+    "mutations": [
+      "F142C",
+      "F142I",
+      "F142L",
+      "F142S",
+      "F142Y",
+      "F142V"
+    ],
+    "mutation_pattern": "CILSYV"
+  }
+]

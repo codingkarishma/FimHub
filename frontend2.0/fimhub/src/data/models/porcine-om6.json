@@ -1,0 +1,22 @@
+﻿{
+    "modelId":  "porcine-om6",
+    "displayName":  "Porcine OM6",
+    "species":  "porcine",
+    "glycanType":  "Oligomannose-6 (Man6GlcNAc2)",
+    "pdbRef":  "1KIU",
+    "ligand":  {
+                   "chainId":  "A",
+                   "structuralClass":  "high-mannose N-glycan",
+                   "notation":  "Man6GlcNAc2",
+                   "notes":  "Model-level binding summary derived from the source mutation dataset."
+               },
+    "referenceMutation":  "F1F",
+    "referenceAffinity":  -211.4874503,
+    "referenceStability":  -3407.67654,
+    "testedMutationCount":  166,
+    "enhancedBindingCount":  53,
+    "weakenedBindingCount":  93,
+    "strongestBinder":  "Q133K",
+    "weakestBinder":  "Q133K",
+    "lastUpdated":  "2026-04-28"
+}

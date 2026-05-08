@@ -1,16 +1,41 @@
-# React + Vite
+# FimHub
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Active app:
+- Frontend: `frontend2.0/fimhub`
+- Backend: `backend`
 
-Currently, two official plugins are available:
+Current public routes:
+- `/`
+- `/pathogenesis`
+- `/explorer`
+- `/papers`
+- `/team`
+- `/guide`
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Frontend commands:
+- `npm run dev`
+- `npm run build`
 
-## React Compiler
+Backend commands:
+- `npm run dev`
+- `npm run start`
+- `npm run build:data`
+- `npm run smoke`
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Current frontend architecture:
+- React 19 + Vite
+- route shell in `src/App.jsx`
+- active pages in `src/pages`
+- active content model in `src/content/platformContentV2.js`
+- active style entry in `src/indexV2.css`
 
-## Expanding the ESLint configuration
+Current backend architecture:
+- Express app in `backend/app.js`
+- entrypoint in `backend/index.js`
+- dataset registry in `backend/lib/datasets.js`
+- normalized clean data in `backend/data/clean`
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Deployment:
+- configured in `render.yaml`
+- frontend build path: `frontend2.0/fimhub`
+- backend start path: `backend`
