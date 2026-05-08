@@ -15,6 +15,7 @@ coverage/
 !README.md
 !LICENSE.md
 *.txt
+!backend/**/*.txt
 
 # Exclude old frontend
 frontend/
@@ -24,6 +25,13 @@ data/Human_*_PDBs/
 data/Porcine_*_PDBs/
 data/*.csv
 data/*.unknown
+backend/data/Porcine_OM3_structures.zip
+backend/data/Porcine_OM6_structures.zip
+
+# Local source files kept out of Git
+FIMHUB_V2_SUMMARY.txt
+FimH_Website_AllContent.docx
+Manuscript_images.pdf
 
 # OS files
 Thumbs.db
