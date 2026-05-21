@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Button from '../components/ui/Button';
@@ -41,7 +41,7 @@ const playerSlides = [
   },
 ];
 
-function PlayerCarousel() {
+function PlayerCarousel({ hero = false }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [touchStart, setTouchStart] = useState(null);
   const activeSlide = playerSlides[activeIndex];
@@ -50,6 +50,14 @@ function PlayerCarousel() {
     const normalizedIndex = (nextIndex + playerSlides.length) % playerSlides.length;
     setActiveIndex(normalizedIndex);
   };
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setActiveIndex((currentIndex) => (currentIndex + 1) % playerSlides.length);
+    }, 4500);
+
+    return () => window.clearInterval(timer);
+  }, []);
 
   const handleTouchEnd = (event) => {
     if (touchStart === null) return;
@@ -61,7 +69,7 @@ function PlayerCarousel() {
   };
 
   return (
-    <div className="home-carousel-clean">
+    <div className={`home-carousel-clean ${hero ? 'hero-carousel' : ''}`}>
       <button
         type="button"
         className="carousel-arrow"
@@ -139,10 +147,10 @@ function MethodGraphic() {
 export default function HomePageV2() {
   return (
     <div className="page-surface clean-home-page">
-      <section className="home-hero-minimal">
-        <div className="container-max">
+      <section className="home-hero-carousel">
+        <div className="container-max home-hero-carousel-grid">
           <Reveal>
-            <div className="hero-copy-only">
+            <div className="hero-copy-rail">
               <h1>FimH &amp; Uroplakin Interaction</h1>
               <p className="hero-subhead">
                 Mutational scanning across 545 models to map how FimH pocket mutations alter uroplakin-glycan recognition.
@@ -151,6 +159,10 @@ export default function HomePageV2() {
                 <Button size="lg">Open Mutation Explorer</Button>
               </Link>
             </div>
+          </Reveal>
+
+          <Reveal delay={0.08}>
+            <PlayerCarousel hero />
           </Reveal>
         </div>
       </section>
@@ -166,19 +178,6 @@ export default function HomePageV2() {
                 </div>
               ))}
             </div>
-          </Reveal>
-        </div>
-      </section>
-
-      <section className="section-shell">
-        <div className="container-max">
-          <Reveal>
-            <div className="section-heading clean-heading">
-              <h2>Three key players</h2>
-            </div>
-          </Reveal>
-          <Reveal delay={0.08}>
-            <PlayerCarousel />
           </Reveal>
         </div>
       </section>

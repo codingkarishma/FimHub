@@ -23,9 +23,6 @@ export default function NavbarV2() {
             <span className="block text-[26px] font-bold tracking-tight text-[color:var(--fh-text)]">
               FimHub
             </span>
-            <span className="block text-[18px] font-semibold text-[color:var(--fh-text-secondary)]">
-              FimH adhesion research resource
-            </span>
           </div>
         </Link>
 
