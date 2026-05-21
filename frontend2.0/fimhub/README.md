@@ -36,6 +36,8 @@ Current backend architecture:
 - normalized clean data in `backend/data/clean`
 
 Deployment:
-- configured in `render.yaml`
+- configured in root `vercel.json`
+- deploy from the repository root on Vercel, not from `frontend2.0/fimhub`
 - frontend build path: `frontend2.0/fimhub`
-- backend start path: `backend`
+- backend API path: root `api` serverless functions
+- no `VITE_API_URL` is required for production because the frontend calls same-origin `/api` and `/pdb` routes

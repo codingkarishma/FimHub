@@ -1,212 +1,215 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AnimatePresence, motion } from 'framer-motion';
-import Reveal from '../components/site/Reveal';
-import StatBar from '../components/site/StatBar';
-import TriviaHook from '../components/site/TriviaHook';
+import { motion } from 'framer-motion';
 import Button from '../components/ui/Button';
-import { homeContent } from '../content/platformContentV2';
+import Reveal from '../components/site/Reveal';
+import fimhUpkOmOverviewImage from '../assets/manuscript/fimh-upk-om3-om6-overview.png';
+import type1PilusImage from '../assets/rpec/type1-pilus.png';
+import uroplakinComplexImage from '../assets/rpec/uroplakin-complex.png';
 
-export default function HomePageV2() {
-  const [activeInsight, setActiveInsight] = useState(0);
-  const [direction, setDirection] = useState(0);
+const problemStats = [
+  { value: '36.7M+', label: 'Global UTI cases/year' },
+  { value: '14.9M', label: 'India pediatric UTI burden' },
+  { value: '80-90%', label: 'UPEC-caused UTIs' },
+  { value: '545', label: 'Mutant models examined' },
+];
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setDirection(1);
-      setActiveInsight((prev) => (prev + 1) % homeContent.insights.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, []);
+const playerSlides = [
+  {
+    title: 'Uroplakin',
+    subtitle: 'Bladder surface receptor',
+    text: 'Presents glycan context for bacterial attachment.',
+    image: uroplakinComplexImage,
+  },
+  {
+    title: 'Glycan',
+    subtitle: 'OM3 / OM6 sugars',
+    text: 'High-mannose N-glycans that FimH recognizes.',
+    image: fimhUpkOmOverviewImage,
+  },
+  {
+    title: 'FimH',
+    subtitle: 'Type 1 pilus adhesin',
+    text: 'Bacterial protein at the fimbrial tip with a mannose-binding pocket.',
+    image: type1PilusImage,
+  },
+  {
+    title: 'Combined Model',
+    subtitle: 'FimH + UPK + Glycan',
+    text: 'The full interaction system used in our model panel.',
+    image: fimhUpkOmOverviewImage,
+  },
+];
 
-  const slideVariants = {
-    enter: (dir) => ({
-      x: dir > 0 ? 1000 : -1000,
-      opacity: 0,
-    }),
-    center: {
-      zIndex: 1,
-      x: 0,
-      opacity: 1,
-    },
-    exit: (dir) => ({
-      zIndex: 0,
-      x: dir > 0 ? -1000 : 1000,
-      opacity: 0,
-    }),
+function PlayerCarousel() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState(null);
+  const activeSlide = playerSlides[activeIndex];
+
+  const goToSlide = (nextIndex) => {
+    const normalizedIndex = (nextIndex + playerSlides.length) % playerSlides.length;
+    setActiveIndex(normalizedIndex);
   };
 
-  const handleNextInsight = () => {
-    setDirection(1);
-    setActiveInsight((prev) => (prev + 1) % homeContent.insights.length);
-  };
-
-  const handlePrevInsight = () => {
-    setDirection(-1);
-    setActiveInsight(
-      (prev) =>
-        (prev - 1 + homeContent.insights.length) % homeContent.insights.length,
-    );
+  const handleTouchEnd = (event) => {
+    if (touchStart === null) return;
+    const delta = touchStart - event.changedTouches[0].clientX;
+    if (Math.abs(delta) > 45) {
+      goToSlide(activeIndex + (delta > 0 ? 1 : -1));
+    }
+    setTouchStart(null);
   };
 
   return (
-    <div className="bg-[color:var(--fh-bg)]">
-      <section className="hero-shell">
-        <div className="container-max py-16 md:py-20">
+    <div className="home-carousel-clean">
+      <button
+        type="button"
+        className="carousel-arrow"
+        onClick={() => goToSlide(activeIndex - 1)}
+        aria-label="Previous slide"
+      >
+        &lt;
+      </button>
+
+      <motion.article
+        key={activeSlide.title}
+        className="carousel-slide-card"
+        initial={{ opacity: 0, x: 24 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.28, ease: 'easeOut' }}
+        onTouchStart={(event) => setTouchStart(event.touches[0].clientX)}
+        onTouchEnd={handleTouchEnd}
+      >
+        <div className="carousel-slide-image">
+          <img src={activeSlide.image} alt={activeSlide.subtitle} loading="lazy" />
+        </div>
+        <div className="carousel-slide-copy">
+          <p className="eyebrow text-[color:var(--fh-accent)]">
+            {String(activeIndex + 1).padStart(2, '0')} / 04
+          </p>
+          <h3>{activeSlide.title}</h3>
+          <strong>{activeSlide.subtitle}</strong>
+          <p>{activeSlide.text}</p>
+        </div>
+      </motion.article>
+
+      <button
+        type="button"
+        className="carousel-arrow"
+        onClick={() => goToSlide(activeIndex + 1)}
+        aria-label="Next slide"
+      >
+        &gt;
+      </button>
+
+      <div className="carousel-dots" aria-label="Carousel slide controls">
+        {playerSlides.map((slide, index) => (
+          <button
+            key={slide.title}
+            type="button"
+            className={index === activeIndex ? 'is-active' : ''}
+            onClick={() => goToSlide(index)}
+            aria-label={`Show ${slide.title}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function MethodGraphic() {
+  return (
+    <div className="single-method-graphic">
+      <div className="fimh-pocket-graphic">
+        <span>FimH</span>
+        <strong>MBP</strong>
+        <small>mannose-binding pocket</small>
+      </div>
+      <div className="method-arrow">
+        <span>Mutations introduced in MBP</span>
+      </div>
+      <div className="glycan-score-graphic">
+        <span>UPK-attached glycans</span>
+        <strong>Affinity scored</strong>
+      </div>
+    </div>
+  );
+}
+
+export default function HomePageV2() {
+  return (
+    <div className="page-surface clean-home-page">
+      <section className="home-hero-minimal">
+        <div className="container-max">
           <Reveal>
-            <div className="max-w-3xl">
-              <h1 className="text-4xl leading-tight text-[color:var(--fh-text)] md:text-5xl lg:text-6xl">
-                {homeContent.hero.title}
-              </h1>
-              <p className="mt-4 text-base text-[color:var(--fh-text-secondary)] md:text-lg">
-                {homeContent.hero.description}
+            <div className="hero-copy-only">
+              <h1>FimH &amp; Uroplakin Interaction</h1>
+              <p className="hero-subhead">
+                Mutational scanning across 545 models to map how FimH pocket mutations alter uroplakin-glycan recognition.
+              </p>
+              <Link to="/explorer" className="hero-cta-link">
+                <Button size="lg">Open Mutation Explorer</Button>
+              </Link>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="section-shell">
+        <div className="container-max">
+          <Reveal>
+            <div className="stats-grid-clean" aria-label="The problem">
+              {problemStats.map((stat) => (
+                <div key={stat.label} className="stat-card-clean">
+                  <strong>{stat.value}</strong>
+                  <span>{stat.label}</span>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="section-shell">
+        <div className="container-max">
+          <Reveal>
+            <div className="section-heading clean-heading">
+              <h2>Three key players</h2>
+            </div>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <PlayerCarousel />
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="section-shell">
+        <div className="container-max">
+          <Reveal>
+            <div className="single-method-card">
+              <div className="section-heading clean-heading">
+                <h2>What we did</h2>
+              </div>
+              <MethodGraphic />
+              <p>
+                FimH pocket mutations were scored against uroplakin-attached glycans across the model panel.
               </p>
             </div>
           </Reveal>
         </div>
       </section>
 
-      <section className="py-16 md:py-20">
+      <section className="home-bottom-actions">
         <div className="container-max">
           <Reveal>
-            <StatBar items={homeContent.stats} />
-          </Reveal>
-        </div>
-      </section>
-
-      <section className="pb-16 md:pb-20">
-        <div className="container-max">
-          <div className="mb-8">
-            <Reveal>
-              <h2 className="text-2xl text-[color:var(--fh-text)] md:text-3xl">
-                Key insights about UTI and UPEC
-              </h2>
-            </Reveal>
-          </div>
-
-          <div className="relative overflow-hidden rounded-lg border border-[color:var(--fh-border)] bg-[color:var(--fh-surface)]">
-            <div className="min-h-[18rem] px-6 py-10 md:px-10 md:py-12">
-              <AnimatePresence initial={false} custom={direction} mode="wait">
-                <motion.div
-                  key={activeInsight}
-                  custom={direction}
-                  variants={slideVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{
-                    x: { type: 'spring', stiffness: 300, damping: 30 },
-                    opacity: { duration: 0.2 },
-                  }}
-                  className="space-y-4"
-                >
-                  <div className="text-5xl font-bold text-[color:var(--fh-accent)] md:text-6xl">
-                    {homeContent.insights[activeInsight].stat}
-                  </div>
-                  <h3 className="text-2xl text-[color:var(--fh-text)] md:text-3xl">
-                    {homeContent.insights[activeInsight].headline}
-                  </h3>
-                  <p className="max-w-2xl text-base text-[color:var(--fh-text-secondary)] md:text-lg">
-                    {homeContent.insights[activeInsight].description}
-                  </p>
-                </motion.div>
-              </AnimatePresence>
+            <div className="compact-action-row">
+              <Link to="/explorer" className="compact-action-link">
+                Explore mutations
+              </Link>
+              <Link to="/data" className="compact-action-link secondary">
+                View data tables
+              </Link>
             </div>
-
-            <div className="flex items-center justify-between gap-4 border-t border-[color:var(--fh-border)] px-6 py-4 md:px-10">
-              <button
-                onClick={handlePrevInsight}
-                className="inline-flex h-8 w-8 items-center justify-center rounded border border-[color:var(--fh-border)] text-[color:var(--fh-text)] hover:bg-[color:var(--fh-mid)]"
-              >
-                {'<-'}
-              </button>
-              <div className="flex gap-2">
-                {homeContent.insights.map((_, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => {
-                      setDirection(idx > activeInsight ? 1 : -1);
-                      setActiveInsight(idx);
-                    }}
-                    className={`h-2 w-2 rounded-full transition-colors ${
-                      idx === activeInsight
-                        ? 'bg-[color:var(--fh-accent)]'
-                        : 'bg-[color:var(--fh-border)]'
-                    }`}
-                  />
-                ))}
-              </div>
-              <button
-                onClick={handleNextInsight}
-                className="inline-flex h-8 w-8 items-center justify-center rounded border border-[color:var(--fh-border)] text-[color:var(--fh-text)] hover:bg-[color:var(--fh-mid)]"
-              >
-                {'->'}
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="pb-16 md:pb-20">
-        <div className="container-max">
-          <Reveal>
-            <div className="surface-panel px-6 py-7 md:px-8">
-              <TriviaHook
-                title={homeContent.trivia.title}
-                statement={homeContent.trivia.statement}
-                citation={homeContent.trivia.citation}
-              />
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      <section className="py-16 md:py-20">
-        <div className="container-max">
-          <div className="grid gap-6 lg:grid-cols-3">
-            {homeContent.previewCards.map((card, idx) => {
-              return (
-                <Reveal key={card.title} delay={idx * 0.1}>
-                  <motion.article
-                    whileHover={{ y: -4 }}
-                    className="group flex flex-col overflow-hidden rounded-lg border border-[color:var(--fh-border)] bg-[color:var(--fh-surface)] transition-shadow hover:shadow-lg"
-                  >
-                    <div className="overflow-hidden bg-[color:var(--fh-mid)]">
-                      <motion.img
-                        src={card.image || homeContent.hero.image}
-                        alt={card.imageAlt || card.title}
-                        className="h-40 w-full object-cover transition-transform duration-300 group-hover:scale-110"
-                      />
-                    </div>
-                    <div className="flex flex-1 flex-col p-5">
-                      <h3 className="text-lg font-semibold text-[color:var(--fh-text)]">
-                        {card.title}
-                      </h3>
-                      <p className="mt-2 flex-1 text-sm text-[color:var(--fh-text-secondary)]">
-                        {card.description}
-                      </p>
-                    </div>
-                  </motion.article>
-                </Reveal>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      <section className="border-t border-[color:var(--fh-border)] py-16 md:py-20">
-        <div className="container-max text-center">
-          <Reveal>
-            <h2 className="text-3xl text-[color:var(--fh-text)] md:text-4xl">
-              Ready to inspect the mutation dataset?
-            </h2>
-            <p className="mt-4 text-[color:var(--fh-text-secondary)]">
-              Open the data tables to browse model-specific mutation records
-              across the published host and glycan contexts.
-            </p>
-            <Link to="/data" className="mt-6 inline-block">
-              <Button size="lg">View Data Tables</Button>
-            </Link>
           </Reveal>
         </div>
       </section>

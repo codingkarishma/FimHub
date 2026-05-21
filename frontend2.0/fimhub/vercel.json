@@ -2,14 +2,6 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "rewrites": [
     {
-      "source": "/api/:path*",
-      "destination": "https://fimhub-backend.onrender.com/api/:path*"
-    },
-    {
-      "source": "/pdb/:path*",
-      "destination": "https://fimhub-backend.onrender.com/pdb/:path*"
-    },
-    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

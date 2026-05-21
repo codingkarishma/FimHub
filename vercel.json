@@ -1,0 +1,24 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "installCommand": "npm install && npm --prefix frontend2.0/fimhub ci",
+  "buildCommand": "npm run build",
+  "outputDirectory": "frontend2.0/fimhub/dist",
+  "functions": {
+    "api/index.js": {
+      "includeFiles": "backend/data/**"
+    },
+    "api/[...path].js": {
+      "includeFiles": "backend/data/**"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/pdb/:path*",
+      "destination": "/api/pdb/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

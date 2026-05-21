@@ -15,9 +15,57 @@ function toTitleCase(value = '') {
   return value.charAt(0).toUpperCase() + value.slice(1);
 }
 
+const LEGACY_MODEL_META = {
+  human_om3: {
+    id: 'human-om3',
+    displayName: 'Human OM3',
+    species: 'human',
+    om: 'om3',
+    glycanType: 'Oligomannose-3 (Man3GlcNAc2)',
+    description: 'Human FimH model scored against the OM3 oligomannose glycan context.',
+    color: '#0E6B6B',
+    pdbRef: '1KIU',
+    status: 'published',
+  },
+  human_om6: {
+    id: 'human-om6',
+    displayName: 'Human OM6',
+    species: 'human',
+    om: 'om6',
+    glycanType: 'Oligomannose-6 (Man6GlcNAc2)',
+    description: 'Human FimH model scored against the OM6 oligomannose glycan context.',
+    color: '#2563EB',
+    pdbRef: '1KIU',
+    status: 'published',
+  },
+  porcine_om3: {
+    id: 'porcine-om3',
+    displayName: 'Porcine OM3',
+    species: 'porcine',
+    om: 'om3',
+    glycanType: 'Oligomannose-3 (Man3GlcNAc2)',
+    description: 'Porcine FimH comparison model for the OM3 glycan context.',
+    color: '#B45309',
+    pdbRef: '1KIU',
+    status: 'published',
+  },
+  porcine_om6: {
+    id: 'porcine-om6',
+    displayName: 'Porcine OM6',
+    species: 'porcine',
+    om: 'om6',
+    glycanType: 'Oligomannose-6 (Man6GlcNAc2)',
+    description: 'Porcine FimH comparison model for the OM6 glycan context.',
+    color: '#7C3AED',
+    pdbRef: '1KIU',
+    status: 'published',
+  },
+};
+
 function mapBackendModel(model) {
   return {
     ...model,
+    om: model.om || model.chainLength || model.glycan || null,
     displayName: model.displayName || model.label,
     glycanType: model.glycanType || model.label,
     species: model.species || 'unknown',
@@ -28,30 +76,62 @@ function mapBackendModel(model) {
   };
 }
 
+function mapLegacyModels(payload) {
+  const catalog = payload?.legacy && typeof payload.legacy === 'object'
+    ? payload.legacy
+    : payload && !Array.isArray(payload) && typeof payload === 'object'
+      ? payload
+      : {};
+
+  return Object.keys(catalog)
+    .map((key) => LEGACY_MODEL_META[key])
+    .filter(Boolean)
+    .map(mapBackendModel);
+}
+
 function mapBackendMutation(record) {
+  const mutationId = record.id || record.mutation_normalized || record.mutation;
+  const parsed = typeof mutationId === 'string' ? mutationId.match(/^([A-Z])(\d+)([A-Z])$/) : null;
+  const ddgBinding =
+    typeof record.ddg_binding === 'number'
+      ? record.ddg_binding
+      : typeof record.dAffinity === 'number'
+        ? record.dAffinity
+        : null;
+  const ddgStability =
+    typeof record.ddg_stability === 'number'
+      ? record.ddg_stability
+      : typeof record.dStability === 'number'
+        ? record.dStability
+        : null;
+
   return {
     ...record,
-    id: record.id || record.mutation_normalized || record.mutation,
+    id: mutationId,
     mutation: record.mutation || record.id,
-    wt: record.wt || record.wild_type || null,
-    mut: record.mut || record.mutant || null,
-    position: typeof record.position === 'number' ? record.position : null,
-    affinity: typeof record.affinity === 'number' ? record.affinity : null,
-    stability: typeof record.stability === 'number' ? record.stability : null,
-    ddg_binding: typeof record.ddg_binding === 'number' ? record.ddg_binding : null,
-    ddg_stability: typeof record.ddg_stability === 'number' ? record.ddg_stability : null,
-    phenotype: record.phenotype || 'neutral',
+    wt: record.wt || record.wild_type || parsed?.[1] || null,
+    mut: record.mut || record.mutant || parsed?.[3] || null,
+    position: typeof record.position === 'number' ? record.position : parsed ? Number(parsed[2]) : null,
+    affinity: typeof record.affinity === 'number' ? record.affinity : typeof record.Affinity === 'number' ? record.Affinity : null,
+    stability: typeof record.stability === 'number' ? record.stability : typeof record.Stability === 'number' ? record.Stability : null,
+    ddg_binding: ddgBinding,
+    ddg_stability: ddgStability,
+    phenotype: record.phenotype || (typeof ddgBinding === 'number' ? (ddgBinding < 0 ? 'gain' : ddgBinding > 0 ? 'loss' : 'neutral') : 'neutral'),
     region: record.region || 'unassigned',
     method: record.method || 'MOE',
     notes: record.notes || '',
     structureUrl: record.pdb_file ? `${API_BASE_URL}${record.pdb_file}` : null,
-    structureAvailable: Boolean(record.structure_available),
+    structureAvailable: Boolean(record.structure_available || record.pdb_file),
   };
 }
 
 export async function fetchAvailableModels() {
   const payload = await getJson('/api/datasets');
-  return Array.isArray(payload.datasets) ? payload.datasets.map(mapBackendModel) : [];
+  if (Array.isArray(payload?.datasets)) {
+    return payload.datasets.map(mapBackendModel);
+  }
+
+  return mapLegacyModels(payload);
 }
 
 export async function fetchMutationsForModel(model) {

@@ -6,24 +6,24 @@ export default function NavbarV2() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const navLinkClass = ({ isActive }) =>
-    `border-b px-1 py-2 text-sm font-medium transition-colors ${
+    `border-b-2 px-1 py-2 text-[20px] font-semibold leading-none transition-colors ${
       isActive
         ? 'border-[color:var(--fh-accent)] text-[color:var(--fh-text)]'
         : 'border-transparent text-[color:var(--fh-text-secondary)] hover:border-[color:var(--fh-border-strong)] hover:text-[color:var(--fh-text)]'
     }`;
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-[color:var(--fh-border)] bg-[#f7f7f5]/90 backdrop-blur">
-      <div className="container-max flex min-h-16 items-center justify-between gap-4 py-3">
+    <nav className="sticky top-0 z-50 border-b border-[color:var(--fh-border)] bg-[#fbfbf8]/95 backdrop-blur">
+      <div className="container-max flex min-h-[4.75rem] items-center justify-between gap-4 py-4">
         <Link to="/" className="flex items-center gap-3">
-          <span className="inline-flex h-9 w-9 items-center justify-center border border-[color:var(--fh-border-strong)] bg-[color:var(--fh-surface)] text-xs font-semibold text-[color:var(--fh-text)]">
+          <span className="inline-flex h-11 w-11 items-center justify-center rounded-md border border-[color:var(--fh-border-strong)] bg-[color:var(--fh-surface)] text-base font-bold text-[color:var(--fh-text)]">
             FH
           </span>
           <div>
-            <span className="block font-serif text-xl font-semibold tracking-tight text-[color:var(--fh-text)]">
+            <span className="block text-[26px] font-bold tracking-tight text-[color:var(--fh-text)]">
               FimHub
             </span>
-            <span className="block text-xs text-[color:var(--fh-text-secondary)]">
+            <span className="block text-[18px] font-semibold text-[color:var(--fh-text-secondary)]">
               FimH adhesion research resource
             </span>
           </div>
@@ -58,7 +58,7 @@ export default function NavbarV2() {
                 to={item.path}
                 onClick={() => setMobileOpen(false)}
                 className={({ isActive }) =>
-                  `border border-[color:var(--fh-border)] px-4 py-3 text-sm transition-colors ${
+                  `border border-[color:var(--fh-border)] px-4 py-3 text-[20px] font-semibold transition-colors ${
                     isActive
                       ? 'bg-[color:var(--fh-accent-soft)] text-[color:var(--fh-text)]'
                       : 'bg-[color:var(--fh-surface)] text-[color:var(--fh-text-secondary)]'

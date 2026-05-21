@@ -20,12 +20,12 @@ function createCorsOptions() {
     return configuredOrigins.includes(origin);
   }
 
-  function isRenderOrigin(origin) {
+  function isVercelOrigin(origin) {
     try {
       const { hostname, protocol } = new URL(origin);
       return (
         (protocol === 'https:' || protocol === 'http:') &&
-        hostname.endsWith('.onrender.com')
+        hostname.endsWith('.vercel.app')
       );
     } catch {
       return false;
@@ -47,14 +47,14 @@ function createCorsOptions() {
       const isLocalhost = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(origin);
       const isLanAddress = /^https?:\/\/(?:\d{1,3}\.){3}\d{1,3}(?::\d+)?$/i.test(origin);
       const allowDevOrigins = process.env.NODE_ENV !== 'production' && configuredOrigins.length === 0;
-      const allowRenderOrigins = process.env.ALLOW_RENDER_ORIGINS !== 'false';
+      const allowVercelOrigins = process.env.ALLOW_VERCEL_ORIGINS !== 'false';
 
       if (allowDevOrigins && (isLocalhost || isLanAddress)) {
         callback(null, true);
         return;
       }
 
-      if (allowRenderOrigins && isRenderOrigin(origin)) {
+      if (allowVercelOrigins && isVercelOrigin(origin)) {
         callback(null, true);
         return;
       }
@@ -155,7 +155,7 @@ function createApp() {
     res.json(getPocketRecords(dataset.species, dataset.om));
   });
 
-  app.get('/pdb/:dir/:filename', (req, res) => {
+  app.get(['/pdb/:dir/:filename', '/api/pdb/:dir/:filename'], (req, res) => {
     const pdbPath = resolvePdbPath(req.params.dir, req.params.filename);
     if (!pdbPath) {
       res.status(403).json({ error: 'Forbidden' });
