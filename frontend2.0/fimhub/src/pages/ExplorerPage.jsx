@@ -1,5 +1,15 @@
 import { useDeferredValue, useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
 import Reveal from '../components/site/Reveal';
 import Button from '../components/ui/Button';
 import StructureViewport from '../components/StructureViewport';
@@ -12,11 +22,9 @@ import {
   fetchMutationIndex,
   formatNumber,
   formatSignedNumber,
-  getModelBindingSummary,
   getModelById,
   getModelMutations,
   getMutationById,
-  getMutationCrossModelData,
   getPublishedModels,
   getResidueGroups,
   getVisibleModels,
@@ -36,23 +44,52 @@ function getPreferredMutation(records = []) {
 }
 
 function formatSpeciesLabel(value = '') {
-  if (!value) {
-    return 'N/A';
-  }
-
+  if (!value) return 'N/A';
   return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
+function getDotColor(record, active) {
+  if (record.structureAvailable) {
+    return active ? 'bg-[color:var(--fh-accent)]' : 'bg-emerald-600';
+  }
+  return active ? 'bg-[color:var(--fh-border-strong)]' : 'bg-slate-300';
+}
+
+function buildComparisonData(records = []) {
+  return records.map((record) => ({
+    id: record.id,
+    affinity: Number.isFinite(record.affinity) ? record.affinity : null,
+    dAffinity: Number.isFinite(record.ddg_binding) ? record.ddg_binding : null,
+    stability: Number.isFinite(record.stability) ? record.stability : null,
+    dStability: Number.isFinite(record.ddg_stability)
+      ? record.ddg_stability
+      : null,
+    structureAvailable: record.structureAvailable,
+  }));
+}
+
+function ComparisonTooltip({ active, payload, label }) {
+  if (!active || !payload?.length) return null;
+
+  const item = payload[0]?.payload;
+  return (
+    <div className="explorer-chart-tooltip">
+      <strong>{label}</strong>
+      <span>dAffinity: {formatSignedNumber(item?.dAffinity)}</span>
+      <span>dStability: {formatSignedNumber(item?.dStability)}</span>
+      <span>Affinity: {formatNumber(item?.affinity)}</span>
+    </div>
+  );
 }
 
 export default function ExplorerPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [allModels, setAllModels] = useState([]);
   const [mutationsByModel, setMutationsByModel] = useState({});
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [filters, setFilters] = useState({
     species: 'all',
     chainLength: 'all',
-    status: 'all',
   });
   const [selectedResiduePosition, setSelectedResiduePosition] = useState(null);
   const [selectedMutationId, setSelectedMutationId] = useState('');
@@ -64,45 +101,30 @@ export default function ExplorerPage() {
     let cancelled = false;
 
     async function loadExplorerData() {
-      setLoading(true);
       setError('');
-
       try {
         const models = await fetchAvailableModels();
         const mutationIndex = await fetchMutationIndex(models);
-
-        if (cancelled) {
-          return;
-        }
-
+        if (cancelled) return;
         setAllModels(models);
         setMutationsByModel(mutationIndex);
       } catch (loadError) {
-        if (cancelled) {
-          return;
-        }
-
+        if (cancelled) return;
         setError(
           loadError instanceof Error
             ? loadError.message
             : 'Failed to load explorer data',
         );
-      } finally {
-        if (!cancelled) {
-          setLoading(false);
-        }
       }
     }
 
     loadExplorerData();
-
     return () => {
       cancelled = true;
     };
   }, []);
 
   const visibleModels = getVisibleModels(allModels);
-  const publishedModels = getPublishedModels(allModels);
   const defaultModelId = getDefaultModelId(allModels);
   const selectedModelId = searchParams.get('model') || defaultModelId;
   const selectedModel =
@@ -117,14 +139,9 @@ export default function ExplorerPage() {
       model.id.endsWith(filters.chainLength) ||
       (filters.chainLength === 'om7plus' &&
         ['om7', 'om8', 'om9'].some((item) => model.id.endsWith(item)));
-    const matchesStatus =
-      filters.status === 'all' || model.status === filters.status;
-    return matchesSpecies && matchesChainLength && matchesStatus;
+    return matchesSpecies && matchesChainLength;
   });
 
-  const modelSummary = selectedModel
-    ? getModelBindingSummary(selectedModel)
-    : null;
   const mutationRecords = selectedModel
     ? getModelMutations(mutationsByModel, selectedModel.id)
     : [];
@@ -149,13 +166,10 @@ export default function ExplorerPage() {
   const selectedMutation =
     getMutationById(selectedResidueGroup?.records || [], selectedMutationId) ||
     getPreferredMutation(selectedResidueGroup?.records || []);
-  const crossModelRows = selectedMutation
-    ? getMutationCrossModelData(
-        allModels,
-        mutationsByModel,
-        selectedMutation.id,
-      )
-    : [];
+
+  const samePositionMutations = selectedResidueGroup?.records || [];
+  const comparisonData = buildComparisonData(samePositionMutations);
+
   const structureUrl =
     selectedModel && selectedMutation
       ? resolveStructureUrl(selectedModel, selectedMutation)
@@ -208,68 +222,43 @@ export default function ExplorerPage() {
       label: 'Glycan',
       value: selectedModel?.glycanType || 'N/A',
     },
-    {
-      label: 'Mutations',
-      value: modelSummary?.testedMutationCount ?? mutationRecords.length,
-    },
-    {
-      label: 'PDB',
-      value: selectedModel?.pdbRef || 'N/A',
-    },
   ];
 
   return (
     <div className="explorer-page">
       {error && (
         <div className="container-max py-4">
-          <div className="text-sm text-rose-700">{error}</div>
+          <div className="rounded-lg bg-rose-50 px-4 py-3 text-sm text-rose-700">
+            {error}
+          </div>
         </div>
       )}
 
-      <section className="relative overflow-hidden border-b border-[color:var(--fh-border)] bg-[linear-gradient(180deg,color-mix(in_srgb,var(--fh-mid)_72%,white_28%),var(--fh-bg))]">
-        <div className="container-max relative py-10 md:py-12">
-          <Reveal>
-            <div className="max-w-xl">
-              <h1 className="text-4xl font-light leading-[1.02] text-[color:var(--fh-text)] md:text-5xl">
-                {explorerContent.hero.title}
-              </h1>
-              <p className="mt-4 max-w-lg text-base leading-8 text-[color:var(--fh-text-secondary)] md:text-lg">
-                {explorerContent.hero.description}
-              </p>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      <section className="container-max py-10 md:py-12">
+      <main className="container-max py-8 md:py-10">
         <Reveal>
-          <div className="overflow-hidden rounded-[1.5rem] border border-[color:var(--fh-border)] bg-[color:var(--fh-surface)]">
-            <div className="px-5 py-5 md:px-6">
-              <h2 className="text-2xl font-light text-[color:var(--fh-text)] md:text-3xl">
-                {selectedModel?.displayName || 'No model selected'}
-              </h2>
+          <section className="explorer-commandbar">
+            <div>
+              <p className="explorer-list-label">Explorer</p>
+              <h1>{explorerContent.hero.title}</h1>
             </div>
-            <dl className="grid gap-0 border-t border-[color:var(--fh-border)] md:grid-cols-4">
-              {modelDetails.map((item) => (
-                <div
-                  key={item.label}
-                  className="border-t border-[color:var(--fh-border)] px-5 py-4 first:border-t-0 md:border-l md:first:border-l-0 md:border-t-0 md:px-6"
-                >
-                  <dt className="text-sm text-[color:var(--fh-text-secondary)]">
-                    {item.label}
-                  </dt>
-                  <dd className="mt-2 text-lg text-[color:var(--fh-text)]">
-                    {item.value}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </div>
+            <div className="explorer-model-summary">
+              <div>
+                <span>Active model</span>
+                <strong>{selectedModel?.displayName || 'No model selected'}</strong>
+              </div>
+              <dl>
+                {modelDetails.map((item) => (
+                  <div key={item.label}>
+                    <dt>{item.label}</dt>
+                    <dd>{item.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </section>
         </Reveal>
-      </section>
 
-      <section className="pb-14 md:pb-16">
-        <div className="container-max grid gap-5 xl:grid-cols-[15.5rem,minmax(0,1fr),18rem]">
+        <section className="explorer-workspace">
           <Reveal className="xl:sticky xl:top-24 xl:h-fit">
             <ModelSelector
               models={filteredModels}
@@ -280,14 +269,13 @@ export default function ExplorerPage() {
             />
           </Reveal>
 
-          <div className="space-y-5">
+          <div className="explorer-main-stack">
             <Reveal>
-              <section className="surface-panel overflow-hidden rounded-[1.5rem] px-5 py-6 md:px-6">
-                <div className="explorer-section-header border-b border-[color:var(--fh-border)] pb-5">
+              <section className="explorer-panel">
+                <div className="explorer-section-header">
                   <div>
-                    <h2 className="text-2xl font-light text-[color:var(--fh-text)]">
-                      Selection
-                    </h2>
+                    <p className="explorer-list-label">Residue selection</p>
+                    <h2>Choose site and substitution</h2>
                   </div>
                   <input
                     type="text"
@@ -298,7 +286,7 @@ export default function ExplorerPage() {
                   />
                 </div>
 
-                <div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,0.92fr),minmax(0,1.08fr)]">
+                <div className="explorer-selection-grid">
                   <div>
                     <p className="explorer-list-label">
                       {explorerContent.sections.residueWorkspace.residuesLabel}
@@ -338,7 +326,7 @@ export default function ExplorerPage() {
                     <p className="explorer-list-label">
                       {explorerContent.sections.residueWorkspace.mutationsLabel}
                     </p>
-                    <div className="mt-3 flex flex-wrap gap-2">
+                    <div className="explorer-mutation-grid">
                       {selectedResidueGroup?.records.map((record) => {
                         const active = record.id === selectedMutation?.id;
                         return (
@@ -353,15 +341,7 @@ export default function ExplorerPage() {
                                 {record.id}
                               </span>
                               <span
-                                className={`h-2 w-2 rounded-full ${
-                                  record.structureAvailable
-                                    ? active
-                                      ? 'bg-[color:var(--fh-accent)]'
-                                      : 'bg-emerald-600'
-                                    : active
-                                      ? 'bg-[color:var(--fh-border-strong)]'
-                                      : 'bg-slate-300'
-                                }`}
+                                className={`h-2 w-2 rounded-full ${getDotColor(record, active)}`}
                               />
                             </span>
                           </button>
@@ -373,24 +353,84 @@ export default function ExplorerPage() {
               </section>
             </Reveal>
 
-            <Reveal delay={0.04}>
-              <section className="surface-panel overflow-hidden rounded-[1.5rem] px-5 py-6 md:px-6">
-                <div className="explorer-section-header border-b border-[color:var(--fh-border)] pb-5">
+            <Reveal delay={0.02}>
+              <section className="explorer-panel explorer-chart-panel">
+                <div className="explorer-section-header">
                   <div>
-                    <h2 className="text-3xl font-light text-[color:var(--fh-text)]">
+                    <p className="explorer-list-label">Residue comparison</p>
+                    <h2>
+                      {selectedResidueGroup
+                        ? `${selectedResidueGroup.wt}${selectedResidueGroup.position} substitutions`
+                        : 'Substitution comparison'}
+                    </h2>
+                  </div>
+                  <div className="explorer-chart-legend">
+                    <span className="is-better">Stronger binding</span>
+                    <span className="is-weaker">Weaker binding</span>
+                  </div>
+                </div>
+
+                <div className="explorer-chart-frame">
+                  {comparisonData.length > 0 ? (
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart
+                        data={comparisonData}
+                        margin={{ top: 12, right: 8, bottom: 0, left: -18 }}
+                      >
+                        <CartesianGrid stroke="rgba(155, 166, 175, 0.28)" vertical={false} />
+                        <XAxis
+                          dataKey="id"
+                          tickLine={false}
+                          axisLine={false}
+                          interval={0}
+                          tick={{ fill: '#4f5a64', fontSize: 12 }}
+                        />
+                        <YAxis
+                          tickLine={false}
+                          axisLine={false}
+                          tick={{ fill: '#4f5a64', fontSize: 12 }}
+                        />
+                        <Tooltip content={<ComparisonTooltip />} cursor={{ fill: 'rgba(226, 241, 239, 0.42)' }} />
+                        <Bar dataKey="dAffinity" radius={[5, 5, 0, 0]}>
+                          {comparisonData.map((entry) => (
+                            <Cell
+                              key={entry.id}
+                              fill={entry.dAffinity <= 0 ? '#0b686f' : '#d18a21'}
+                            />
+                          ))}
+                        </Bar>
+                      </BarChart>
+                    </ResponsiveContainer>
+                  ) : (
+                    <p className="explorer-empty-copy">No comparison data available.</p>
+                  )}
+                </div>
+              </section>
+            </Reveal>
+
+            <Reveal delay={0.04}>
+              <section className="explorer-panel explorer-viewer-panel">
+                <div className="explorer-section-header">
+                  <div>
+                    <p className="explorer-list-label">Structure viewer</p>
+                    <h2 className="font-mono">
                       {selectedMutation?.id || 'No mutation selected'}
                     </h2>
                   </div>
                   {structureUrl && (
-                    <a href={structureUrl} target="_blank" rel="noreferrer">
-                      <Button variant="outline" size="sm">
-                        Open PDB
+                    <a
+                      href={structureUrl}
+                      download
+                      className="inline-flex items-center"
+                    >
+                      <Button variant="outline" size="sm" className="rounded-lg">
+                        Download Structure
                       </Button>
                     </a>
                   )}
                 </div>
 
-                <div className="mt-6">
+                <div className="explorer-viewer-frame">
                   <StructureViewport
                     mutationName={selectedMutation?.id}
                     mutationPosition={selectedMutation?.position}
@@ -400,7 +440,7 @@ export default function ExplorerPage() {
                   />
                 </div>
 
-                <dl className="explorer-metric-grid mt-6">
+                <dl className="explorer-metric-grid">
                   <div>
                     <dt>{explorerContent.sections.structurePanel.affinityLabel}</dt>
                     <dd>{formatNumber(selectedMutation?.affinity)}</dd>
@@ -416,51 +456,38 @@ export default function ExplorerPage() {
                     <dd>{formatNumber(selectedMutation?.stability)}</dd>
                   </div>
                   <div>
-                    <dt>
-                      {explorerContent.sections.structurePanel.deltaStabilityLabel}
-                    </dt>
+                    <dt>dStability</dt>
                     <dd>{formatSignedNumber(selectedMutation?.ddg_stability)}</dd>
                   </div>
                   <div>
                     <dt>{explorerContent.sections.structurePanel.crossModelLabel}</dt>
-                    <dd>{crossModelRows.length}</dd>
-                  </div>
-                  <div>
-                    <dt>Structure</dt>
-                    <dd>{structureUrl ? 'Linked PDB' : 'Unavailable'}</dd>
+                    <dd>{samePositionMutations.length}</dd>
                   </div>
                 </dl>
               </section>
             </Reveal>
           </div>
 
-          <Reveal className="space-y-5" delay={0.03}>
+          <Reveal className="explorer-side-stack" delay={0.03}>
             <MutationDataPanelV2
               model={selectedModel}
               mutation={selectedMutation}
-              crossModelCount={crossModelRows.length}
+              crossModelCount={samePositionMutations.length}
               onCompareAcrossModels={() => setModalOpen(true)}
             />
 
-            <section className="surface-panel rounded-[1.5rem] px-5 py-5">
-              <p className="text-sm text-[color:var(--fh-text-secondary)]">
-                dAffinity &lt; 0 indicates stronger predicted binding.
-              </p>
-              <div className="mt-4">
-                <Link to="/guide" className="data-link text-sm">
-                  Guide
-                </Link>
-              </div>
-            </section>
+            <Link to="/guide" className="explorer-guide-link">
+              Guide
+            </Link>
           </Reveal>
-        </div>
-      </section>
+        </section>
+      </main>
 
       <CrossModelModalV2
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         mutationId={selectedMutation?.id}
-        entries={crossModelRows}
+        entries={samePositionMutations}
       />
     </div>
   );

@@ -274,21 +274,6 @@ export const explorerContent = {
     description:
       'Select a model, isolate a site, inspect the structure.',
   },
-  graphicalAbstract: {
-    title: 'Mutation landscapes across the curated FimH models',
-    caption:
-      'This manuscript figure summarizes how affinity and stability shifts were distributed across the mutant panel, with highlighted designs that define gain- and loss-of-binding behavior.',
-    image: mutationVolcanoHistogramImage,
-    imageAlt:
-      'Volcano plot and ranked histogram summarizing the mutation screening results.',
-    steps: [
-      'Browse models',
-      'Inspect site',
-      'Read score shifts',
-      'Open structure',
-      'Compare contexts',
-    ],
-  },
   sections: {
     modelPanel: {
       title: 'Models',
