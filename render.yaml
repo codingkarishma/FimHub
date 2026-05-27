@@ -1,0 +1,15 @@
+services:
+  - type: web
+    runtime: node
+    name: fimhub-api
+    rootDir: backend
+    plan: free
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeployTrigger: commit
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: ALLOW_VERCEL_ORIGINS
+        value: "true"
