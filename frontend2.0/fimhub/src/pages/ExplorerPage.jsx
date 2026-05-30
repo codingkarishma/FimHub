@@ -244,7 +244,9 @@ export default function ExplorerPage() {
             <div className="explorer-model-summary">
               <div>
                 <span>Active model</span>
-                <strong>{selectedModel?.displayName || 'No model selected'}</strong>
+                <strong>
+                  {selectedModel?.displayName || 'No model selected'}
+                </strong>
               </div>
               <dl>
                 {modelDetails.map((item) => (
@@ -375,34 +377,57 @@ export default function ExplorerPage() {
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart
                         data={comparisonData}
-                        margin={{ top: 12, right: 8, bottom: 0, left: -18 }}
+                        margin={{ top: 12, right: 8, bottom: 0, left: 40 }}
                       >
-                        <CartesianGrid stroke="rgba(155, 166, 175, 0.28)" vertical={false} />
+                        <CartesianGrid
+                          stroke="rgba(155, 166, 175, 0.28)"
+                          vertical={false}
+                        />
                         <XAxis
                           dataKey="id"
                           tickLine={false}
                           axisLine={false}
                           interval={0}
                           tick={{ fill: '#4f5a64', fontSize: 12 }}
+                          label={{
+                            value: 'Substitution',
+                            position: 'bottom',
+                            offset: 8,
+                            fill: '#4f5a64',
+                            fontSize: 12,
+                          }}
                         />
                         <YAxis
                           tickLine={false}
                           axisLine={false}
                           tick={{ fill: '#4f5a64', fontSize: 12 }}
+                          label={{
+                            value: 'ΔAffinity (kcal/mol)',
+                            angle: -90,
+                            position: 'insideLeft',
+                            style: { fill: '#4f5a64', fontSize: 12 },
+                          }}
                         />
-                        <Tooltip content={<ComparisonTooltip />} cursor={{ fill: 'rgba(226, 241, 239, 0.42)' }} />
+                        <Tooltip
+                          content={<ComparisonTooltip />}
+                          cursor={{ fill: 'rgba(226, 241, 239, 0.42)' }}
+                        />
                         <Bar dataKey="dAffinity" radius={[5, 5, 0, 0]}>
                           {comparisonData.map((entry) => (
                             <Cell
                               key={entry.id}
-                              fill={entry.dAffinity <= 0 ? '#0b686f' : '#d18a21'}
+                              fill={
+                                entry.dAffinity <= 0 ? '#0b686f' : '#d18a21'
+                              }
                             />
                           ))}
                         </Bar>
                       </BarChart>
                     </ResponsiveContainer>
                   ) : (
-                    <p className="explorer-empty-copy">No comparison data available.</p>
+                    <p className="explorer-empty-copy">
+                      No comparison data available.
+                    </p>
                   )}
                 </div>
               </section>
@@ -423,7 +448,11 @@ export default function ExplorerPage() {
                       download
                       className="inline-flex items-center"
                     >
-                      <Button variant="outline" size="sm" className="rounded-lg">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="rounded-lg"
+                      >
                         Download Structure
                       </Button>
                     </a>
@@ -442,25 +471,36 @@ export default function ExplorerPage() {
 
                 <dl className="explorer-metric-grid">
                   <div>
-                    <dt>{explorerContent.sections.structurePanel.affinityLabel}</dt>
+                    <dt>
+                      {explorerContent.sections.structurePanel.affinityLabel}
+                    </dt>
                     <dd>{formatNumber(selectedMutation?.affinity)}</dd>
                   </div>
                   <div>
                     <dt>
-                      {explorerContent.sections.structurePanel.deltaAffinityLabel}
+                      {
+                        explorerContent.sections.structurePanel
+                          .deltaAffinityLabel
+                      }
                     </dt>
                     <dd>{formatSignedNumber(selectedMutation?.ddg_binding)}</dd>
                   </div>
                   <div>
-                    <dt>{explorerContent.sections.structurePanel.stabilityLabel}</dt>
+                    <dt>
+                      {explorerContent.sections.structurePanel.stabilityLabel}
+                    </dt>
                     <dd>{formatNumber(selectedMutation?.stability)}</dd>
                   </div>
                   <div>
                     <dt>dStability</dt>
-                    <dd>{formatSignedNumber(selectedMutation?.ddg_stability)}</dd>
+                    <dd>
+                      {formatSignedNumber(selectedMutation?.ddg_stability)}
+                    </dd>
                   </div>
                   <div>
-                    <dt>{explorerContent.sections.structurePanel.crossModelLabel}</dt>
+                    <dt>
+                      {explorerContent.sections.structurePanel.crossModelLabel}
+                    </dt>
                     <dd>{samePositionMutations.length}</dd>
                   </div>
                 </dl>
