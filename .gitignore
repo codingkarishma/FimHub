@@ -21,8 +21,6 @@ coverage/
 frontend/
 
 # Exclude large PDB files and data
-data/Human_*_PDBs/
-data/Porcine_*_PDBs/
 data/*.csv
 data/*.unknown
 backend/data/Porcine_OM3_structures.zip

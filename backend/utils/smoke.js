@@ -31,6 +31,17 @@ async function main() {
       throw new Error('Dataset registry response is incomplete');
     }
 
+    const datasetsWithoutStructures = datasets.datasets.filter(
+      (dataset) => dataset.status === 'published' && !dataset.counts?.structures
+    );
+    if (datasetsWithoutStructures.length) {
+      throw new Error(
+        `Published datasets are missing structure files: ${datasetsWithoutStructures
+          .map((dataset) => dataset.id)
+          .join(', ')}`
+      );
+    }
+
     const humanOm3 = await fetchJson(baseUrl, '/api/mutations/human/om3');
     const humanOm6 = await fetchJson(baseUrl, '/api/mutations/human/om6');
     const porcineOm3 = await fetchJson(baseUrl, '/api/mutations/porcine/om3');
@@ -43,6 +54,22 @@ async function main() {
     const mutationDetail = await fetchJson(baseUrl, `/api/mutation/human/om3/${humanOm3[0].mutation}`);
     if (!mutationDetail?.mutation) {
       throw new Error('Mutation detail endpoint returned an invalid payload');
+    }
+
+    const structureRecord = [...humanOm3, ...humanOm6, ...porcineOm3, ...porcineOm6].find(
+      (record) => record.structure_available && record.pdb_file
+    );
+    if (!structureRecord) {
+      throw new Error('No mutation-linked PDB structure files were found');
+    }
+
+    const pdbResponse = await fetch(`${baseUrl}${structureRecord.pdb_file}`);
+    if (!pdbResponse.ok) {
+      throw new Error(`${structureRecord.pdb_file} expected 200 but received ${pdbResponse.status}`);
+    }
+    const pdbBody = await pdbResponse.text();
+    if (!pdbBody.includes('ATOM')) {
+      throw new Error(`${structureRecord.pdb_file} did not look like a PDB file`);
     }
 
     const humanPocketOm3 = await fetchJson(baseUrl, '/api/pocket/human/om3');

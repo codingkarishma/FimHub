@@ -11,8 +11,6 @@ dist/
 build/
 
 # Data files
-data/Human_*_PDBs/
-data/Porcine_*_PDBs/
 data/*.csv
 data/*.unknown
 
