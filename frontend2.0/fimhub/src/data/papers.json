@@ -220,6 +220,19 @@
       "tags": ["conservation", "evolution", "methods"],
       "featured": false,
       "category": "Computational Methods"
+    },
+    {
+      "id": "shekhar-2026",
+      "authors": "Shekhar A et al.",
+      "year": 2026,
+      "title": "FimH-mediated adhesion across uroplakin glycan contexts: a structural and computational integration",
+      "journal": "International Journal of Biological Macromolecules",
+      "doi": "10.1016/j.ijbiomac.2026.152407",
+      "pubmed": null,
+      "annotation": "Comprehensive structural and molecular dynamics analysis linking FimH mutations to glycan-binding outcomes across oligomannose conformational states and uroplakin-receptor interactions.",
+      "tags": ["FimH", "glycan-binding", "molecular-dynamics", "mutation-effects"],
+      "featured": true,
+      "category": "Foundational: FimH Structure and Catch-Bond"
     }
   ]
 }
