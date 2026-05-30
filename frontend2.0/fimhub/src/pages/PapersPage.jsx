@@ -10,46 +10,49 @@ function buildExternalHref(type, value) {
 
 function PaperTag({ tag }) {
   const colors = {
-    'structural': '#0E6B6B',
+    structural: '#0E6B6B',
     'catch-bond': '#2563EB',
-    'foundational': '#7C3AED',
+    foundational: '#7C3AED',
     'binding-pocket': '#059669',
-    'OM3': '#0891B2',
-    'OM6': '#0891B2',
+    OM3: '#0891B2',
+    OM6: '#0891B2',
     'anti-adhesion': '#DC2626',
-    'glycan': '#F59E0B',
-    'allostery': '#8B5CF6',
+    glycan: '#F59E0B',
+    allostery: '#8B5CF6',
     'clinical-variants': '#EA580C',
-    'uroplakin': '#0EA5E9',
+    uroplakin: '#0EA5E9',
     'cryo-em': '#6366F1',
-    'receptor': '#10B981',
-    'pathogenesis': '#EF4444',
-    'IBC': '#D97706',
-    'recurrence': '#EC4899',
-    'epidemiology': '#06B6D4',
+    receptor: '#10B981',
+    pathogenesis: '#EF4444',
+    IBC: '#D97706',
+    recurrence: '#EC4899',
+    epidemiology: '#06B6D4',
     'computational-methods': '#8B5CF6',
     'protein-design': '#6366F1',
-    'alphafold2': '#5B21B6',
+    alphafold2: '#5B21B6',
     'structural-modeling': '#3730A3',
     'normal-mode-analysis': '#4C1D95',
-    'dynamics': '#6D28D9',
-    'interactions': '#7E22CE',
+    dynamics: '#6D28D9',
+    interactions: '#7E22CE',
     'structure-analysis': '#5B21B6',
-    'conservation': '#4F46E5',
-    'evolution': '#4338CA',
-    'methods': '#6366F1',
-    'FimH': '#0E6B6B',
+    conservation: '#4F46E5',
+    evolution: '#4338CA',
+    methods: '#6366F1',
+    FimH: '#0E6B6B',
     'molecular-dynamics': '#3B82F6',
     'mutation-effects': '#EF4444',
     'glycan-binding': '#F59E0B',
   };
   const bgColor = colors[tag] || '#6B7280';
   return (
-    <span className="inline-block rounded-full px-2.5 py-1 text-xs font-medium" style={{
-      backgroundColor: `${bgColor}20`,
-      color: bgColor,
-      border: `1px solid ${bgColor}40`
-    }}>
+    <span
+      className="inline-block rounded-full px-2.5 py-1 text-xs font-medium"
+      style={{
+        backgroundColor: `${bgColor}20`,
+        color: bgColor,
+        border: `1px solid ${bgColor}40`,
+      }}
+    >
       {tag}
     </span>
   );
@@ -63,14 +66,16 @@ export default function PapersPage() {
   const papers = papersData.papers;
   const categories = ['All', ...new Set(papers.map((paper) => paper.category))];
   const filtered = papers.filter((paper) => {
-    const matchesCategory = activeCategory === 'All' || paper.category === activeCategory;
-    const haystack = `${paper.title} ${paper.authors} ${paper.annotation} ${paper.tags.join(' ')}`.toLowerCase();
+    const matchesCategory =
+      activeCategory === 'All' || paper.category === activeCategory;
+    const haystack =
+      `${paper.title} ${paper.authors} ${paper.annotation} ${paper.tags.join(' ')}`.toLowerCase();
     const matchesSearch = !deferredSearch || haystack.includes(deferredSearch);
     return matchesCategory && matchesSearch;
   });
-  
-  const featured = filtered.filter(p => p.featured);
-  const regular = filtered.filter(p => !p.featured);
+
+  const featured = filtered.filter((p) => p.featured);
+  const regular = filtered.filter((p) => !p.featured);
 
   return (
     <div>
@@ -81,7 +86,9 @@ export default function PapersPage() {
               Literature
             </h1>
             <p className="mt-4 max-w-3xl text-base leading-7 text-[color:var(--fh-text-secondary)] md:text-lg">
-              Peer-reviewed references supporting FimH structural analysis, glycan recognition, uroplakin interactions, and computational methods.
+              Peer-reviewed references supporting FimH structural analysis,
+              glycan recognition, uroplakin interactions, and computational
+              methods.
             </p>
           </div>
         </div>
@@ -127,18 +134,21 @@ export default function PapersPage() {
       {featured.length > 0 && (
         <section className="section-shell !py-12">
           <div className="container-max">
-            <h2 className="mb-6 text-lg font-semibold text-[color:var(--fh-text)]">Featured</h2>
+            <h2 className="mb-6 text-lg font-semibold text-[color:var(--fh-text)]">
+              Featured
+            </h2>
             <div className="grid gap-4 lg:grid-cols-2">
               {featured.map((paper) => (
-                <article 
-                  key={paper.id} 
+                <article
+                  key={paper.id}
                   className="surface-panel rounded-lg border border-[color:var(--fh-border)] p-6 transition-all hover:border-[color:var(--fh-accent)] hover:shadow-md"
                 >
                   <h3 className="text-lg font-semibold leading-snug text-[color:var(--fh-text)] mb-3">
                     {paper.title}
                   </h3>
                   <p className="text-xs text-[color:var(--fh-text-secondary)] mb-3">
-                    <span className="font-medium">{paper.authors}</span> • {paper.year} • {paper.journal}
+                    <span className="font-medium">{paper.authors}</span> •{' '}
+                    {paper.year} • {paper.journal}
                   </p>
                   <p className="text-sm leading-6 text-[color:var(--fh-text-secondary)] mb-4">
                     {paper.annotation}
@@ -181,16 +191,22 @@ export default function PapersPage() {
         <div className="container-max">
           {regular.length > 0 && (
             <div>
-              <h2 className="mb-6 text-lg font-semibold text-[color:var(--fh-text)]">References</h2>
+              <h2 className="mb-6 text-lg font-semibold text-[color:var(--fh-text)]">
+                References
+              </h2>
               <div className="surface-panel rounded-lg overflow-hidden border border-[color:var(--fh-border)]">
                 <div className="divide-y divide-[color:var(--fh-border)]">
                   {regular.map((paper) => (
-                    <article key={paper.id} className="p-6 transition-colors hover:bg-[color:var(--fh-accent-soft)]">
+                    <article
+                      key={paper.id}
+                      className="p-6 transition-colors hover:bg-[color:var(--fh-accent-soft)]"
+                    >
                       <h3 className="text-base font-semibold text-[color:var(--fh-text)] leading-snug mb-2">
                         {paper.title}
                       </h3>
                       <p className="text-xs text-[color:var(--fh-text-secondary)] mb-3">
-                        <span className="font-medium">{paper.authors}</span> • {paper.year} • {paper.journal}
+                        <span className="font-medium">{paper.authors}</span> •{' '}
+                        {paper.year} • {paper.journal}
                       </p>
                       <p className="text-sm leading-6 text-[color:var(--fh-text-secondary)] mb-3">
                         {paper.annotation}
@@ -232,7 +248,9 @@ export default function PapersPage() {
           )}
           {filtered.length === 0 && (
             <div className="surface-panel rounded-lg border border-[color:var(--fh-border)] p-8 text-center">
-              <p className="text-sm text-[color:var(--fh-text-secondary)]">No papers matched your search.</p>
+              <p className="text-sm text-[color:var(--fh-text-secondary)]">
+                No papers matched your search.
+              </p>
             </div>
           )}
         </div>

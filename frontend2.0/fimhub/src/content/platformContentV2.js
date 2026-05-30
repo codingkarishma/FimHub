@@ -317,95 +317,62 @@ export const explorerContent = {
 
 export const teamContent = {
   hero: {
-    title: 'Laboratory for Computational Biology & Biomolecular Design',
-    description:
-      'The broad research themes of LCBD at BCE, IIT (BHU) span computational protein and enzyme design, protein engineering, large-scale mutational analysis, health informatics and therapeutics development, and tools and pipelines development.',
     kicker: 'BCE, IIT (BHU) Varanasi',
+    title: 'Laboratory for Computational Biology & Biomolecular Design (LCBD)',
+    description:
+      'FimHub was developed at the Laboratory for Computational Biology & Biomolecular Design (LCBD), School of Biochemical Engineering, IIT (BHU) Varanasi.',
   },
+
   institution: {
-    name: 'Laboratory for Computational Biology and Biomolecular Design',
-    summary:
-      'The laboratory works through two major directions: fundamental and translational research, and methods, pipelines, and tools development.',
+    name: 'Laboratory for Computational Biology & Biomolecular Design (LCBD)',
     location:
       'School of Biochemical Engineering, IIT (BHU) Varanasi, Uttar Pradesh, India',
+    summary:
+      'LCBD investigates the structure-dynamics-function relationships of complex biological systems through computational protein design, multiscale molecular simulations, and machine learning. We decode disease-causing mutations, predict drug resistance, and engineer high-affinity therapeutic binders — with active work in viral pathogenesis, antimicrobial resistance, and neurodegenerative mechanisms.',
   },
+
   focusAreas: [
-    'Computational Protein & Enzyme Design',
-    'Protein Engineering',
-    'Large-Scale Mutational Analysis',
-    'Health Informatics & Therapeutics Development',
-    'Tools and Pipelines Development',
+    'Computational Protein Design',
+    'Molecular Dynamics & Multiscale Simulations',
+    'Viral Drug Resistance & Antimicrobial Resistance',
+    'Neurodegenerative Disease Mechanisms',
+    'Therapeutic Antibody & Nanobody Engineering',
+    'Structural & Translational Bioinformatics',
   ],
-  directions: [
-    {
-      title: 'Fundamental and translational research',
-      description:
-        'LCBD develops and uses computational protein design approaches to understand the evolution and emergence of macromolecular systems of metabolic, therapeutic, and biotechnological significance. The group also studies structure-dynamics-function relationships in complex biological systems through integrated computational analysis.',
-      points: [
-        'Computational protein design for mechanistic and translational questions',
-        'Structure-dynamics-function analysis of complex biological systems',
-        'Large-scale analysis of disease-causing genetic variation, SNPs, and rare variants',
-        'Conformational and multi-combinatorial analysis for determinants of molecular function',
-      ],
-    },
-    {
-      title: 'Methods, pipelines, and tools development',
-      description:
-        'The laboratory also builds methods and computational workflows for therapeutic and biotechnological design problems, often in collaboration with experimental biologists and chemists.',
-      points: [
-        'Design of high-affinity protein binders for therapeutic and biotechnological applications',
-        'Use of non-natural amino acids for affinity prediction and maturation',
-        'Computational protein design methods with improved scoring and protein flexibility handling',
-        'Analysis and prediction of disease-causing and susceptibility mutations',
-      ],
-    },
-  ],
-  recentFocus: {
-    title: 'Recent focus',
-    description:
-      'Lately, LCBD has also worked on COVID-19 by studying SARS-CoV-2 proteins, drug-target interactions, and resistance-causing mutations using computational protein design, molecular dynamics simulations, mutational mapping, and related computational biophysics methods.',
-  },
+
   team: [
+    {
+      name: 'Dr. Aditya Kumar Padhi',
+      role: 'Principal Investigator & Assistant Professor',
+      institution: 'School of Biochemical Engineering, IIT (BHU) Varanasi',
+      orcid: '0000-0001-6732-2547',
+      email: 'aditya.bce@iitbhu.ac.in',
+      profileHref: 'https://www.iitbhu.ac.in/dept/bce/people/adityabce',
+      contributions:
+        'Dr. Padhi is an INSA Young Associate (2026) and ISCB Young Scientist Awardee with 60+ peer-reviewed publications and 1600+ citations. His research bridges computational protein design with therapeutic discovery, spanning SARS-CoV-2 drug resistance, ALS mechanisms, and engineered nanobodies. He has served as a JSPS Postdoctoral Fellow at RIKEN, Japan, and currently serves as Editor for Biochemical and Biophysical Research Communications and on editorial advisory boards for PCCP (RSC), FEBS Letters, and Microbiology Spectrum (ASM).',
+      focus:
+        'Computational protein design, disease mutation analysis, and structure-based therapeutics for infectious and neurodegenerative diseases.',
+    },
     {
       name: 'Shashank Shekhar',
       role: 'PhD Research Scholar',
-      institution: 'IIT (BHU) Varanasi',
+      institution: 'LCBD, IIT (BHU) Varanasi',
       orcid: '0009-0006-8815-9367',
       fellowship:
         'UGC Research Fellowship and IIT (BHU) Varanasi Research Fellowship',
       contributions:
-        'Main researcher and responsible for all the data generation, analysis, and curation that went into the platform.',
+        'Lead researcher for FimHub. Drives data generation, structural analysis, mutation scoring, and biological interpretation for the platform.',
+      focus: 'Uropathogenic E. coli adhesion biology and antimicrobial resistance.',
     },
     {
       name: 'Karishma Santani',
-      role: 'IDD 4th Year, Scool of Biochemical Engineering',
-      institution: 'IIT (BHU) Varanasi',
-      contributions: 'Website development and data curation.',
+      role: 'IDD Student, School of Biochemical Engineering',
+      institution: 'LCBD, IIT (BHU) Varanasi',
+      contributions:
+        'Built the FimHub frontend, interface, and content architecture. Manages platform data curation and user experience.',
     },
-    {
-      name: 'Dr. Aditya K. Padhi',
-      role: 'Assistant Professor',
-      institution: 'IIT (BHU) Varanasi',
-      orcid: '0000-0001-6732-2547',
-      email: 'aditya.bce@iitbhu.ac.in',
-      profile: 'IIT (BHU) faculty profile',
-      profileHref: 'https://www.iitbhu.ac.in/dept/bce/people/adityabce',
-      contributions: 'Principal Investigator and supervision',
-    },
-  ],
-  acknowledgements: [
-    'Computational resources provided by IIT (BHU) Varanasi High Performance Computing Facility',
-    'FimH structural templates from the Protein Data Bank and SWISS-MODEL repository',
-    'AlphaFold2 predictions generated on Google Colab infrastructure',
-    'Colleagues in the Biochemical Engineering community for constructive feedback',
-  ],
-  funding: [
-    'UGC Research Fellowship to Shashank Shekhar',
-    'IIT (BHU) Varanasi Institute Research Support',
-    'DST Science and Engineering Research Board (SERB) grant support',
   ],
 };
-
 export const guideContent = {
   hero: {
     title: 'Using the Explorer.',
