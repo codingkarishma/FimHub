@@ -29,24 +29,6 @@ const insightPoints = [
   },
 ];
 
-const workflowSteps = [
-  {
-    step: '01',
-    title: 'Model the interface',
-    text: 'Assemble FimH, uroplakin, and glycan context.',
-  },
-  {
-    step: '02',
-    title: 'Introduce variants',
-    text: 'Scan pocket mutations across the selected systems.',
-  },
-  {
-    step: '03',
-    title: 'Compare outcomes',
-    text: 'Review how variants shift recognition patterns.',
-  },
-];
-
 const playerSlides = [
   {
     title: 'Uroplakin',
@@ -187,32 +169,26 @@ export default function HomePageV2() {
               <p className="home-kicker">FimHub interaction atlas</p>
               <h1>FimH-Uroplakin Binding</h1>
               <p className="hero-subhead">
-                A focused map of how FimH pocket mutations alter uroplakin-glycan recognition across OM3 and OM6 model systems.
+               Mutational scanning across 545 models to map how FimH pocket mutations alter uroplakin-glycan recognition
               </p>
+               <div className="hero-proof-line" aria-label="Study scope">
+                <span>545 models</span>
+                <span>OM3 / OM6 glycans</span>
+              </div>
               <div className="hero-action-row">
                 <Link to="/explorer" className="hero-cta-link">
                   <Button size="lg" className="home-primary-button">
                     Open Mutation Explorer
                   </Button>
                 </Link>
-                <Link to="/pathogenesis" className="hero-text-link">
-                  View mechanism
-                </Link>
               </div>
-              <div className="hero-proof-line" aria-label="Study scope">
-                <span>545 models</span>
-                <span>OM3 / OM6 glycans</span>
-                <span>Human and porcine panels</span>
-              </div>
+
             </div>
           </Reveal>
 
           <Reveal delay={0.08}>
             <div className="home-visual-stack">
               <PlayerCarousel hero />
-              <p className="home-visual-caption">
-                Rotate through the receptor, glycan, adhesin, and combined interaction model.
-              </p>
             </div>
           </Reveal>
         </div>
@@ -238,37 +214,6 @@ export default function HomePageV2() {
         </div>
       </section>
 
-      <section className="section-shell home-insight-section">
-        <div className="container-max">
-          <Reveal>
-            <div className="home-insight-grid">
-              <figure className="home-insight-figure">
-                <img
-                  src={fimhUpkOmOverviewImage}
-                  alt="FimH, uroplakin, OM3, and OM6 interaction overview"
-                  loading="lazy"
-                />
-              </figure>
-              <div className="home-insight-copy">
-                <p className="home-kicker">Interaction system</p>
-                <h2>One interface, multiple biological contexts.</h2>
-                <p>
-                  The page centers the FimH mannose-binding pocket, the uroplakin receptor surface, and the glycan ligands that connect them.
-                </p>
-                <div className="home-insight-list">
-                  {insightPoints.map((point) => (
-                    <article key={point.title} className="home-insight-item">
-                      <h3>{point.title}</h3>
-                      <p>{point.text}</p>
-                    </article>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
       <section className="section-shell home-method-section">
         <div className="container-max">
           <Reveal>
@@ -281,15 +226,6 @@ export default function HomePageV2() {
                 </p>
               </div>
               <MethodGraphic />
-              <div className="home-workflow-list">
-                {workflowSteps.map((item) => (
-                  <article key={item.step} className="home-workflow-step">
-                    <span>{item.step}</span>
-                    <h3>{item.title}</h3>
-                    <p>{item.text}</p>
-                  </article>
-                ))}
-              </div>
             </div>
           </Reveal>
         </div>
