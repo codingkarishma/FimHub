@@ -1,6 +1,16 @@
 import { teamContent } from '../content/platformContentV2';
 import Reveal from '../components/site/Reveal';
 import clsx from 'clsx';
+import labLogo from '../assets/profile/Lab-logo.png';
+import padhiProfileImage from '../assets/profile/padhi_sir.jpeg';
+import shashankProfileImage from '../assets/profile/shashank_bhaiya.jpeg';
+import karishmaProfileImage from '../assets/profile/karishma.jpeg';
+
+const profileImagesByName = {
+  'Dr. Aditya Kumar Padhi': padhiProfileImage,
+  'Shashank Shekhar': shashankProfileImage,
+  'Karishma Santani': karishmaProfileImage,
+};
 
 function getInitials(name) {
   return name
@@ -13,10 +23,14 @@ function getInitials(name) {
     .toUpperCase();
 }
 
-function PersonMark({ name, lead = false }) {
+function PersonMark({ name, lead = false, imageSrc }) {
   return (
-    <div className={clsx('team-person-mark', lead && 'is-lead')}>
-      {getInitials(name)}
+    <div className={clsx('team-person-mark', imageSrc && 'has-photo', lead && 'is-lead')}>
+      {imageSrc ? (
+        <img src={imageSrc} alt={`${name} portrait`} loading="lazy" />
+      ) : (
+        getInitials(name)
+      )}
     </div>
   );
 }
@@ -68,12 +82,11 @@ export default function TeamPage() {
     <Reveal delay={0.08}>
       <figure className="team-hero-visual">
         <img
-          src="/assets/lab-group.jpg"
-          alt="LCBD research group at IIT (BHU) Varanasi"
+          src={labLogo}
+          alt="LCBD lab logo at IIT (BHU) Varanasi"
           className="team-hero-img"
           loading="lazy"
         />
-        <figcaption>LCBD, IIT (BHU) Varanasi</figcaption>
       </figure>
     </Reveal>
   </div>
@@ -88,7 +101,7 @@ export default function TeamPage() {
 
           <Reveal delay={0.05}>
             <article className="team-pi-panel">
-              <PersonMark name={pi.name} lead />
+              <PersonMark name={pi.name} imageSrc={profileImagesByName[pi.name]} lead />
               <div className="team-pi-body">
                 <p className="team-role">{pi.role}</p>
                 <p className="team-institution">{pi.institution}</p>
@@ -112,7 +125,10 @@ export default function TeamPage() {
             {contributors.map((member, i) => (
               <Reveal key={member.name} delay={i * 0.05}>
                 <article className="team-roster-row">
-                  <PersonMark name={member.name} />
+                  <PersonMark
+                    name={member.name}
+                    imageSrc={profileImagesByName[member.name]}
+                  />
                   <div className="team-roster-info">
                     <h3>{member.name}</h3>
                     <p className="team-role">{member.role}</p>

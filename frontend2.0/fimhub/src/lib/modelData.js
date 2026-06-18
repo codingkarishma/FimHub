@@ -24,7 +24,6 @@ const LEGACY_MODEL_META = {
     glycanType: 'Oligomannose-3 (Man3GlcNAc2)',
     description: 'Human FimH model scored against the OM3 oligomannose glycan context.',
     color: '#0E6B6B',
-    pdbRef: '1KIU',
     status: 'published',
   },
   human_om6: {
@@ -35,7 +34,6 @@ const LEGACY_MODEL_META = {
     glycanType: 'Oligomannose-6 (Man6GlcNAc2)',
     description: 'Human FimH model scored against the OM6 oligomannose glycan context.',
     color: '#2563EB',
-    pdbRef: '1KIU',
     status: 'published',
   },
   porcine_om3: {
@@ -46,7 +44,6 @@ const LEGACY_MODEL_META = {
     glycanType: 'Oligomannose-3 (Man3GlcNAc2)',
     description: 'Porcine FimH comparison model for the OM3 glycan context.',
     color: '#B45309',
-    pdbRef: '1KIU',
     status: 'published',
   },
   porcine_om6: {
@@ -57,7 +54,6 @@ const LEGACY_MODEL_META = {
     glycanType: 'Oligomannose-6 (Man6GlcNAc2)',
     description: 'Porcine FimH comparison model for the OM6 glycan context.',
     color: '#7C3AED',
-    pdbRef: '1KIU',
     status: 'published',
   },
 };

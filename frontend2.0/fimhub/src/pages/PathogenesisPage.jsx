@@ -66,7 +66,7 @@ export default function PathogenesisPage() {
               </span>
               <h3 className="mb-2 text-lg font-semibold text-gray-900">Invasion</h3>
               <p className="text-base leading-relaxed text-gray-600">
-                The bladder cell swallows the bacterium, pulling it inside a protective bubble.
+                The bacteria enters the bladder cell, forming a protective bubble.
               </p>
             </div>
 

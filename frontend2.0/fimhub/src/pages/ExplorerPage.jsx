@@ -25,6 +25,7 @@ import {
   getModelById,
   getModelMutations,
   getMutationById,
+  getMutationCrossModelData,
   getPublishedModels,
   getResidueGroups,
   getVisibleModels,
@@ -48,13 +49,6 @@ function formatSpeciesLabel(value = '') {
   return value.charAt(0).toUpperCase() + value.slice(1);
 }
 
-function getDotColor(record, active) {
-  if (record.structureAvailable) {
-    return active ? 'bg-[color:var(--fh-accent)]' : 'bg-emerald-600';
-  }
-  return active ? 'bg-[color:var(--fh-border-strong)]' : 'bg-slate-300';
-}
-
 function buildComparisonData(records = []) {
   return records.map((record) => ({
     id: record.id,
@@ -68,16 +62,66 @@ function buildComparisonData(records = []) {
   }));
 }
 
-function ComparisonTooltip({ active, payload, label }) {
+function AffinityTooltip({ active, payload, label }) {
   if (!active || !payload?.length) return null;
-
-  const item = payload[0]?.payload;
+  const data = payload[0]?.payload;
   return (
-    <div className="explorer-chart-tooltip">
-      <strong>{label}</strong>
-      <span>dAffinity: {formatSignedNumber(item?.dAffinity)}</span>
-      <span>dStability: {formatSignedNumber(item?.dStability)}</span>
-      <span>Affinity: {formatNumber(item?.affinity)}</span>
+    <div
+      style={{
+        background: 'rgba(255, 255, 255, 0.98)',
+        border: '1px solid #e2e8f0',
+        borderRadius: '8px',
+        padding: '12px 16px',
+        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+        fontSize: '13px',
+        lineHeight: 1.5,
+        color: '#1e293b',
+        minWidth: '160px',
+      }}
+    >
+      <div style={{ fontWeight: 600, fontSize: '14px', marginBottom: '8px', color: '#0f172a' }}>
+        {label}
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '16px', marginBottom: '4px' }}>
+        <span style={{ color: '#64748b' }}>Affinity:</span>
+        <span style={{ fontWeight: 500, color: '#475569' }}>{formatNumber(data?.affinity)}</span>
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '16px' }}>
+        <span style={{ color: '#64748b' }}>ΔAffinity:</span>
+        <span style={{ fontWeight: 500, color: '#0d9488' }}>{formatSignedNumber(data?.dAffinity)}</span>
+      </div>
+    </div>
+  );
+}
+
+function StabilityTooltip({ active, payload, label }) {
+  if (!active || !payload?.length) return null;
+  const data = payload[0]?.payload;
+  return (
+    <div
+      style={{
+        background: 'rgba(255, 255, 255, 0.98)',
+        border: '1px solid #e2e8f0',
+        borderRadius: '8px',
+        padding: '12px 16px',
+        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+        fontSize: '13px',
+        lineHeight: 1.5,
+        color: '#1e293b',
+        minWidth: '160px',
+      }}
+    >
+      <div style={{ fontWeight: 600, fontSize: '14px', marginBottom: '8px', color: '#0f172a' }}>
+        {label}
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '16px', marginBottom: '4px' }}>
+        <span style={{ color: '#64748b' }}>Stability:</span>
+        <span style={{ fontWeight: 500, color: '#475569' }}>{formatNumber(data?.stability)}</span>
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '16px' }}>
+        <span style={{ color: '#64748b' }}>ΔStability:</span>
+        <span style={{ fontWeight: 500, color: '#6366f1' }}>{formatSignedNumber(data?.dStability)}</span>
+      </div>
     </div>
   );
 }
@@ -225,10 +269,19 @@ export default function ExplorerPage() {
   ];
 
   return (
-    <div className="explorer-page">
+    <div className="explorer-page" style={{ background: '#f8fafc', minHeight: '100vh' }}>
       {error && (
         <div className="container-max py-4">
-          <div className="rounded-lg bg-rose-50 px-4 py-3 text-sm text-rose-700">
+          <div
+            style={{
+              background: '#fef2f2',
+              border: '1px solid #fecaca',
+              borderRadius: '8px',
+              padding: '12px 16px',
+              fontSize: '14px',
+              color: '#991b1b',
+            }}
+          >
             {error}
           </div>
         </div>
@@ -236,23 +289,81 @@ export default function ExplorerPage() {
 
       <main className="container-max py-8 md:py-10">
         <Reveal>
-          <section className="explorer-commandbar">
+          <section
+            style={{
+              display: 'flex',
+              alignItems: 'flex-end',
+              justifyContent: 'space-between',
+              marginBottom: '32px',
+              paddingBottom: '24px',
+              borderBottom: '1px solid #e2e8f0',
+            }}
+          >
             <div>
-              <p className="explorer-list-label">Explorer</p>
-              <h1>{explorerContent.hero.title}</h1>
+              <p
+                style={{
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                  color: '#64748b',
+                  marginBottom: '8px',
+                }}
+              >
+                Explorer
+              </p>
+              <h1 style={{ fontSize: '28px', fontWeight: 700, color: '#0f172a', lineHeight: 1.2 }}>
+                {explorerContent.hero.title}
+              </h1>
             </div>
-            <div className="explorer-model-summary">
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '24px',
+                background: '#ffffff',
+                padding: '16px 20px',
+                borderRadius: '10px',
+                border: '1px solid #e2e8f0',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+              }}
+            >
               <div>
-                <span>Active model</span>
-                <strong>
+                <span
+                  style={{
+                    display: 'block',
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    color: '#94a3b8',
+                    marginBottom: '4px',
+                  }}
+                >
+                  Active Model
+                </span>
+                <strong style={{ fontSize: '15px', color: '#0f172a' }}>
                   {selectedModel?.displayName || 'No model selected'}
                 </strong>
               </div>
-              <dl>
+              <dl style={{ display: 'flex', gap: '20px', margin: 0 }}>
                 {modelDetails.map((item) => (
-                  <div key={item.label}>
-                    <dt>{item.label}</dt>
-                    <dd>{item.value}</dd>
+                  <div key={item.label} style={{ margin: 0 }}>
+                    <dt
+                      style={{
+                        fontSize: '11px',
+                        fontWeight: 600,
+                        textTransform: 'uppercase',
+                        color: '#94a3b8',
+                        letterSpacing: '0.05em',
+                        marginBottom: '2px',
+                      }}
+                    >
+                      {item.label}
+                    </dt>
+                    <dd style={{ fontSize: '14px', color: '#334155', margin: 0, fontWeight: 500 }}>
+                      {item.value}
+                    </dd>
                   </div>
                 ))}
               </dl>
@@ -260,7 +371,15 @@ export default function ExplorerPage() {
           </section>
         </Reveal>
 
-        <section className="explorer-workspace">
+        <section
+          className="explorer-workspace"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '280px 1fr 320px',
+            gap: '24px',
+            alignItems: 'start',
+          }}
+        >
           <Reveal className="xl:sticky xl:top-24 xl:h-fit">
             <ModelSelector
               models={filteredModels}
@@ -271,29 +390,92 @@ export default function ExplorerPage() {
             />
           </Reveal>
 
-          <div className="explorer-main-stack">
+          <div className="explorer-main-stack" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            {/* Selection Panel */}
             <Reveal>
-              <section className="explorer-panel">
-                <div className="explorer-section-header">
+              <section
+                className="explorer-panel"
+                style={{
+                  background: '#ffffff',
+                  borderRadius: '12px',
+                  border: '1px solid #e2e8f0',
+                  padding: '24px',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginBottom: '20px',
+                  }}
+                >
                   <div>
-                    <p className="explorer-list-label">Residue selection</p>
-                    <h2>Choose site and substitution</h2>
+                    <p
+                      style={{
+                        fontSize: '12px',
+                        fontWeight: 600,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.05em',
+                        color: '#64748b',
+                        marginBottom: '6px',
+                      }}
+                    >
+                      Residue Selection
+                    </p>
+                    <h2 style={{ fontSize: '20px', fontWeight: 600, color: '#0f172a' }}>
+                      Choose Site and Substitution
+                    </h2>
                   </div>
                   <input
                     type="text"
                     value={searchTerm}
                     onChange={(event) => setSearchTerm(event.target.value)}
-                    placeholder="Search site or substitution"
-                    className="explorer-search-field"
+                    placeholder="Search site or substitution..."
+                    style={{
+                      padding: '10px 14px',
+                      borderRadius: '8px',
+                      border: '1px solid #cbd5e1',
+                      fontSize: '14px',
+                      width: '240px',
+                      outline: 'none',
+                      transition: 'border-color 0.2s',
+                    }}
+                    onFocus={(e) => (e.target.style.borderColor = '#94a3b8')}
+                    onBlur={(e) => (e.target.style.borderColor = '#cbd5e1')}
                   />
                 </div>
 
-                <div className="explorer-selection-grid">
+                <div
+                  className="explorer-selection-grid"
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr',
+                    gap: '24px',
+                  }}
+                >
                   <div>
-                    <p className="explorer-list-label">
+                    <p
+                      style={{
+                        fontSize: '11px',
+                        fontWeight: 600,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.05em',
+                        color: '#94a3b8',
+                        marginBottom: '12px',
+                      }}
+                    >
                       {explorerContent.sections.residueWorkspace.residuesLabel}
                     </p>
-                    <div className="explorer-residue-grid">
+                    <div
+                      className="explorer-residue-grid"
+                      style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fill, minmax(56px, 1fr))',
+                        gap: '6px',
+                      }}
+                    >
                       {searchedResidueGroups.map((group) => {
                         const active =
                           group.position === selectedResidueGroup?.position;
@@ -307,28 +489,59 @@ export default function ExplorerPage() {
                                 getPreferredMutation(group.records)?.id || '',
                               );
                             }}
-                            className={`explorer-token ${active ? 'is-active' : ''}`}
+                            style={{
+                              padding: '8px 4px',
+                              borderRadius: '6px',
+                              border: active ? '1px solid #0d9488' : '1px solid #e2e8f0',
+                              background: active ? '#f0fdfa' : '#ffffff',
+                              color: active ? '#0f766e' : '#475569',
+                              fontSize: '13px',
+                              fontWeight: 600,
+                              cursor: 'pointer',
+                              transition: 'all 0.15s',
+                              fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+                            }}
+                            onMouseEnter={(e) => {
+                              if (!active) e.currentTarget.style.background = '#f8fafc';
+                            }}
+                            onMouseLeave={(e) => {
+                              if (!active) e.currentTarget.style.background = '#ffffff';
+                            }}
                           >
-                            <span className="font-mono font-semibold">
-                              {group.wt}
-                              {group.position}
-                            </span>
+                            {group.wt}
+                            {group.position}
                           </button>
                         );
                       })}
                     </div>
                     {searchedResidueGroups.length === 0 && (
-                      <p className="mt-3 text-sm text-[color:var(--fh-text-secondary)]">
+                      <p style={{ marginTop: '12px', fontSize: '13px', color: '#94a3b8' }}>
                         No residues matched.
                       </p>
                     )}
                   </div>
 
                   <div>
-                    <p className="explorer-list-label">
+                    <p
+                      style={{
+                        fontSize: '11px',
+                        fontWeight: 600,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.05em',
+                        color: '#94a3b8',
+                        marginBottom: '12px',
+                      }}
+                    >
                       {explorerContent.sections.residueWorkspace.mutationsLabel}
                     </p>
-                    <div className="explorer-mutation-grid">
+                    <div
+                      className="explorer-mutation-grid"
+                      style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fill, minmax(80px, 1fr))',
+                        gap: '6px',
+                      }}
+                    >
                       {selectedResidueGroup?.records.map((record) => {
                         const active = record.id === selectedMutation?.id;
                         return (
@@ -336,16 +549,45 @@ export default function ExplorerPage() {
                             key={record.id}
                             type="button"
                             onClick={() => setSelectedMutationId(record.id)}
-                            className={`explorer-token ${active ? 'is-active' : ''}`}
+                            style={{
+                              padding: '8px 10px',
+                              borderRadius: '6px',
+                              border: active ? '1px solid #6366f1' : '1px solid #e2e8f0',
+                              background: active ? '#eef2ff' : '#ffffff',
+                              color: active ? '#4338ca' : '#475569',
+                              fontSize: '13px',
+                              fontWeight: 500,
+                              cursor: 'pointer',
+                              transition: 'all 0.15s',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              gap: '6px',
+                              fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+                            }}
+                            onMouseEnter={(e) => {
+                              if (!active) e.currentTarget.style.background = '#f8fafc';
+                            }}
+                            onMouseLeave={(e) => {
+                              if (!active) e.currentTarget.style.background = '#ffffff';
+                            }}
                           >
-                            <span className="inline-flex items-center gap-2">
-                              <span className="font-mono font-semibold">
-                                {record.id}
-                              </span>
-                              <span
-                                className={`h-2 w-2 rounded-full ${getDotColor(record, active)}`}
-                              />
-                            </span>
+                            <span>{record.id}</span>
+                            <span
+                              style={{
+                                width: '6px',
+                                height: '6px',
+                                borderRadius: '50%',
+                                background: record.structureAvailable
+                                  ? active
+                                    ? '#0d9488'
+                                    : '#10b981'
+                                  : active
+                                    ? '#94a3b8'
+                                    : '#cbd5e1',
+                                flexShrink: 0,
+                              }}
+                            />
                           </button>
                         );
                       })}
@@ -355,103 +597,263 @@ export default function ExplorerPage() {
               </section>
             </Reveal>
 
+            {/* SIDE-BY-SIDE CHARTS */}
             <Reveal delay={0.02}>
-              <section className="explorer-panel explorer-chart-panel">
-                <div className="explorer-section-header">
-                  <div>
-                    <p className="explorer-list-label">Residue comparison</p>
-                    <h2>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(420px, 1fr))',
+                  gap: '24px',
+                }}
+              >
+                {/* LEFT — Affinity + ΔAffinity */}
+                <section
+                  style={{
+                    background: '#ffffff',
+                    borderRadius: '12px',
+                    border: '1px solid #e2e8f0',
+                    padding: '24px',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+                  }}
+                >
+                  <div style={{ marginBottom: '16px' }}>
+                    <p
+                      style={{
+                        fontSize: '12px',
+                        fontWeight: 600,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.05em',
+                        color: '#64748b',
+                        marginBottom: '6px',
+                      }}
+                    >
+                      Binding Energetics
+                    </p>
+                    <h2 style={{ fontSize: '18px', fontWeight: 600, color: '#0f172a' }}>
                       {selectedResidueGroup
-                        ? `${selectedResidueGroup.wt}${selectedResidueGroup.position} substitutions`
-                        : 'Substitution comparison'}
+                        ? `${selectedResidueGroup.wt}${selectedResidueGroup.position} Affinity Profile`
+                        : 'Affinity Profile'}
                     </h2>
                   </div>
-                  <div className="explorer-chart-legend">
-                    <span className="is-better">Stronger binding</span>
-                    <span className="is-weaker">Weaker binding</span>
-                  </div>
-                </div>
 
-                <div className="explorer-chart-frame">
-                  {comparisonData.length > 0 ? (
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart
-                        data={comparisonData}
-                        margin={{ top: 12, right: 8, bottom: 0, left: 40 }}
-                      >
-                        <CartesianGrid
-                          stroke="rgba(155, 166, 175, 0.28)"
-                          vertical={false}
-                        />
-                        <XAxis
-                          dataKey="id"
-                          tickLine={false}
-                          axisLine={false}
-                          interval={0}
-                          tick={{ fill: '#4f5a64', fontSize: 12 }}
-                          label={{
-                            value: 'Substitution',
-                            position: 'bottom',
-                            offset: 8,
-                            fill: '#4f5a64',
-                            fontSize: 12,
-                          }}
-                        />
-                        <YAxis
-                          tickLine={false}
-                          axisLine={false}
-                          tick={{ fill: '#4f5a64', fontSize: 12 }}
-                          label={{
-                            value: 'ΔAffinity (kcal/mol)',
-                            angle: -90,
-                            position: 'insideLeft',
-                            style: { fill: '#4f5a64', fontSize: 12 },
-                          }}
-                        />
-                        <Tooltip
-                          content={<ComparisonTooltip />}
-                          cursor={{ fill: 'rgba(226, 241, 239, 0.42)' }}
-                        />
-                        <Bar dataKey="dAffinity" radius={[5, 5, 0, 0]}>
-                          {comparisonData.map((entry) => (
-                            <Cell
-                              key={entry.id}
-                              fill={
-                                entry.dAffinity <= 0 ? '#0b686f' : '#d18a21'
-                              }
-                            />
-                          ))}
-                        </Bar>
-                      </BarChart>
-                    </ResponsiveContainer>
-                  ) : (
-                    <p className="explorer-empty-copy">
-                      No comparison data available.
+                  <div
+                    style={{
+                      display: 'flex',
+                      gap: '16px',
+                      fontSize: '12px',
+                      marginBottom: '16px',
+                      flexWrap: 'wrap',
+                    }}
+                  >
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#475569' }}>
+                      <span style={{ width: '10px', height: '10px', borderRadius: '2px', background: '#475569' }} />
+                      Affinity
+                    </span>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#475569' }}>
+                      <span style={{ width: '10px', height: '10px', borderRadius: '2px', background: '#0d9488' }} />
+                      ΔAffinity
+                    </span>
+                  </div>
+
+                  <div style={{ height: '340px', width: '100%' }}>
+                    {comparisonData.length > 0 ? (
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart
+                          data={comparisonData}
+                          margin={{ top: 12, right: 8, bottom: 24, left: 44 }}
+                          barGap={2}
+                        >
+                          <CartesianGrid stroke="rgba(148, 163, 184, 0.12)" vertical={false} />
+                          <XAxis
+                            dataKey="id"
+                            tickLine={false}
+                            axisLine={{ stroke: 'rgba(148, 163, 184, 0.3)' }}
+                            interval={0}
+                            tick={{ fill: '#475569', fontSize: 11 }}
+                            label={{
+                              value: 'Substitution',
+                              position: 'bottom',
+                              offset: 8,
+                              fill: '#64748b',
+                              fontSize: 11,
+                            }}
+                          />
+                          <YAxis
+                            tickLine={false}
+                            axisLine={{ stroke: 'rgba(148, 163, 184, 0.3)' }}
+                            tick={{ fill: '#475569', fontSize: 11 }}
+                            label={{
+                              value: 'kcal/mol',
+                              angle: -90,
+                              position: 'insideLeft',
+                              style: { fill: '#64748b', fontSize: 11 },
+                            }}
+                          />
+                          <Tooltip content={<AffinityTooltip />} cursor={{ fill: 'rgba(241, 245, 249, 0.6)' }} />
+                          <Bar dataKey="affinity" name="Affinity" fill="#475569" radius={[3, 3, 0, 0]} maxBarSize={22} />
+                          <Bar dataKey="dAffinity" name="ΔAffinity" fill="#0d9488" radius={[3, 3, 0, 0]} maxBarSize={22} />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    ) : (
+                      <p style={{ textAlign: 'center', color: '#94a3b8', paddingTop: '120px', fontSize: '14px' }}>
+                        No data available.
+                      </p>
+                    )}
+                  </div>
+                </section>
+
+                {/* RIGHT — Stability + ΔStability */}
+                <section
+                  style={{
+                    background: '#ffffff',
+                    borderRadius: '12px',
+                    border: '1px solid #e2e8f0',
+                    padding: '24px',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+                  }}
+                >
+                  <div style={{ marginBottom: '16px' }}>
+                    <p
+                      style={{
+                        fontSize: '12px',
+                        fontWeight: 600,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.05em',
+                        color: '#64748b',
+                        marginBottom: '6px',
+                      }}
+                    >
+                      Thermodynamic Stability
                     </p>
-                  )}
-                </div>
-              </section>
+                    <h2 style={{ fontSize: '18px', fontWeight: 600, color: '#0f172a' }}>
+                      {selectedResidueGroup
+                        ? `${selectedResidueGroup.wt}${selectedResidueGroup.position} Stability Profile`
+                        : 'Stability Profile'}
+                    </h2>
+                  </div>
+
+                  <div
+                    style={{
+                      display: 'flex',
+                      gap: '16px',
+                      fontSize: '12px',
+                      marginBottom: '16px',
+                      flexWrap: 'wrap',
+                    }}
+                  >
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#475569' }}>
+                      <span style={{ width: '10px', height: '10px', borderRadius: '2px', background: '#475569' }} />
+                      Stability
+                    </span>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#475569' }}>
+                      <span style={{ width: '10px', height: '10px', borderRadius: '2px', background: '#6366f1' }} />
+                      ΔStability
+                    </span>
+                  </div>
+
+                  <div style={{ height: '340px', width: '100%' }}>
+                    {comparisonData.length > 0 ? (
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart
+                          data={comparisonData}
+                          margin={{ top: 12, right: 8, bottom: 24, left: 44 }}
+                          barGap={2}
+                        >
+                          <CartesianGrid stroke="rgba(148, 163, 184, 0.12)" vertical={false} />
+                          <XAxis
+                            dataKey="id"
+                            tickLine={false}
+                            axisLine={{ stroke: 'rgba(148, 163, 184, 0.3)' }}
+                            interval={0}
+                            tick={{ fill: '#475569', fontSize: 11 }}
+                            label={{
+                              value: 'Substitution',
+                              position: 'bottom',
+                              offset: 8,
+                              fill: '#64748b',
+                              fontSize: 11,
+                            }}
+                          />
+                          <YAxis
+                            tickLine={false}
+                            axisLine={{ stroke: 'rgba(148, 163, 184, 0.3)' }}
+                            tick={{ fill: '#475569', fontSize: 11 }}
+                            label={{
+                              value: 'kcal/mol',
+                              angle: -90,
+                              position: 'insideLeft',
+                              style: { fill: '#64748b', fontSize: 11 },
+                            }}
+                          />
+                          <Tooltip content={<StabilityTooltip />} cursor={{ fill: 'rgba(241, 245, 249, 0.6)' }} />
+                          <Bar dataKey="stability" name="Stability" fill="#475569" radius={[3, 3, 0, 0]} maxBarSize={22} />
+                          <Bar dataKey="dStability" name="ΔStability" fill="#6366f1" radius={[3, 3, 0, 0]} maxBarSize={22} />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    ) : (
+                      <p style={{ textAlign: 'center', color: '#94a3b8', paddingTop: '120px', fontSize: '14px' }}>
+                        No data available.
+                      </p>
+                    )}
+                  </div>
+                </section>
+              </div>
             </Reveal>
 
-            <Reveal delay={0.04}>
-              <section className="explorer-panel explorer-viewer-panel">
-                <div className="explorer-section-header">
+            {/* Structure Viewer & Metrics */}
+            <Reveal delay={0.03}>
+              <section
+                style={{
+                  background: '#ffffff',
+                  borderRadius: '12px',
+                  border: '1px solid #e2e8f0',
+                  padding: '24px',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginBottom: '20px',
+                  }}
+                >
                   <div>
-                    <p className="explorer-list-label">Structure viewer</p>
-                    <h2 className="font-mono">
+                    <p
+                      style={{
+                        fontSize: '12px',
+                        fontWeight: 600,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.05em',
+                        color: '#64748b',
+                        marginBottom: '6px',
+                      }}
+                    >
+                      Structure Viewer
+                    </p>
+                    <h2
+                      style={{
+                        fontSize: '20px',
+                        fontWeight: 600,
+                        color: '#0f172a',
+                        fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+                      }}
+                    >
                       {selectedMutation?.id || 'No mutation selected'}
                     </h2>
                   </div>
                   {structureUrl && (
-                    <a
-                      href={structureUrl}
-                      download
-                      className="inline-flex items-center"
-                    >
+                    <a href={structureUrl} download style={{ textDecoration: 'none' }}>
                       <Button
                         variant="outline"
                         size="sm"
-                        className="rounded-lg"
+                        style={{
+                          borderRadius: '8px',
+                          borderColor: '#cbd5e1',
+                          color: '#475569',
+                          fontWeight: 500,
+                        }}
                       >
                         Download Structure
                       </Button>
@@ -459,7 +861,15 @@ export default function ExplorerPage() {
                   )}
                 </div>
 
-                <div className="explorer-viewer-frame">
+                <div
+                  style={{
+                    background: '#f8fafc',
+                    borderRadius: '10px',
+                    border: '1px solid #e2e8f0',
+                    overflow: 'hidden',
+                    marginBottom: '20px',
+                  }}
+                >
                   <StructureViewport
                     mutationName={selectedMutation?.id}
                     mutationPosition={selectedMutation?.position}
@@ -469,56 +879,124 @@ export default function ExplorerPage() {
                   />
                 </div>
 
-                <dl className="explorer-metric-grid">
-                  <div>
-                    <dt>
-                      {explorerContent.sections.structurePanel.affinityLabel}
-                    </dt>
-                    <dd>{formatNumber(selectedMutation?.affinity)}</dd>
-                  </div>
-                  <div>
-                    <dt>
-                      {
-                        explorerContent.sections.structurePanel
-                          .deltaAffinityLabel
-                      }
-                    </dt>
-                    <dd>{formatSignedNumber(selectedMutation?.ddg_binding)}</dd>
-                  </div>
-                  <div>
-                    <dt>
-                      {explorerContent.sections.structurePanel.stabilityLabel}
-                    </dt>
-                    <dd>{formatNumber(selectedMutation?.stability)}</dd>
-                  </div>
-                  <div>
-                    <dt>dStability</dt>
-                    <dd>
-                      {formatSignedNumber(selectedMutation?.ddg_stability)}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt>
-                      {explorerContent.sections.structurePanel.crossModelLabel}
-                    </dt>
-                    <dd>{samePositionMutations.length}</dd>
-                  </div>
-                </dl>
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(5, 1fr)',
+                    gap: '16px',
+                  }}
+                >
+                  {[
+                    {
+                      label: explorerContent.sections.structurePanel.affinityLabel,
+                      value: formatNumber(selectedMutation?.affinity),
+                      color: '#0f172a',
+                    },
+                    {
+                      label: explorerContent.sections.structurePanel.deltaAffinityLabel,
+                      value: formatSignedNumber(selectedMutation?.ddg_binding),
+                      color: '#0f172a',
+                    },
+                    {
+                      label: explorerContent.sections.structurePanel.stabilityLabel,
+                      value: formatNumber(selectedMutation?.stability),
+                      color: '#0f172a',
+                    },
+                    {
+                      label: explorerContent.sections.structurePanel.deltaStabilityLabel,
+                      value: formatSignedNumber(selectedMutation?.ddg_stability),
+                      color: '#0f172a',
+                    },
+                    {
+                      label: explorerContent.sections.structurePanel.crossModelLabel,
+                      value: samePositionMutations.length,
+                      color: '#0f172a',
+                    },
+                  ].map((metric) => (
+                    <div
+                      key={metric.label}
+                      style={{
+                        background: '#f8fafc',
+                        borderRadius: '8px',
+                        padding: '14px 16px',
+                        border: '1px solid #e2e8f0',
+                      }}
+                    >
+                      <dt
+                        style={{
+                          fontSize: '11px',
+                          fontWeight: 600,
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.05em',
+                          color: '#94a3b8',
+                          marginBottom: '6px',
+                        }}
+                      >
+                        {metric.label}
+                      </dt>
+                      <dd
+                        style={{
+                          fontSize: '18px',
+                          fontWeight: 700,
+                          color: metric.color,
+                          margin: 0,
+                          fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+                        }}
+                      >
+                        {metric.value ?? '—'}
+                      </dd>
+                    </div>
+                  ))}
+                </div>
               </section>
             </Reveal>
           </div>
 
           <Reveal className="explorer-side-stack" delay={0.03}>
-            <MutationDataPanelV2
-              model={selectedModel}
-              mutation={selectedMutation}
-              crossModelCount={samePositionMutations.length}
-              onCompareAcrossModels={() => setModalOpen(true)}
-            />
+            <div
+              style={{
+                position: 'sticky',
+                top: '96px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '16px',
+              }}
+            >
+              <MutationDataPanelV2
+                model={selectedModel}
+                mutation={selectedMutation}
+                crossModelCount={samePositionMutations.length}
+                onCompareAcrossModels={() => setModalOpen(true)}
+              />
 
-            <Link to="/guide" className="explorer-guide-link">
-              Guide
-            </Link>
+              <Link
+                to="/guide"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '12px',
+                  background: '#ffffff',
+                  border: '1px solid #e2e8f0',
+                  borderRadius: '8px',
+                  color: '#64748b',
+                  fontSize: '14px',
+                  fontWeight: 500,
+                  textDecoration: 'none',
+                  transition: 'all 0.2s',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = '#cbd5e1';
+                  e.currentTarget.style.color = '#475569';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = '#e2e8f0';
+                  e.currentTarget.style.color = '#64748b';
+                }}
+              >
+                Guide
+              </Link>
+            </div>
           </Reveal>
         </section>
       </main>
@@ -527,7 +1005,7 @@ export default function ExplorerPage() {
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         mutationId={selectedMutation?.id}
-        entries={samePositionMutations}
+        entries={getMutationCrossModelData(allModels, mutationsByModel, selectedMutation?.id)}
       />
     </div>
   );

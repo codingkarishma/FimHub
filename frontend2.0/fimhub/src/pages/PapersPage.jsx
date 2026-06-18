@@ -60,113 +60,175 @@ function PaperTag({ tag }) {
 
 export default function PapersPage() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [activeCategory, setActiveCategory] = useState('All');
   const deferredSearch = useDeferredValue(searchTerm).trim().toLowerCase();
 
   const papers = papersData.papers;
-  const categories = ['All', ...new Set(papers.map((paper) => paper.category))];
   const filtered = papers.filter((paper) => {
-    const matchesCategory =
-      activeCategory === 'All' || paper.category === activeCategory;
     const haystack =
       `${paper.title} ${paper.authors} ${paper.annotation} ${paper.tags.join(' ')}`.toLowerCase();
-    const matchesSearch = !deferredSearch || haystack.includes(deferredSearch);
-    return matchesCategory && matchesSearch;
+    return !deferredSearch || haystack.includes(deferredSearch);
   });
 
-  const featured = filtered.filter((p) => p.featured);
-  const regular = filtered.filter((p) => !p.featured);
-
   return (
-    <div>
-      <section className="hero-shell">
-        <div className="container-max py-12 md:py-16">
-          <div className="max-w-4xl">
-            <h1 className="text-4xl leading-[1.02] text-[color:var(--fh-text)] md:text-5xl">
-              Literature
+    <div style={{ background: '#f8fafc', minHeight: '100vh' }}>
+      {/* Hero */}
+      <section style={{ borderBottom: '1px solid #e2e8f0', background: '#ffffff' }}>
+        <div className="container-max" style={{ padding: '48px 0' }}>
+          <div>
+            <h1
+              style={{
+                fontSize: '36px',
+                fontWeight: 700,
+                color: '#0f172a',
+                lineHeight: 1.1,
+                letterSpacing: '-0.02em',
+              }}
+            >
+              Papers to explore the FimH adhesin and its role in bacterial pathogenesis
             </h1>
-            <p className="mt-4 max-w-3xl text-base leading-7 text-[color:var(--fh-text-secondary)] md:text-lg">
-              Peer-reviewed references supporting FimH structural analysis,
-              glycan recognition, uroplakin interactions, and computational
-              methods.
+          </div>
+        </div>
+      </section>
+
+      {/* Search bar only */}
+      <section style={{ padding: '24px 0', background: '#ffffff', borderBottom: '1px solid #e2e8f0' }}>
+        <div className="container-max">
+          <div style={{ maxWidth: '480px' }}>
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(event) => setSearchTerm(event.target.value)}
+              placeholder="Search title, author, keywords..."
+              style={{
+                width: '100%',
+                padding: '12px 16px',
+                borderRadius: '10px',
+                border: '1px solid #e2e8f0',
+                background: '#f8fafc',
+                fontSize: '14px',
+                color: '#0f172a',
+                outline: 'none',
+                transition: 'all 0.2s',
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = '#94a3b8';
+                e.target.style.background = '#ffffff';
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = '#e2e8f0';
+                e.target.style.background = '#f8fafc';
+              }}
+            />
+            <p style={{ marginTop: '8px', fontSize: '12px', color: '#94a3b8' }}>
+              {papers.length} publications
             </p>
           </div>
         </div>
       </section>
 
-      <section className="section-shell !py-12">
+      {/* Paper grid */}
+      <section style={{ padding: '40px 0 80px' }}>
         <div className="container-max">
-          <div className="surface-panel px-6 py-6">
-            <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
-              <div>
-                <input
-                  type="text"
-                  value={searchTerm}
-                  onChange={(event) => setSearchTerm(event.target.value)}
-                  placeholder="Search title, author, keywords..."
-                  className="w-full rounded-lg border border-[color:var(--fh-border)] bg-[color:var(--fh-surface)] px-4 py-3 text-sm text-[color:var(--fh-text)] outline-none transition-all focus:border-[color:var(--fh-accent)] focus:ring-2 focus:ring-[color:var(--fh-accent-soft)] xl:max-w-md"
-                />
-                <p className="mt-2 text-xs text-[color:var(--fh-text-secondary)]">
-                  {papers.length} total • {filtered.length} shown
-                </p>
-              </div>
-            </div>
-            <div className="mt-6 flex flex-wrap gap-2">
-              {categories.map((category) => (
-                <button
-                  key={category}
-                  type="button"
-                  onClick={() => setActiveCategory(category)}
-                  className={`rounded-full border px-4 py-2 text-sm font-medium transition-all ${
-                    activeCategory === category
-                      ? 'border-[color:var(--fh-accent)] bg-[color:var(--fh-accent-soft)] text-[color:var(--fh-text)]'
-                      : 'border-[color:var(--fh-border)] bg-transparent text-[color:var(--fh-text-secondary)] hover:border-[color:var(--fh-accent)] hover:text-[color:var(--fh-text)]'
-                  }`}
-                >
-                  {category}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {featured.length > 0 && (
-        <section className="section-shell !py-12">
-          <div className="container-max">
-            <h2 className="mb-6 text-lg font-semibold text-[color:var(--fh-text)]">
-              Featured
-            </h2>
-            <div className="grid gap-4 lg:grid-cols-2">
-              {featured.map((paper) => (
+          {filtered.length > 0 ? (
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(380px, 1fr))',
+                gap: '24px',
+              }}
+            >
+              {filtered.map((paper) => (
                 <article
                   key={paper.id}
-                  className="surface-panel rounded-lg border border-[color:var(--fh-border)] p-6 transition-all hover:border-[color:var(--fh-accent)] hover:shadow-md"
+                  style={{
+                    background: '#ffffff',
+                    borderRadius: '12px',
+                    border: '1px solid #e2e8f0',
+                    padding: '28px',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+                    transition: 'all 0.2s',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '16px',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = '#cbd5e1';
+                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.06)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = '#e2e8f0';
+                    e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.04)';
+                  }}
                 >
-                  <h3 className="text-lg font-semibold leading-snug text-[color:var(--fh-text)] mb-3">
+                  {/* Title */}
+                  <h3
+                    style={{
+                      fontSize: '17px',
+                      fontWeight: 600,
+                      lineHeight: 1.4,
+                      color: '#0f172a',
+                    }}
+                  >
                     {paper.title}
                   </h3>
-                  <p className="text-xs text-[color:var(--fh-text-secondary)] mb-3">
-                    <span className="font-medium">{paper.authors}</span> •{' '}
-                    {paper.year} • {paper.journal}
+
+                  {/* Meta line */}
+                  <p style={{ fontSize: '13px', color: '#64748b', lineHeight: 1.5 }}>
+                    <span style={{ fontWeight: 500, color: '#475569' }}>
+                      {paper.authors}
+                    </span>
+                    {' • '}
+                    {paper.year}
+                    {' • '}
+                    <span style={{ fontStyle: 'italic' }}>{paper.journal}</span>
                   </p>
-                  <p className="text-sm leading-6 text-[color:var(--fh-text-secondary)] mb-4">
+
+                  {/* Annotation */}
+                  <p
+                    style={{
+                      fontSize: '14px',
+                      lineHeight: 1.6,
+                      color: '#475569',
+                      flex: 1,
+                    }}
+                  >
                     {paper.annotation}
                   </p>
-                  <div className="mb-4 flex flex-wrap gap-2">
+
+                  {/* Tags */}
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                     {paper.tags.map((tag) => (
                       <PaperTag key={tag} tag={tag} />
                     ))}
                   </div>
-                  <div className="flex gap-4 text-sm">
+
+                  {/* Links */}
+                  <div
+                    style={{
+                      display: 'flex',
+                      gap: '20px',
+                      paddingTop: '16px',
+                      borderTop: '1px solid #f1f5f9',
+                    }}
+                  >
                     {paper.doi && (
                       <a
                         href={buildExternalHref('doi', paper.doi)}
                         target="_blank"
                         rel="noreferrer"
-                        className="font-medium text-[color:var(--fh-accent)] hover:underline"
+                        style={{
+                          fontSize: '13px',
+                          fontWeight: 600,
+                          color: '#0d9488',
+                          textDecoration: 'none',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                        }}
+                        onMouseEnter={(e) => (e.target.style.textDecoration = 'underline')}
+                        onMouseLeave={(e) => (e.target.style.textDecoration = 'none')}
                       >
-                        DOI
+                        DOI ↗
                       </a>
                     )}
                     {paper.pubmed && (
@@ -174,83 +236,35 @@ export default function PapersPage() {
                         href={buildExternalHref('pubmed', paper.pubmed)}
                         target="_blank"
                         rel="noreferrer"
-                        className="font-medium text-[color:var(--fh-accent)] hover:underline"
+                        style={{
+                          fontSize: '13px',
+                          fontWeight: 600,
+                          color: '#0d9488',
+                          textDecoration: 'none',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                        }}
+                        onMouseEnter={(e) => (e.target.style.textDecoration = 'underline')}
+                        onMouseLeave={(e) => (e.target.style.textDecoration = 'none')}
                       >
-                        PubMed
+                        PubMed ↗
                       </a>
                     )}
                   </div>
                 </article>
               ))}
             </div>
-          </div>
-        </section>
-      )}
-
-      <section className="pb-16 pt-12">
-        <div className="container-max">
-          {regular.length > 0 && (
-            <div>
-              <h2 className="mb-6 text-lg font-semibold text-[color:var(--fh-text)]">
-                References
-              </h2>
-              <div className="surface-panel rounded-lg overflow-hidden border border-[color:var(--fh-border)]">
-                <div className="divide-y divide-[color:var(--fh-border)]">
-                  {regular.map((paper) => (
-                    <article
-                      key={paper.id}
-                      className="p-6 transition-colors hover:bg-[color:var(--fh-accent-soft)]"
-                    >
-                      <h3 className="text-base font-semibold text-[color:var(--fh-text)] leading-snug mb-2">
-                        {paper.title}
-                      </h3>
-                      <p className="text-xs text-[color:var(--fh-text-secondary)] mb-3">
-                        <span className="font-medium">{paper.authors}</span> •{' '}
-                        {paper.year} • {paper.journal}
-                      </p>
-                      <p className="text-sm leading-6 text-[color:var(--fh-text-secondary)] mb-3">
-                        {paper.annotation}
-                      </p>
-                      <div className="flex items-center justify-between gap-4 flex-wrap">
-                        <div className="flex flex-wrap gap-2">
-                          {paper.tags.map((tag) => (
-                            <PaperTag key={tag} tag={tag} />
-                          ))}
-                        </div>
-                        <div className="flex gap-4 text-sm">
-                          {paper.doi && (
-                            <a
-                              href={buildExternalHref('doi', paper.doi)}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="font-medium text-[color:var(--fh-accent)] hover:underline"
-                            >
-                              DOI
-                            </a>
-                          )}
-                          {paper.pubmed && (
-                            <a
-                              href={buildExternalHref('pubmed', paper.pubmed)}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="font-medium text-[color:var(--fh-accent)] hover:underline"
-                            >
-                              PubMed
-                            </a>
-                          )}
-                        </div>
-                      </div>
-                    </article>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-          {filtered.length === 0 && (
-            <div className="surface-panel rounded-lg border border-[color:var(--fh-border)] p-8 text-center">
-              <p className="text-sm text-[color:var(--fh-text-secondary)]">
-                No papers matched your search.
-              </p>
+          ) : (
+            <div
+              style={{
+                textAlign: 'center',
+                padding: '64px 24px',
+                color: '#94a3b8',
+                fontSize: '14px',
+              }}
+            >
+              No papers matched your search.
             </div>
           )}
         </div>

@@ -1,241 +1,320 @@
 import { Link } from 'react-router-dom';
 import Reveal from '../components/site/Reveal';
 import Button from '../components/ui/Button';
-import { guideContent } from '../content/platformContentV2';
 
-function ExplorerGuideMap() {
-  return (
-    <div className="overflow-hidden rounded-[1.7rem] border border-[color:var(--fh-border)] bg-[color:var(--fh-surface)] p-4 md:p-5">
-      <div className="rounded-[1.2rem] border border-[color:var(--fh-border)] bg-[linear-gradient(180deg,color-mix(in_srgb,var(--fh-mid)_74%,white_26%),var(--fh-bg))] p-4 md:p-5">
-        <div className="border-b border-[color:var(--fh-border)] pb-4">
-          <p className="text-xs uppercase tracking-[0.12em] text-[color:var(--fh-text-secondary)]">
-            Explorer
-          </p>
-          <h2 className="mt-2 text-2xl font-light text-[color:var(--fh-text)]">
-            Mutation Explorer
-          </h2>
-          <p className="mt-2 text-sm leading-7 text-[color:var(--fh-text-secondary)]">
-            Select a model, isolate a site, inspect the structure.
-          </p>
-        </div>
+const quickStartSteps = [
+  {
+    number: '01',
+    title: 'Open the Explorer',
+    text: 'Navigate to the Mutation Explorer. This is the central workspace where all models, residue sites, mutations, scores, and structures are connected.',
+    action: 'Go to Explorer',
+    href: '/explorer',
+  },
+  {
+    number: '02',
+    title: 'Choose a Model',
+    text: 'Select your host–glycan system from the left panel. Available options include Human OM3, Human OM6, Porcine OM3, and Porcine OM6. Each model represents a distinct structural context for FimH binding.',
+    action: null,
+    href: null,
+  },
+  {
+    number: '03',
+    title: 'Select a Residue',
+    text: 'Click any residue position in the grid to view all available substitutions at that site. The residue selector filters by wild-type amino acid and position number.',
+    action: null,
+    href: null,
+  },
+  {
+    number: '04',
+    title: 'Pick a Mutation',
+    text: 'Choose a specific substitution to load its thermodynamic profile: binding affinity, stability, phenotype classification, and linked structural data.',
+    action: null,
+    href: null,
+  },
+  {
+    number: '05',
+    title: 'Read the Charts',
+    text: 'Compare Affinity vs ΔAffinity and Stability vs ΔStability side-by-side for all substitutions at your selected position. Use the structure viewer when a PDB file is available.',
+    action: null,
+    href: null,
+  },
+];
 
-        <div className="mt-5 grid gap-4 xl:grid-cols-[13rem,minmax(0,1fr),15rem]">
-          <section className="rounded-[1.1rem] border border-[color:var(--fh-border)] bg-[color:var(--fh-surface)] p-4">
-            <p className="text-sm font-semibold text-[color:var(--fh-text)]">
-              1. Models
-            </p>
-            <div className="mt-4 space-y-2">
-              <div className="rounded-full border border-[color:var(--fh-border)] bg-[color:var(--fh-bg)] px-4 py-2 text-sm text-[color:var(--fh-text-secondary)]">
-                Human
-              </div>
-              <div className="rounded-full border border-[color:var(--fh-border)] bg-[color:var(--fh-bg)] px-4 py-2 text-sm text-[color:var(--fh-text-secondary)]">
-                OM3
-              </div>
-              <div className="rounded-[1rem] border border-[color:var(--fh-accent)] bg-[color:var(--fh-accent-soft)] px-4 py-3">
-                <p className="text-sm font-semibold text-[color:var(--fh-text)]">
-                  hOM3
-                </p>
-                <p className="mt-1 text-xs text-[color:var(--fh-text-secondary)]">
-                  choose a model first
-                </p>
-              </div>
-            </div>
-          </section>
-
-          <div className="space-y-4">
-            <section className="rounded-[1.1rem] border border-[color:var(--fh-border)] bg-[color:var(--fh-surface)] p-4">
-              <p className="text-sm font-semibold text-[color:var(--fh-text)]">
-                2. Selection
-              </p>
-              <div className="mt-4 grid gap-4 lg:grid-cols-2">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.1em] text-[color:var(--fh-text-secondary)]">
-                    Residues
-                  </p>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {['N46', 'T51', 'I52', 'N135'].map((item) => (
-                      <span
-                        key={item}
-                        className={`rounded-full border px-3 py-1.5 text-sm ${
-                          item === 'N135'
-                            ? 'border-[color:var(--fh-accent)] bg-[color:var(--fh-accent-soft)] text-[color:var(--fh-text)]'
-                            : 'border-[color:var(--fh-border)] bg-[color:var(--fh-bg)] text-[color:var(--fh-text-secondary)]'
-                        }`}
-                      >
-                        {item}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <p className="text-xs uppercase tracking-[0.1em] text-[color:var(--fh-text-secondary)]">
-                    Mutations
-                  </p>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {['N135K', 'N135A', 'N135Q'].map((item, index) => (
-                      <span
-                        key={item}
-                        className={`rounded-full border px-3 py-1.5 text-sm ${
-                          index === 0
-                            ? 'border-[color:var(--fh-accent)] bg-[color:var(--fh-accent-soft)] text-[color:var(--fh-text)]'
-                            : 'border-[color:var(--fh-border)] bg-[color:var(--fh-bg)] text-[color:var(--fh-text-secondary)]'
-                        }`}
-                      >
-                        {item}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <section className="rounded-[1.1rem] border border-[color:var(--fh-border)] bg-[color:var(--fh-surface)] p-4">
-              <div className="flex items-center justify-between gap-3">
-                <p className="text-sm font-semibold text-[color:var(--fh-text)]">
-                  3. Structure view
-                </p>
-                <span className="text-xs text-[color:var(--fh-text-secondary)]">
-                  Open PDB
-                </span>
-              </div>
-              <div className="mt-4 flex h-[14rem] items-center justify-center rounded-[1rem] border border-[color:var(--fh-border)] bg-[color:var(--fh-mid)]">
-                <p className="text-sm text-[color:var(--fh-text-secondary)]">
-                  linked structure loads here
-                </p>
-              </div>
-            </section>
-          </div>
-
-          <section className="rounded-[1.1rem] border border-[color:var(--fh-border)] bg-[color:var(--fh-surface)] p-4">
-            <p className="text-sm font-semibold text-[color:var(--fh-text)]">
-              4. Mutation panel
-            </p>
-            <div className="mt-4 space-y-3">
-              {[
-                ['Affinity', '-8.21'],
-                ['dAffinity', '-0.42'],
-                ['Stability', '-1.04'],
-                ['dStability', '+0.18'],
-              ].map(([label, value]) => (
-                <div
-                  key={label}
-                  className="flex items-center justify-between border-t border-[color:var(--fh-border)] pt-3 text-sm"
-                >
-                  <span className="text-[color:var(--fh-text-secondary)]">
-                    {label}
-                  </span>
-                  <span className="text-[color:var(--fh-text)]">{value}</span>
-                </div>
-              ))}
-            </div>
-          </section>
-        </div>
-      </div>
-    </div>
-  );
-}
+const terminology = [
+  {
+    term: 'Affinity',
+    definition: 'Absolute binding score for the selected mutant. Lower (more negative) values indicate stronger predicted glycan binding.',
+  },
+  {
+    term: 'ΔAffinity (dAffinity)',
+    definition: 'Change in binding free energy relative to wild type. Negative values suggest improved binding; positive values suggest weakened binding.',
+  },
+  {
+    term: 'Stability',
+    definition: 'Absolute protein stability score for the mutant. Reflects the thermodynamic favorability of the folded state.',
+  },
+  {
+    term: 'ΔStability (dStability)',
+    definition: 'Change in stability relative to wild type. Negative values indicate destabilization; positive values indicate stabilization.',
+  },
+  {
+    term: 'Structure File',
+    definition: 'A linked PDB coordinate file available for direct download and 3D visualization in the structure viewer.',
+  },
+  {
+    term: 'Cross-Model Comparison',
+    definition: 'Compare the same mutation across all curated host–glycan models to assess binding consistency and structural availability.',
+  },
+];
 
 export default function GuidePageV2() {
-  const keyDefinitions = guideContent.definitions.filter((item) =>
-    ['dAffinity', 'dStability', 'Affinity', 'Stability', 'Structure file'].includes(item.term),
-  );
-
   return (
-    <div className="bg-[color:var(--fh-bg)]">
-      <section className="border-b border-[color:var(--fh-border)]">
-        <div className="container-max py-12 md:py-16">
+    <div style={{ background: '#f8fafc', minHeight: '100vh' }}>
+     <h1 style={{ fontSize: '36px', fontWeight: 700, color: '#0f172a', textAlign: 'center', paddingTop: '48px' }}>
+        FimHub User Guide
+      </h1>
+      {/* Quick Start Steps */}
+      <section style={{ padding: '48px 0 64px' }}>
+        <div className="container-max">
           <Reveal>
-            <div className="max-w-3xl">
-              <h1 className="text-3xl font-light leading-tight text-[color:var(--fh-text)] md:text-5xl">
-                {guideContent.hero.title}
-              </h1>
-              <p className="mt-5 max-w-2xl text-base leading-8 text-[color:var(--fh-text-secondary)] md:text-lg">
-                {guideContent.hero.description}
+            <div style={{ marginBottom: '36px' }}>
+              <p
+                style={{
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em',
+                  color: '#64748b',
+                  marginBottom: '10px',
+                }}
+              >
+                Start Here
               </p>
-              <div className="mt-7">
-                <Link to="/explorer">
-                  <Button size="lg">Open Explorer</Button>
-                </Link>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      <section className="container-max py-12 md:py-16">
-        <div className="grid gap-10 lg:grid-cols-[0.72fr,1.28fr] lg:gap-14">
-          <Reveal>
-            <div className="max-w-xl">
-              <h2 className="text-2xl font-light leading-tight text-[color:var(--fh-text)] md:text-3xl">
-                Navigation
+              <h2
+                style={{
+                  fontSize: '24px',
+                  fontWeight: 600,
+                  color: '#0f172a',
+                  marginBottom: '8px',
+                }}
+              >
+                Five Steps to a Result
               </h2>
-              <div className="mt-6 space-y-4">
-                {guideContent.steps.map((step, index) => (
+              <p style={{ fontSize: '15px', color: '#64748b', maxWidth: '560px' }}>
+                Follow this sequence. Each step builds on the previous one.
+              </p>
+            </div>
+          </Reveal>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            {quickStartSteps.map((step, index) => (
+              <Reveal key={step.number} delay={index * 0.04}>
+                <div
+                  style={{
+                    background: '#ffffff',
+                    borderRadius: '12px',
+                    border: '1px solid #e2e8f0',
+                    padding: '24px 28px',
+                    display: 'grid',
+                    gridTemplateColumns: '56px 1fr auto',
+                    gap: '24px',
+                    alignItems: 'start',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+                    transition: 'all 0.2s',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = '#cbd5e1';
+                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.06)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = '#e2e8f0';
+                    e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.04)';
+                  }}
+                >
                   <div
-                    key={step}
-                    className="border-t border-[color:var(--fh-border)] pt-4"
+                    style={{
+                      fontSize: '24px',
+                      fontWeight: 700,
+                      color: '#e2e8f0',
+                      fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+                      lineHeight: 1,
+                      paddingTop: '2px',
+                    }}
                   >
-                    <p className="text-sm font-semibold text-[color:var(--fh-text)]">
-                      Step {index + 1}
-                    </p>
-                    <p className="mt-2 text-sm leading-7 text-[color:var(--fh-text-secondary)]">
-                      {step}
+                    {step.number}
+                  </div>
+                  <div>
+                    <h3
+                      style={{
+                        fontSize: '17px',
+                        fontWeight: 600,
+                        color: '#0f172a',
+                        marginBottom: '6px',
+                      }}
+                    >
+                      {step.title}
+                    </h3>
+                    <p
+                      style={{
+                        fontSize: '14px',
+                        lineHeight: 1.6,
+                        color: '#475569',
+                        maxWidth: '560px',
+                      }}
+                    >
+                      {step.text}
                     </p>
                   </div>
-                ))}
-              </div>
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.05}>
-            <ExplorerGuideMap />
-          </Reveal>
-        </div>
-      </section>
-
-      <section className="border-t border-[color:var(--fh-border)]">
-        <div className="container-max py-12 md:py-16">
-          <div className="grid gap-10 lg:grid-cols-[0.78fr,1.22fr] lg:gap-14">
-            <Reveal>
-              <div className="max-w-xl">
-                <h2 className="text-2xl font-light leading-tight text-[color:var(--fh-text)] md:text-3xl">
-                  Key terms
-                </h2>
-                <p className="mt-5 text-base leading-8 text-[color:var(--fh-text-secondary)]">
-                  These are the only readouts you need to interpret the current
-                  explorer workflow.
-                </p>
-              </div>
-            </Reveal>
-
-            <div className="space-y-5">
-              {keyDefinitions.map((item, index) => (
-                <Reveal key={item.term} delay={index * 0.04}>
-                  <div className="border-t border-[color:var(--fh-border)] pt-4">
-                    <p className="text-sm font-semibold text-[color:var(--fh-text)]">
-                      {item.term}
-                    </p>
-                    <p className="mt-2 text-sm leading-7 text-[color:var(--fh-text-secondary)]">
-                      {item.text}
-                    </p>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
+                  {step.action && step.href && (
+                    <div style={{ paddingTop: '4px' }}>
+                      <Link
+                        to={step.href}
+                        style={{
+                          fontSize: '13px',
+                          fontWeight: 600,
+                          color: '#0d9488',
+                          textDecoration: 'none',
+                          whiteSpace: 'nowrap',
+                        }}
+                        onMouseEnter={(e) => (e.target.style.textDecoration = 'underline')}
+                        onMouseLeave={(e) => (e.target.style.textDecoration = 'none')}
+                      >
+                        {step.action} →
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className="border-t border-[color:var(--fh-border)]">
-        <div className="container-max py-12 md:py-16">
+      {/* Terminology */}
+      <section style={{ background: '#ffffff', borderTop: '1px solid #e2e8f0', padding: '48px 0 64px' }}>
+        <div className="container-max">
           <Reveal>
-            <div className="max-w-3xl">
-              <h2 className="text-2xl font-light leading-tight text-[color:var(--fh-text)] md:text-3xl">
-                Limits
+            <div style={{ marginBottom: '36px' }}>
+              <h2
+                style={{
+                  fontSize: '24px',
+                  fontWeight: 600,
+                  color: '#0f172a',
+                  marginBottom: '8px',
+                }}
+              >
+                What the Numbers Mean
               </h2>
-              <p className="mt-5 text-sm leading-8 text-[color:var(--fh-text-secondary)] md:text-base">
-                {guideContent.limitations}
+              <p style={{ fontSize: '15px', color: '#64748b', maxWidth: '560px' }}>
+                Definitions for the core metrics displayed in the explorer.
               </p>
+            </div>
+          </Reveal>
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+              gap: '16px',
+            }}
+          >
+            {terminology.map((item, index) => (
+              <Reveal key={item.term} delay={index * 0.03}>
+                <div
+                  style={{
+                    background: '#f8fafc',
+                    borderRadius: '10px',
+                    border: '1px solid #e2e8f0',
+                    padding: '20px 24px',
+                    transition: 'all 0.15s',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = '#cbd5e1';
+                    e.currentTarget.style.background = '#ffffff';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = '#e2e8f0';
+                    e.currentTarget.style.background = '#f8fafc';
+                  }}
+                >
+                  <h3
+                    style={{
+                      fontSize: '15px',
+                      fontWeight: 600,
+                      color: '#0f172a',
+                      marginBottom: '8px',
+                    }}
+                  >
+                    {item.term}
+                  </h3>
+                  <p
+                    style={{
+                      fontSize: '14px',
+                      lineHeight: 1.6,
+                      color: '#475569',
+                    }}
+                  >
+                    {item.definition}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section style={{ background: '#0f172a', padding: '48px 0' }}>
+        <div className="container-max">
+          <Reveal>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '24px',
+                flexWrap: 'wrap',
+              }}
+            >
+              <div>
+                <p
+                  style={{
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.08em',
+                    color: '#94a3b8',
+                    marginBottom: '10px',
+                  }}
+                >
+                  Ready to begin?
+                </p>
+                <h2
+                  style={{
+                    fontSize: '22px',
+                    fontWeight: 600,
+                    color: '#f8fafc',
+                    marginBottom: '6px',
+                  }}
+                >
+                  Explore mutations now.
+                </h2>
+                <p style={{ fontSize: '14px', color: '#94a3b8' }}>
+                  Use FimHub as a computational guide for FimH structural analysis.
+                </p>
+              </div>
+              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                <Link to="/explorer" style={{ textDecoration: 'none' }}>
+                  <Button size="lg" variant="primary">
+                    Open Explorer
+                  </Button>
+                </Link>
+                <Link to="/papers" style={{ textDecoration: 'none' }}>
+                  <Button size="lg" variant="outline" style={{ borderColor: '#475569', color: 'black' }}>
+                    Read Papers
+                  </Button>
+                </Link>
+              </div>
             </div>
           </Reveal>
         </div>

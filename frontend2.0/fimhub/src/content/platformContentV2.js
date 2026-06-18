@@ -271,8 +271,7 @@ export const pathogenesisPageContent = {
 export const explorerContent = {
   hero: {
     title: 'Mutation Explorer',
-    description:
-      'Select a model, isolate a site, inspect the structure.',
+    description: 'Select a model, isolate a site, inspect the structure.',
   },
   sections: {
     modelPanel: {
@@ -362,7 +361,8 @@ export const teamContent = {
         'UGC Research Fellowship and IIT (BHU) Varanasi Research Fellowship',
       contributions:
         'Lead researcher for FimHub. Drives data generation, structural analysis, mutation scoring, and biological interpretation for the platform.',
-      focus: 'Uropathogenic E. coli adhesion biology and antimicrobial resistance.',
+      focus:
+        'Uropathogenic E. coli adhesion biology and antimicrobial resistance.',
     },
     {
       name: 'Karishma Santani',

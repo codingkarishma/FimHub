@@ -3,15 +3,48 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Button from '../components/ui/Button';
 import Reveal from '../components/site/Reveal';
+import side2 from '../assets/manuscript/slide2.png';
+import type1PilusImage from '../assets/manuscript/slide3.png';
+import uroplakinComplexImage from '../assets/manuscript/slide1.png';
 import fimhUpkOmOverviewImage from '../assets/manuscript/fimh-upk-om3-om6-overview.png';
-import type1PilusImage from '../assets/rpec/type1-pilus.png';
-import uroplakinComplexImage from '../assets/rpec/uroplakin-complex.png';
-
 const problemStats = [
-  { value: '36.7M+', label: 'Global UTI cases/year' },
-  { value: '14.9M', label: 'India pediatric UTI burden' },
-  { value: '80-90%', label: 'UPEC-caused UTIs' },
-  { value: '545', label: 'Mutant models examined' },
+  { value: '36.7M', label: 'Global UTI cases/year', context: 'Clinical scale' },
+  { value: '14.9M', label: 'India pediatric UTI burden', context: 'Regional need' },
+  { value: '80-90%', label: 'UPEC-caused UTIs', context: 'Primary pathogen' },
+  { value: '545', label: 'Mutant models examined', context: 'Screening depth' },
+];
+
+const insightPoints = [
+  {
+    title: 'Pocket-level focus',
+    text: 'Residue changes are framed around the mannose-binding pocket where FimH meets glycan ligands.',
+  },
+  {
+    title: 'Host receptor context',
+    text: 'Uroplakin-attached OM3 and OM6 glycans keep the model close to bladder-surface recognition.',
+  },
+  {
+    title: 'Explorer-ready output',
+    text: 'The home flow leads directly into mutation, model, and data views for deeper inspection.',
+  },
+];
+
+const workflowSteps = [
+  {
+    step: '01',
+    title: 'Model the interface',
+    text: 'Assemble FimH, uroplakin, and glycan context.',
+  },
+  {
+    step: '02',
+    title: 'Introduce variants',
+    text: 'Scan pocket mutations across the selected systems.',
+  },
+  {
+    step: '03',
+    title: 'Compare outcomes',
+    text: 'Review how variants shift recognition patterns.',
+  },
 ];
 
 const playerSlides = [
@@ -25,7 +58,7 @@ const playerSlides = [
     title: 'Glycan',
     subtitle: 'OM3 / OM6 sugars',
     text: 'High-mannose N-glycans that FimH recognizes.',
-    image: fimhUpkOmOverviewImage,
+    image: side2,
   },
   {
     title: 'FimH',
@@ -54,7 +87,7 @@ function PlayerCarousel({ hero = false }) {
   useEffect(() => {
     const timer = window.setInterval(() => {
       setActiveIndex((currentIndex) => (currentIndex + 1) % playerSlides.length);
-    }, 4500);
+    }, 10000);
 
     return () => window.clearInterval(timer);
   }, []);
@@ -138,7 +171,7 @@ function MethodGraphic() {
       </div>
       <div className="glycan-score-graphic">
         <span>UPK-attached glycans</span>
-        <strong>Affinity scored</strong>
+        <strong>Mutational Scanning</strong>
       </div>
     </div>
   );
@@ -151,28 +184,51 @@ export default function HomePageV2() {
         <div className="container-max home-hero-carousel-grid">
           <Reveal>
             <div className="hero-copy-rail">
-              <h1>FimH &amp; Uroplakin Interaction</h1>
+              <p className="home-kicker">FimHub interaction atlas</p>
+              <h1>FimH-Uroplakin Binding</h1>
               <p className="hero-subhead">
-                Mutational scanning across 545 models to map how FimH pocket mutations alter uroplakin-glycan recognition.
+                A focused map of how FimH pocket mutations alter uroplakin-glycan recognition across OM3 and OM6 model systems.
               </p>
-              <Link to="/explorer" className="hero-cta-link">
-                <Button size="lg">Open Mutation Explorer</Button>
-              </Link>
+              <div className="hero-action-row">
+                <Link to="/explorer" className="hero-cta-link">
+                  <Button size="lg" className="home-primary-button">
+                    Open Mutation Explorer
+                  </Button>
+                </Link>
+                <Link to="/pathogenesis" className="hero-text-link">
+                  View mechanism
+                </Link>
+              </div>
+              <div className="hero-proof-line" aria-label="Study scope">
+                <span>545 models</span>
+                <span>OM3 / OM6 glycans</span>
+                <span>Human and porcine panels</span>
+              </div>
             </div>
           </Reveal>
 
           <Reveal delay={0.08}>
-            <PlayerCarousel hero />
+            <div className="home-visual-stack">
+              <PlayerCarousel hero />
+              <p className="home-visual-caption">
+                Rotate through the receptor, glycan, adhesin, and combined interaction model.
+              </p>
+            </div>
           </Reveal>
         </div>
       </section>
 
-      <section className="section-shell">
+      <section className="section-shell home-proof-section">
         <div className="container-max">
           <Reveal>
+            <div className="home-section-heading">
+              <p className="home-kicker">Why it matters</p>
+              <h2>UTI scale meets a mutation-level binding question.</h2>
+            </div>
             <div className="stats-grid-clean" aria-label="The problem">
               {problemStats.map((stat) => (
                 <div key={stat.label} className="stat-card-clean">
+                  <span className="stat-context">{stat.context}</span>
                   <strong>{stat.value}</strong>
                   <span>{stat.label}</span>
                 </div>
@@ -182,17 +238,58 @@ export default function HomePageV2() {
         </div>
       </section>
 
-      <section className="section-shell">
+      <section className="section-shell home-insight-section">
+        <div className="container-max">
+          <Reveal>
+            <div className="home-insight-grid">
+              <figure className="home-insight-figure">
+                <img
+                  src={fimhUpkOmOverviewImage}
+                  alt="FimH, uroplakin, OM3, and OM6 interaction overview"
+                  loading="lazy"
+                />
+              </figure>
+              <div className="home-insight-copy">
+                <p className="home-kicker">Interaction system</p>
+                <h2>One interface, multiple biological contexts.</h2>
+                <p>
+                  The page centers the FimH mannose-binding pocket, the uroplakin receptor surface, and the glycan ligands that connect them.
+                </p>
+                <div className="home-insight-list">
+                  {insightPoints.map((point) => (
+                    <article key={point.title} className="home-insight-item">
+                      <h3>{point.title}</h3>
+                      <p>{point.text}</p>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="section-shell home-method-section">
         <div className="container-max">
           <Reveal>
             <div className="single-method-card">
-              <div className="section-heading clean-heading">
+              <div className="section-heading clean-heading method-heading">
+                <p className="home-kicker">Method</p>
                 <h2>What we did</h2>
+                <p>
+                  FimH pocket mutations were scored against uroplakin-attached glycans across the model panel.
+                </p>
               </div>
               <MethodGraphic />
-              <p>
-                FimH pocket mutations were scored against uroplakin-attached glycans across the model panel.
-              </p>
+              <div className="home-workflow-list">
+                {workflowSteps.map((item) => (
+                  <article key={item.step} className="home-workflow-step">
+                    <span>{item.step}</span>
+                    <h3>{item.title}</h3>
+                    <p>{item.text}</p>
+                  </article>
+                ))}
+              </div>
             </div>
           </Reveal>
         </div>
@@ -201,13 +298,19 @@ export default function HomePageV2() {
       <section className="home-bottom-actions">
         <div className="container-max">
           <Reveal>
-            <div className="compact-action-row">
-              <Link to="/explorer" className="compact-action-link">
-                Explore mutations
-              </Link>
-              <Link to="/data" className="compact-action-link secondary">
-                View data tables
-              </Link>
+            <div className="home-final-cta">
+              <div>
+                <p className="home-kicker">Next step</p>
+                <h2>Move from overview to inspection.</h2>
+              </div>
+              <div className="compact-action-row">
+                <Link to="/explorer" className="compact-action-link">
+                  Explore mutations
+                </Link>
+                <Link to="/data" className="compact-action-link secondary">
+                  View data tables
+                </Link>
+              </div>
             </div>
           </Reveal>
         </div>
