@@ -11,7 +11,6 @@ export default function ModelSelector({
     <aside className="explorer-panel explorer-model-panel">
       <div className="explorer-panel-heading">
         <p className="explorer-list-label">Models</p>
-        <h2>Filter system</h2>
       </div>
 
       <div className="explorer-filter-stack">
@@ -40,7 +39,6 @@ export default function ModelSelector({
             <option value="all">All glycans</option>
             <option value="om3">OM3</option>
             <option value="om6">OM6</option>
-            <option value="om7plus">OM7+</option>
           </select>
         </label>
 

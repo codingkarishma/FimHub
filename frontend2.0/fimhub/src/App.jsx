@@ -14,7 +14,7 @@ import TeamPage from './pages/TeamPage';
 import GuidePageV2 from './pages/GuidePageV2';
 import DataViewerPage from './pages/DataViewerPage';
 
-const ExplorerPage = lazy(() => import('./pages/ExplorerPage'));
+const ExplorerPage = lazy(() => import('./pages/ExplorerPage2'));
 
 function PageFallback() {
   return (

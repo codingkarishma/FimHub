@@ -787,7 +787,7 @@ export default function ExplorerPage() {
                           />
                           <Tooltip content={<StabilityTooltip />} cursor={{ fill: 'rgba(241, 245, 249, 0.6)' }} />
                           <Bar dataKey="stability" name="Stability" fill="#475569" radius={[3, 3, 0, 0]} maxBarSize={22} />
-                          <Bar dataKey="dStability" name="ΔStability" fill="#6366f1" radius={[3, 3, 0, 0]} maxBarSize={22} />
+                          <Bar dataKey="dStability" name="dStability" fill="#6366f1" radius={[3, 3, 0, 0]} maxBarSize={22} />
                         </BarChart>
                       </ResponsiveContainer>
                     ) : (

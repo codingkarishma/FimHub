@@ -25,12 +25,11 @@ export default function MutationDataPanelV2({
         <p className="explorer-list-label">Mutation</p>
         <h3 className="font-mono">{mutation.id}</h3>
         <p>{model?.displayName || 'No model selected'}</p>
-        <p>{mutation.phenotype}</p>
       </div>
 
       <dl className="explorer-detail-list">
         <div>
-          <dt>Wild-type site</dt>
+          <dt>WT site</dt>
           <dd className="truncate">
             {mutation.wt}
             {mutation.position}
@@ -42,22 +41,7 @@ export default function MutationDataPanelV2({
             {mutation.wt} {'->'} {mutation.mut}
           </dd>
         </div>
-        <div>
-          <dt>Region</dt>
-          <dd className="capitalize truncate">
-            {mutation.region.replace('-', ' ')}
-          </dd>
-        </div>
-        <div>
-          <dt>Method</dt>
-          <dd className="truncate">{mutation.method}</dd>
-        </div>
-        <div>
-          <dt>Structure file</dt>
-          <dd className="truncate">
-            {mutation.structureAvailable ? 'Linked PDB' : 'No linked PDB'}
-          </dd>
-        </div>
+
         <div>
           <dt>Affinity</dt>
           <dd className="truncate font-mono text-sm">

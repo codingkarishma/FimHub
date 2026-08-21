@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Button from '../components/ui/Button';
 import Reveal from '../components/site/Reveal';
-import side2 from '../assets/manuscript/slide2.png';
+import side2 from '../assets/manuscript/slide2.png'
 import type1PilusImage from '../assets/manuscript/slide3.png';
 import uroplakinComplexImage from '../assets/manuscript/slide1.png';
 import fimhUpkOmOverviewImage from '../assets/manuscript/fimh-upk-om3-om6-overview.png';
@@ -166,7 +166,6 @@ export default function HomePageV2() {
         <div className="container-max home-hero-carousel-grid">
           <Reveal>
             <div className="hero-copy-rail">
-              <p className="home-kicker">FimHub interaction atlas</p>
               <h1>FimH-Uroplakin Binding</h1>
               <p className="hero-subhead">
                Mutational scanning across 545 models to map how FimH pocket mutations alter uroplakin-glycan recognition
@@ -221,8 +220,8 @@ export default function HomePageV2() {
               <div className="section-heading clean-heading method-heading">
                 <p className="home-kicker">Method</p>
                 <h2>What we did</h2>
-                <p>
-                  FimH pocket mutations were scored against uroplakin-attached glycans across the model panel.
+                <p className='what_we_did'>
+                  FimH pocket mutations were compared against Wild Type FimH in complex with Uroplakin-attached-Glycan
                 </p>
               </div>
               <MethodGraphic />
