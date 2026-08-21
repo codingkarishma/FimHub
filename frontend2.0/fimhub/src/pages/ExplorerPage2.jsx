@@ -1,12 +1,11 @@
 import { useDeferredValue, useEffect, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import Reveal from '../components/site/Reveal';
 import ModelSelector from '../components/explorer/ModelSelector';
 import MutationDataPanelV2 from '../components/explorer/MutationDataPanelV2';
 import CrossModelModalV2 from '../components/explorer/CrossModelModalV2';
 import ResidueSelectionPanel from '../new-files/ResidueSelectionPanel';
 import StructureSection from '../new-files/StructureSection';
-import ProfileChart from '../new-files/ProfileChart';
 import { explorerContent } from '../content/platformContentV2';
 import { colors } from '../lib/explorerStyles';
 import {
@@ -95,9 +94,7 @@ export default function ExplorerPage() {
     const residueId = `${group.wt}${group.position}`.toLowerCase();
     return (
       residueId.includes(deferredSearch) ||
-      group.records.some((record) =>
-        record.id.toLowerCase().includes(deferredSearch),
-      )
+      group.records.some((r) => r.id.toLowerCase().includes(deferredSearch))
     );
   });
   const selectedResidueGroup =
@@ -156,20 +153,16 @@ export default function ExplorerPage() {
     setFilters((current) => ({ ...current, [key]: value }));
   };
 
-  const { residuesLabel, mutationsLabel } =
-    explorerContent.sections.residueWorkspace;
-  const { crossModelLabel } = explorerContent.sections.structurePanel;
-
   return (
-    <div style={{ background: colors.bg, minHeight: '100vh' }}>
+    <div style={{ background: '#f8fafc', minHeight: '100vh' }}>
       {error && (
         <div className="container-max py-4">
           <div
             style={{
               background: '#fef2f2',
               border: '1px solid #fecaca',
-              borderRadius: '8px',
-              padding: '12px 16px',
+              borderRadius: '12px',
+              padding: '12px 20px',
               fontSize: '14px',
               color: '#991b1b',
             }}
@@ -179,140 +172,79 @@ export default function ExplorerPage() {
         </div>
       )}
 
-      <main className="container-max py-8 md:py-10">
+      <main className="container-max py-8">
         <Reveal>
           <PageHeader selectedModel={selectedModel} />
         </Reveal>
 
-        <section
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '280px 1fr 320px',
-            gap: '24px',
-            alignItems: 'start',
-          }}
-        >
-          <Reveal className="xl:sticky xl:top-24 xl:h-fit">
-            <ModelSelector
-              models={filteredModels}
-              selectedModelId={selectedModel?.id}
-              onSelectModel={handleSelectModel}
-              filters={filters}
-              onFilterChange={handleFilterChange}
-            />
-          </Reveal>
-
-          <div
-            style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}
-          >
-            <Reveal>
-              <ResidueSelectionPanel
-                content={{ residuesLabel, mutationsLabel }}
-                residueGroups={searchedResidueGroups}
-                selectedResidueGroup={selectedResidueGroup}
-                selectedMutation={selectedMutation}
-                searchTerm={searchTerm}
-                onSearchChange={setSearchTerm}
-                onSelectResidue={handleSelectResidue}
-                onSelectMutation={setSelectedMutationId}
-              />
+        <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-6 lg:gap-8">
+          {/* Left Column */}
+          <div className="space-y-6">
+            <Reveal delay={0.01}>
+              <div className="bg-white rounded-xl border border-slate-200/80 shadow-sm overflow-hidden">
+                <ModelSelector
+                  models={filteredModels}
+                  selectedModelId={selectedModel?.id}
+                  onSelectModel={handleSelectModel}
+                  filters={filters}
+                  onFilterChange={handleFilterChange}
+                />
+              </div>
             </Reveal>
 
             <Reveal delay={0.02}>
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(420px, 1fr))',
-                  gap: '24px',
-                }}
-              >
-                <ProfileChart
-                  eyebrowText="Binding Energetics"
-                  title={
-                    selectedResidueGroup
-                      ? `${selectedResidueGroup.wt}${selectedResidueGroup.position} Affinity Profile`
-                      : 'Affinity Profile'
-                  }
-                  data={comparisonData}
-                  valueKey="affinity"
-                  deltaKey="dAffinity"
-                  valueLabel="Affinity"
-                  deltaLabel="ΔAffinity"
-                  deltaColor={colors.affinityDelta}
+              <div className="sticky top-6">
+                <MutationDataPanelV2
+                  model={selectedModel}
+                  mutation={selectedMutation}
+                  crossModelCount={samePositionMutations.length}
+                  onCompareAcrossModels={() => setModalOpen(true)}
                 />
-                <ProfileChart
-                  eyebrowText="Thermodynamic Stability"
-                  title={
-                    selectedResidueGroup
-                      ? `${selectedResidueGroup.wt}${selectedResidueGroup.position} Stability Profile`
-                      : 'Stability Profile'
-                  }
-                  data={comparisonData}
-                  valueKey="stability"
-                  deltaKey="dStability"
-                  valueLabel="Stability"
-                  deltaLabel="dStability"
-                  deltaColor={colors.stabilityDelta}
+              </div>
+            </Reveal>
+          </div>
+
+          {/* Right Column */}
+          <div className="space-y-6">
+            <Reveal delay={0.02}>
+              <div className="bg-white rounded-xl border border-slate-200/80 shadow-sm overflow-hidden">
+                <div className="p-4 flex items-center justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-3">
+                      <span className="text-sm text-slate-600 truncate">
+                        {selectedModel?.displayName || ''}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <StructureSection
+                  selectedMutation={selectedMutation}
+                  structureUrl={structureUrl}
+                  crossModelLabel=""
+                  crossModelCount={samePositionMutations.length}
                 />
               </div>
             </Reveal>
 
             <Reveal delay={0.03}>
-              <StructureSection
-                selectedMutation={selectedMutation}
-                structureUrl={structureUrl}
-                crossModelLabel={crossModelLabel}
-                crossModelCount={samePositionMutations.length}
-              />
+              <div className="bg-white rounded-xl border border-slate-200/80 shadow-sm overflow-hidden">
+                <ResidueSelectionPanel
+                  content={{
+                    residuesLabel: 'Residues',
+                    mutationsLabel: 'Mutations',
+                  }}
+                  residueGroups={searchedResidueGroups}
+                  selectedResidueGroup={selectedResidueGroup}
+                  selectedMutation={selectedMutation}
+                  searchTerm={searchTerm}
+                  onSearchChange={setSearchTerm}
+                  onSelectResidue={handleSelectResidue}
+                  onSelectMutation={setSelectedMutationId}
+                />
+              </div>
             </Reveal>
           </div>
-
-          <Reveal delay={0.03}>
-            <div
-              style={{
-                position: 'sticky',
-                top: '96px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '16px',
-              }}
-            >
-              <MutationDataPanelV2
-                model={selectedModel}
-                mutation={selectedMutation}
-                crossModelCount={samePositionMutations.length}
-                onCompareAcrossModels={() => setModalOpen(true)}
-              />
-              <Link
-                to="/guide"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  padding: '12px',
-                  background: '#ffffff',
-                  border: `1px solid ${colors.border}`,
-                  borderRadius: '8px',
-                  color: colors.muted,
-                  fontSize: '14px',
-                  fontWeight: 500,
-                  textDecoration: 'none',
-                  transition: 'all 0.2s',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = colors.borderStrong;
-                  e.currentTarget.style.color = colors.body;
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = colors.border;
-                  e.currentTarget.style.color = colors.muted;
-                }}
-              >
-                Guide
-              </Link>
-            </div>
-          </Reveal>
-        </section>
+        </div>
       </main>
 
       <CrossModelModalV2
@@ -330,105 +262,50 @@ export default function ExplorerPage() {
 }
 
 function PageHeader({ selectedModel }) {
-  const modelDetails = [
-    { label: 'Host', value: formatSpeciesLabel(selectedModel?.species) },
-    { label: 'Glycan', value: selectedModel?.glycanType || 'N/A' },
-  ];
-
   return (
-    <section
-      style={{
-        display: 'flex',
-        alignItems: 'flex-end',
-        justifyContent: 'space-between',
-        marginBottom: '32px',
-        paddingBottom: '24px',
-        borderBottom: `1px solid ${colors.border}`,
-      }}
-    >
-      <div>
-        <p
-          style={{
-            fontSize: '12px',
-            fontWeight: 600,
-            textTransform: 'uppercase',
-            letterSpacing: '0.05em',
-            color: colors.muted,
-            marginBottom: '8px',
-          }}
-        >
-          Explorer
-        </p>
-        <h1
-          style={{
-            fontSize: '28px',
-            fontWeight: 700,
-            color: colors.ink,
-            lineHeight: 1.2,
-          }}
-        >
-          {explorerContent.hero.title}
-        </h1>
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '24px',
-          background: '#ffffff',
-          padding: '16px 20px',
-          borderRadius: '10px',
-          border: `1px solid ${colors.border}`,
-          boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
-        }}
-      >
-        <div>
-          <span
-            style={{
-              display: 'block',
-              fontSize: '11px',
-              fontWeight: 600,
-              textTransform: 'uppercase',
-              letterSpacing: '0.05em',
-              color: colors.faint,
-              marginBottom: '4px',
-            }}
-          >
-            Active Model
-          </span>
-          <strong style={{ fontSize: '15px', color: colors.ink }}>
-            {selectedModel?.displayName || 'No model selected'}
-          </strong>
+    <div className="mb-8 pb-6 border-b border-slate-200/80">
+      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+        <div className="flex-1 min-w-0">
+          <h1 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">
+            {explorerContent.hero.title}
+          </h1>
+          <p className="mt-1 text-sm text-slate-500 max-w-xl">
+            Browse mutation models across species and glycan types. Inspect
+            binding energetics and structural data.
+          </p>
         </div>
-        <dl style={{ display: 'flex', gap: '20px', margin: 0 }}>
-          {modelDetails.map((item) => (
-            <div key={item.label} style={{ margin: 0 }}>
-              <dt
-                style={{
-                  fontSize: '11px',
-                  fontWeight: 600,
-                  textTransform: 'uppercase',
-                  color: colors.faint,
-                  letterSpacing: '0.05em',
-                  marginBottom: '2px',
-                }}
-              >
-                {item.label}
-              </dt>
-              <dd
-                style={{
-                  fontSize: '14px',
-                  color: colors.body,
-                  margin: 0,
-                  fontWeight: 500,
-                }}
-              >
-                {item.value}
-              </dd>
+
+        {selectedModel && (
+          <div className="flex items-center gap-4 px-4 py-2 bg-white rounded-lg border border-slate-200/80 shadow-sm shrink-0">
+            <div>
+              <div className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">
+                Model
+              </div>
+              <div className="text-sm font-semibold text-slate-900">
+                {selectedModel.displayName}
+              </div>
             </div>
-          ))}
-        </dl>
+            <div className="w-px h-8 bg-slate-200" />
+            <div>
+              <div className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">
+                Host
+              </div>
+              <div className="text-sm text-slate-700">
+                {formatSpeciesLabel(selectedModel.species)}
+              </div>
+            </div>
+            <div className="w-px h-8 bg-slate-200" />
+            <div>
+              <div className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">
+                Glycan
+              </div>
+              <div className="text-sm text-slate-700">
+                {selectedModel.glycanType || 'N/A'}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-    </section>
+    </div>
   );
 }

@@ -3,15 +3,40 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Button from '../components/ui/Button';
 import Reveal from '../components/site/Reveal';
-import side2 from '../assets/manuscript/slide2.png'
+import side2 from '../assets/manuscript/slide2.png';
 import type1PilusImage from '../assets/manuscript/slide3.png';
 import uroplakinComplexImage from '../assets/manuscript/slide1.png';
 import fimhUpkOmOverviewImage from '../assets/manuscript/fimh-upk-om3-om6-overview.png';
+
 const problemStats = [
-  { value: '36.7M', label: 'Global UTI cases/year', context: 'Clinical scale' },
-  { value: '14.9M', label: 'India pediatric UTI burden', context: 'Regional need' },
-  { value: '80-90%', label: 'UPEC-caused UTIs', context: 'Primary pathogen' },
-  { value: '545', label: 'Mutant models examined', context: 'Screening depth' },
+  {
+    value: '150M',
+    label: 'Global UTI cases/year',
+    context: 'Clinical scale',
+    source: 'Flores-Mireles et al., Nat Rev Microbiol (2015)',
+    sourceUrl: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4457377/',
+  },
+  {
+    value: '14.9M',
+    label: 'India pediatric UTI burden',
+    context: 'Regional need',
+    source: 'GBD 2021, Trop Med Health (2025)',
+    sourceUrl: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC12642102/',
+  },
+  {
+    value: '80–90%',
+    label: 'UPEC-caused UTIs',
+    context: 'Primary pathogen',
+    source: 'Gebremedhin et al., Infect Agents Cancer (2025)',
+    sourceUrl: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC12467495/',
+  },
+  {
+    value: '545',
+    label: 'Mutant models examined',
+    context: 'Screening depth',
+    source: 'Shekhar S, Bhagat K, Padhi AK,International Journal of Biological Macromolecules',
+    sourceUrl: 'https://www.sciencedirect.com/science/article/pii/S0141813026023342?via%3Dihub',
+  },
 ];
 
 const insightPoints = [
@@ -168,9 +193,9 @@ export default function HomePageV2() {
             <div className="hero-copy-rail">
               <h1>FimH-Uroplakin Binding</h1>
               <p className="hero-subhead">
-               Mutational scanning across 545 models to map how FimH pocket mutations alter uroplakin-glycan recognition
+                Mutational scanning across 545 models to map how FimH pocket mutations alter uroplakin-glycan recognition
               </p>
-               <div className="hero-proof-line" aria-label="Study scope">
+              <div className="hero-proof-line" aria-label="Study scope">
                 <span>545 models</span>
                 <span>OM3 / OM6 glycans</span>
               </div>
@@ -181,7 +206,6 @@ export default function HomePageV2() {
                   </Button>
                 </Link>
               </div>
-
             </div>
           </Reveal>
 
@@ -206,6 +230,30 @@ export default function HomePageV2() {
                   <span className="stat-context">{stat.context}</span>
                   <strong>{stat.value}</strong>
                   <span>{stat.label}</span>
+                  {stat.source && (
+                    <a
+                      href={stat.sourceUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="stat-source"
+                    >
+                      <svg
+                        width="12"
+                        height="12"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                        <polyline points="15 3 21 3 21 9" />
+                        <line x1="10" y1="14" x2="21" y2="3" />
+                      </svg>
+                      {stat.source}
+                    </a>
+                  )}
                 </div>
               ))}
             </div>
@@ -220,7 +268,7 @@ export default function HomePageV2() {
               <div className="section-heading clean-heading method-heading">
                 <p className="home-kicker">Method</p>
                 <h2>What we did</h2>
-                <p className='what_we_did'>
+                <p className="what_we_did">
                   FimH pocket mutations were compared against Wild Type FimH in complex with Uroplakin-attached-Glycan
                 </p>
               </div>

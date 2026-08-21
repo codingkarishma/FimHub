@@ -43,10 +43,10 @@ const quickStartSteps = [
 const terminology = [
   {
     term: 'Affinity',
-    definition: 'Absolute binding score for the selected mutant. Lower (more negative) values indicate stronger predicted glycan binding.',
+    definition: 'Absolute binding score for the selected mutant. Negative values indicate stronger predicted glycan binding.',
   },
   {
-    term: 'ΔAffinity (dAffinity)',
+    term: 'dAffinity',
     definition: 'Change in binding free energy relative to wild type. Negative values suggest improved binding; positive values suggest weakened binding.',
   },
   {
@@ -54,7 +54,7 @@ const terminology = [
     definition: 'Absolute protein stability score for the mutant. Reflects the thermodynamic favorability of the folded state.',
   },
   {
-    term: 'ΔStability (dStability)',
+    term: 'dStability',
     definition: 'Change in stability relative to wild type. Negative values indicate destabilization; positive values indicate stabilization.',
   },
   {
