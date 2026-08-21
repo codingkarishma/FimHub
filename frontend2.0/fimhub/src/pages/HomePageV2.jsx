@@ -58,25 +58,25 @@ const playerSlides = [
   {
     title: 'Uroplakin',
     subtitle: 'Bladder surface receptor',
-    text: 'Presents glycan context for bacterial attachment.',
+    text: 'Primary site for bacterial adhesion in Lower UTIs',
     image: uroplakinComplexImage,
   },
   {
     title: 'Glycan',
     subtitle: 'OM3 / OM6 sugars',
-    text: 'High-mannose N-glycans that FimH recognizes.',
+    text: 'High-mannose N-glycans that FimH recognizes',
     image: side2,
   },
   {
     title: 'FimH',
     subtitle: 'Type 1 pilus adhesin',
-    text: 'Bacterial protein at the fimbrial tip with a mannose-binding pocket.',
+    text: 'Bacterial protein at the fimbrial tip with a mannose-binding pocket',
     image: type1PilusImage,
   },
   {
     title: 'Combined Model',
     subtitle: 'FimH + UPK + Glycan',
-    text: 'The full interaction system used in our model panel.',
+    text: 'The full interaction system used in our model panel',
     image: fimhUpkOmOverviewImage,
   },
 ];
