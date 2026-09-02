@@ -1,6 +1,14 @@
 import Button from '../ui/Button';
 import { formatNumber, formatSignedNumber } from '../../lib/modelData';
 
+function formatMetric(value, signed = false) {
+  if (typeof value !== 'number' || Number.isNaN(value)) return 'N/A';
+  if (Math.abs(value) >= 1000000) {
+    return `${value >= 0 && signed ? '+' : ''}${value.toExponential(2)}`;
+  }
+  return signed ? formatSignedNumber(value) : formatNumber(value);
+}
+
 export default function MutationDataPanelV2({
   model,
   mutation,
@@ -30,40 +38,40 @@ export default function MutationDataPanelV2({
       <dl className="explorer-detail-list">
         <div>
           <dt>WT site</dt>
-          <dd className="truncate">
+          <dd>
             {mutation.wt}
             {mutation.position}
           </dd>
         </div>
         <div>
           <dt>Substitution</dt>
-          <dd className="truncate">
+          <dd>
             {mutation.wt} {'->'} {mutation.mut}
           </dd>
         </div>
 
         <div>
           <dt>Affinity</dt>
-          <dd className="truncate font-mono text-sm">
-            {formatNumber(mutation.affinity)}
+          <dd className="font-mono text-sm">
+            {formatMetric(mutation.affinity)}
           </dd>
         </div>
         <div>
           <dt>dAffinity</dt>
-          <dd className="truncate font-mono text-sm">
-            {formatSignedNumber(mutation.ddg_binding)}
+          <dd className="font-mono text-sm">
+            {formatMetric(mutation.ddg_binding, true)}
           </dd>
         </div>
         <div>
           <dt>Stability</dt>
-          <dd className="truncate font-mono text-sm">
-            {formatNumber(mutation.stability)}
+          <dd className="font-mono text-sm">
+            {formatMetric(mutation.stability)}
           </dd>
         </div>
         <div>
           <dt>dStability</dt>
-          <dd className="truncate font-mono text-sm">
-            {formatSignedNumber(mutation.ddg_stability)}
+          <dd className="font-mono text-sm">
+            {formatMetric(mutation.ddg_stability, true)}
           </dd>
         </div>
       </dl>

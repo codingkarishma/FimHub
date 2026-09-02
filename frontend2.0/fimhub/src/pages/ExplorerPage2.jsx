@@ -162,7 +162,7 @@ export default function ExplorerPage() {
               background: '#fef2f2',
               border: '1px solid #fecaca',
               borderRadius: '12px',
-              padding: '12px 20px',
+              padding: '8px 15px',
               fontSize: '14px',
               color: '#991b1b',
             }}
@@ -177,9 +177,9 @@ export default function ExplorerPage() {
           <PageHeader selectedModel={selectedModel} />
         </Reveal>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 gap-6 lg:gap-6 xl:gap-4 xl:grid-cols-[minmax(240px,280px)_minmax(0,1fr)]">
           {/* Left Column */}
-          <div className="space-y-6">
+          <div className="space-y-6 xl:space-y-4">
             <Reveal delay={0.01}>
               <div className="bg-white rounded-xl border border-slate-200/80 shadow-sm overflow-hidden">
                 <ModelSelector
@@ -264,24 +264,30 @@ export default function ExplorerPage() {
 function PageHeader({ selectedModel }) {
   return (
     <div className="mb-8 pb-6 border-b border-slate-200/80">
-      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+      <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div className="flex-1 min-w-0">
           <h1 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">
             {explorerContent.hero.title}
           </h1>
           <p className="mt-1 text-sm text-slate-500 max-w-xl">
-            Browse mutation models across species and glycan types. Inspect
-            binding energetics and structural data.
+            <span className="font-semibold text-slate-700">
+              Curious about a specific mutation?
+            </span>
+            <br></br>
+            <span>
+              Browse models by species or glycan type. Check out the binding
+              energy data and see the structural changes up close
+            </span>
           </p>
         </div>
 
         {selectedModel && (
-          <div className="flex items-center gap-4 px-4 py-2 bg-white rounded-lg border border-slate-200/80 shadow-sm shrink-0">
-            <div>
+          <div className="flex max-w-full flex-wrap items-center gap-3 rounded-lg border border-slate-200/80 bg-white px-4 py-2 shadow-sm md:shrink-0">
+            <div className="min-w-0 max-w-full">
               <div className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">
                 Model
               </div>
-              <div className="text-sm font-semibold text-slate-900">
+              <div className="max-w-[16rem] truncate text-sm font-semibold text-slate-900">
                 {selectedModel.displayName}
               </div>
             </div>

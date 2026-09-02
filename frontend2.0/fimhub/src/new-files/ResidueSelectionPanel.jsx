@@ -107,7 +107,8 @@ export default function ResidueSelectionPanel({
               borderRadius: '8px',
               border: `1px solid ${colors.borderStrong}`,
               fontSize: '14px',
-              width: '240px',
+              width: 'min(100%, 240px)',
+              maxWidth: '100%',
               outline: 'none',
               transition: 'border-color 0.2s',
             }}

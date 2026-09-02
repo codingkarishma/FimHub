@@ -75,7 +75,9 @@ export default function DataViewerPage() {
   const glycans = Array.from(
     new Set(
       models
-        .filter((model) => !selectedSpecies || model.species === selectedSpecies)
+        .filter(
+          (model) => !selectedSpecies || model.species === selectedSpecies,
+        )
         .map((model) => model.om)
         .filter(Boolean),
     ),
@@ -236,13 +238,10 @@ export default function DataViewerPage() {
       </section>
 
       {showTable && (
-        <section
-          ref={tableSectionRef}
-          className="py-12 pb-20 md:py-14"
-        >
+        <section ref={tableSectionRef} className="py-12 pb-20 md:py-14">
           <div className="container-max">
             <div className="surface-panel space-y-4 px-5 py-6">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-wrap items-center justify-between gap-2">
                 <h2 className="text-xl font-semibold text-[color:var(--fh-text)]">
                   {selectedSpecies.charAt(0).toUpperCase() +
                     selectedSpecies.slice(1)}{' '}

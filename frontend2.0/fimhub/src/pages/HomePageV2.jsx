@@ -253,17 +253,14 @@ export default function HomePageV2() {
               <div className="hero-brand">
                 <h2 className="hero-title">FimHub</h2>
                 <p className="hero-tagline">
-                  Curating mutational scanning data for the FimH–Uroplakin
-                  complex
+                  FimHub organizes and visualizes mutational scanning data for the FimH uroplakin complex
                 </p>
               </div>
 
               {/* NEW: 3-line FimHub description */}
               <p className="hero-description">
-                A centralized platform exploring 545+ single-point mutations in
-                the FimH mannose-binding pocket, revealing how they affect
-                uroplakin-attached glycan (OM3/OM6) recognition to guide
-                anti-adhesion therapeutic design.
+                We studied how over 545 single point mutations in the FimH binding pocket alter glycan recognition.
+                This resource helps researchers understand bacterial adhesion and design better anti adhesion therapies.
               </p>
 
               <div className="hero-proof-line" aria-label="Study scope">
@@ -343,11 +340,10 @@ export default function HomePageV2() {
                 <p className="home-kicker">Method</p>
                 <h2>What we did</h2>
                 <p className="what_we_did">
-                  FimH pocket mutations were compared against Wild Type FimH in
-                  complex with Uroplakin-attached-Glycan
+                  FimH pocket mutations were compared against Wild Type FimH in complex with Uroplakin-attached-Glycan
                 </p>
               </div>
-              <MethodGraphic />
+              <MethodGraphic/>
             </div>
           </Reveal>
         </div>
@@ -360,7 +356,7 @@ export default function HomePageV2() {
             <div className="home-final-cta">
               <div>
                 <p className="home-kicker">Next step</p>
-                <h2>Move from overview to inspection.</h2>
+                <h2>Move from overview to inspection</h2>
               </div>
               <div className="compact-action-row">
                 <Link to="/explorer" className="compact-action-link">
