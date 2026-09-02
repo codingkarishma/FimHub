@@ -3,11 +3,47 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Button from '../components/ui/Button';
 import Reveal from '../components/site/Reveal';
-import side2 from '../assets/manuscript/slide2.png';
-import type1PilusImage from '../assets/manuscript/slide3.png';
-import uroplakinComplexImage from '../assets/manuscript/slide1.png';
+import side2 from '../assets/manuscript/glycan.jpeg';
+import type1PilusImage from '../assets/manuscript/fimH_labelled.jpeg';
+import uroplakinComplexImage from '../assets/manuscript/AUM_with_po_UPK_HiDef.png';
 import fimhUpkOmOverviewImage from '../assets/manuscript/fimh-upk-om3-om6-overview.png';
 
+// ============================================================
+// 1. BACKGROUND PARTICLES COMPONENT (inline for simplicity)
+// ============================================================
+function ParticlesBackground() {
+  useEffect(() => {
+    const container = document.getElementById('particles-container');
+    if (!container) return;
+
+    const particleCount = 35;
+    const particles = [];
+
+    for (let i = 0; i < particleCount; i++) {
+      const el = document.createElement('div');
+      el.className = 'particle';
+      el.style.left = `${Math.random() * 100}%`;
+      const size = Math.random() * 4 + 1;
+      el.style.width = `${size}px`;
+      el.style.height = `${size}px`;
+      el.style.animationDuration = `${Math.random() * 25 + 15}s`;
+      el.style.animationDelay = `${Math.random() * 25}s`;
+      el.style.opacity = Math.random() * 0.4 + 0.05;
+      container.appendChild(el);
+      particles.push(el);
+    }
+
+    return () => {
+      particles.forEach((p) => p.remove());
+    };
+  }, []);
+
+  return <div id="particles-container" className="particles-container" />;
+}
+
+// ============================================================
+// 2. DATA
+// ============================================================
 const problemStats = [
   {
     value: '150M',
@@ -34,8 +70,10 @@ const problemStats = [
     value: '545',
     label: 'Mutant models examined',
     context: 'Screening depth',
-    source: 'Shekhar S, Bhagat K, Padhi AK,International Journal of Biological Macromolecules',
-    sourceUrl: 'https://www.sciencedirect.com/science/article/pii/S0141813026023342?via%3Dihub',
+    source:
+      'Shekhar S, Bhagat K, Padhi AK, International Journal of Biological Macromolecules',
+    sourceUrl:
+      'https://www.sciencedirect.com/science/article/pii/S0141813026023342?via%3Dihub',
   },
 ];
 
@@ -81,19 +119,25 @@ const playerSlides = [
   },
 ];
 
+// ============================================================
+// 3. PLAYER CAROUSEL COMPONENT
+// ============================================================
 function PlayerCarousel({ hero = false }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [touchStart, setTouchStart] = useState(null);
   const activeSlide = playerSlides[activeIndex];
 
   const goToSlide = (nextIndex) => {
-    const normalizedIndex = (nextIndex + playerSlides.length) % playerSlides.length;
+    const normalizedIndex =
+      (nextIndex + playerSlides.length) % playerSlides.length;
     setActiveIndex(normalizedIndex);
   };
 
   useEffect(() => {
     const timer = window.setInterval(() => {
-      setActiveIndex((currentIndex) => (currentIndex + 1) % playerSlides.length);
+      setActiveIndex(
+        (currentIndex) => (currentIndex + 1) % playerSlides.length,
+      );
     }, 10000);
 
     return () => window.clearInterval(timer);
@@ -116,7 +160,7 @@ function PlayerCarousel({ hero = false }) {
         onClick={() => goToSlide(activeIndex - 1)}
         aria-label="Previous slide"
       >
-        &lt;
+        ‹
       </button>
 
       <motion.article
@@ -129,7 +173,11 @@ function PlayerCarousel({ hero = false }) {
         onTouchEnd={handleTouchEnd}
       >
         <div className="carousel-slide-image">
-          <img src={activeSlide.image} alt={activeSlide.subtitle} loading="lazy" />
+          <img
+            src={activeSlide.image}
+            alt={activeSlide.subtitle}
+            loading="lazy"
+          />
         </div>
         <div className="carousel-slide-copy">
           <p className="eyebrow text-[color:var(--fh-accent)]">
@@ -147,7 +195,7 @@ function PlayerCarousel({ hero = false }) {
         onClick={() => goToSlide(activeIndex + 1)}
         aria-label="Next slide"
       >
-        &gt;
+        ›
       </button>
 
       <div className="carousel-dots" aria-label="Carousel slide controls">
@@ -165,6 +213,9 @@ function PlayerCarousel({ hero = false }) {
   );
 }
 
+// ============================================================
+// 4. METHOD GRAPHIC COMPONENT
+// ============================================================
 function MethodGraphic() {
   return (
     <div className="single-method-graphic">
@@ -184,21 +235,42 @@ function MethodGraphic() {
   );
 }
 
+// ============================================================
+// 5. MAIN HOMEPAGE COMPONENT
+// ============================================================
 export default function HomePageV2() {
   return (
     <div className="page-surface clean-home-page">
+      {/* Animated Background Particles */}
+      <ParticlesBackground />
+
+      {/* ===== HERO SECTION ===== */}
       <section className="home-hero-carousel">
         <div className="container-max home-hero-carousel-grid">
           <Reveal>
             <div className="hero-copy-rail">
-              <h1>FimH-Uroplakin Binding</h1>
-              <p className="hero-subhead">
-                Mutational scanning across 545 models to map how FimH pocket mutations alter uroplakin-glycan recognition
+              {/* NEW: Brand + FimHub title */}
+              <div className="hero-brand">
+                <h2 className="hero-title">FimHub</h2>
+                <p className="hero-tagline">
+                  Curating mutational scanning data for the FimH–Uroplakin
+                  complex
+                </p>
+              </div>
+
+              {/* NEW: 3-line FimHub description */}
+              <p className="hero-description">
+                A centralized platform exploring 545+ single-point mutations in
+                the FimH mannose-binding pocket, revealing how they affect
+                uroplakin-attached glycan (OM3/OM6) recognition to guide
+                anti-adhesion therapeutic design.
               </p>
+
               <div className="hero-proof-line" aria-label="Study scope">
                 <span>545 models</span>
                 <span>OM3 / OM6 glycans</span>
               </div>
+
               <div className="hero-action-row">
                 <Link to="/explorer" className="hero-cta-link">
                   <Button size="lg" className="home-primary-button">
@@ -217,6 +289,7 @@ export default function HomePageV2() {
         </div>
       </section>
 
+      {/* ===== WHY IT MATTERS SECTION ===== */}
       <section className="section-shell home-proof-section">
         <div className="container-max">
           <Reveal>
@@ -261,6 +334,7 @@ export default function HomePageV2() {
         </div>
       </section>
 
+      {/* ===== METHOD SECTION ===== */}
       <section className="section-shell home-method-section">
         <div className="container-max">
           <Reveal>
@@ -269,7 +343,8 @@ export default function HomePageV2() {
                 <p className="home-kicker">Method</p>
                 <h2>What we did</h2>
                 <p className="what_we_did">
-                  FimH pocket mutations were compared against Wild Type FimH in complex with Uroplakin-attached-Glycan
+                  FimH pocket mutations were compared against Wild Type FimH in
+                  complex with Uroplakin-attached-Glycan
                 </p>
               </div>
               <MethodGraphic />
@@ -278,6 +353,7 @@ export default function HomePageV2() {
         </div>
       </section>
 
+      {/* ===== BOTTOM CTA SECTION ===== */}
       <section className="home-bottom-actions">
         <div className="container-max">
           <Reveal>
@@ -291,7 +367,7 @@ export default function HomePageV2() {
                   Explore mutations
                 </Link>
                 <Link to="/data" className="compact-action-link secondary">
-                  View data tables
+                  Data tables
                 </Link>
               </div>
             </div>

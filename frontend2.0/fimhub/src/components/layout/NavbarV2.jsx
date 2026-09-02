@@ -13,7 +13,7 @@ export default function NavbarV2() {
     }`;
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-[color:var(--fh-border)] bg-[#fbfbf8]/95 backdrop-blur">
+    <nav className="fh-navbar sticky top-0 z-50 border-b border-[color:var(--fh-border)] bg-[#fbfbf8]/95 backdrop-blur">
       <div className="container-max flex min-h-[4.75rem] items-center justify-between gap-4 py-4">
         <Link to="/" className="flex items-center gap-3">
           <span className="inline-flex h-11 w-11 items-center justify-center rounded-md border border-[color:var(--fh-border-strong)] bg-[color:var(--fh-surface)] text-base font-bold text-[color:var(--fh-text)]">
@@ -40,8 +40,20 @@ export default function NavbarV2() {
           aria-label="Toggle navigation"
           className="inline-flex h-10 w-10 items-center justify-center border border-[color:var(--fh-border)] bg-[color:var(--fh-surface)] text-[color:var(--fh-text)] xl:hidden"
         >
-          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d={mobileOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 7h16M4 12h16M4 17h16'} />
+          <svg
+            className="h-4 w-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={1.8}
+              d={
+                mobileOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 7h16M4 12h16M4 17h16'
+              }
+            />
           </svg>
         </button>
       </div>
