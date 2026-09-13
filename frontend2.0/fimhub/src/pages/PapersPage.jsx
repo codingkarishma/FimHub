@@ -87,7 +87,7 @@ export default function PapersPage() {
             Literature Library
           </p>
         <h1 className="w-full text-[32px] font-bold leading-[1.15] tracking-[-0.02em] text-slate-900 sm:text-[38px]">
-            Papers to explore the FimH adhesin and its role in bacterial pathogenesis
+            Papers to explore FimH adhesin & its role in bacterial pathogenesis
           </h1>
          <p className="mt-4 w-full text-[15px] leading-relaxed text-slate-500 color-slate-1000 sm:text-[20px]">
           Want to dig deeper? Below is a list of papers you can read to learn more about how FimH works.</p>
