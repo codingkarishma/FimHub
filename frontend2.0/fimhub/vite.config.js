@@ -8,5 +8,8 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 5173,
     strictPort: false,
-  }
+  },
+  resolve: {
+    dedupe: ['react', 'react-dom', 'react/jsx-runtime'],
+  },
 })

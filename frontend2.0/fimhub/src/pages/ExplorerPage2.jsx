@@ -6,6 +6,7 @@ import MutationDataPanelV2 from '../components/explorer/MutationDataPanelV2';
 import CrossModelModalV2 from '../components/explorer/CrossModelModalV2';
 import ResidueSelectionPanel from '../new-files/ResidueSelectionPanel';
 import StructureSection from '../new-files/StructureSection';
+import MutationScatterPair from '../components/explorer/MutationScatterPair'; // ← ADD
 import { explorerContent } from '../content/platformContentV2';
 import { colors } from '../lib/explorerStyles';
 import {
@@ -112,6 +113,11 @@ export default function ExplorerPage() {
     selectedModel && selectedMutation
       ? resolveStructureUrl(selectedModel, selectedMutation)
       : null;
+
+  // ← ADD: label like "F1" or "N135" for the scatter header
+  const residueLabel = selectedResidueGroup
+    ? `${selectedResidueGroup.wt}${selectedResidueGroup.position}`
+    : '';
 
   useEffect(() => {
     if (!selectedModel && defaultModelId) {
@@ -242,6 +248,14 @@ export default function ExplorerPage() {
                   onSelectMutation={setSelectedMutationId}
                 />
               </div>
+            </Reveal>
+
+            {/* ← ADD: side-by-side scatter plots for all substitutions at this residue */}
+            <Reveal delay={0.04}>
+              <MutationScatterPair
+                records={samePositionMutations}
+                residueLabel={residueLabel}
+              />
             </Reveal>
           </div>
         </div>
