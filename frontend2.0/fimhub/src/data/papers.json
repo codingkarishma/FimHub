@@ -2,129 +2,452 @@
   "papers": [
     {
       "id": "shekhar-2026",
-      "authors": "Shekhar S, Bhagat K, Padhi AK",
+      "authors": "Shashank Shekhar, Khushboo Bhagat, Aditya K. Padhi",
       "year": 2026,
-      "title": "FimH-mediated adhesion across uroplakin glycan contexts: a structural and computational integration",
+      "title": "Structural rewiring of the mannose-binding pocket reveals adaptive FimH mutations that enhance uroplakin-associated glycan recognition and uropathogenic adhesion",
       "journal": "International Journal of Biological Macromolecules",
       "doi": "10.1016/j.ijbiomac.2026.152407",
-      "pubmed": null,
-      "annotation": "Comprehensive structural and molecular dynamics analysis linking FimH mutations to glycan-binding outcomes across oligomannose conformational states and uroplakin-receptor interactions.",
+      "pubmed": "42097418",
+      "annotation": "Integrative structural modeling, interface-based protein redesign, and mutational energy profiling of FimH-glycan-UPK interactions across human and porcine uroplakin contexts; identifies affinity-modulating substitutions including N135S, Y137F, D54G and D47V.",
       "tags": [
         "FimH",
         "glycan-binding",
         "molecular-dynamics",
-        "mutation-effects"
+        "mutation-effects",
+        "uroplakin",
+        "protein-design"
       ]
     },
     {
       "id": "padhi-tripathi-2023",
-      "authors": "Padhi AK, Tripathi T",
+      "authors": "Aditya K. Padhi, Timir Tripathi",
       "year": 2023,
       "title": "A comprehensive protein design protocol to identify resistance mutations and signatures of adaptation in pathogens",
       "journal": "Briefings in Functional Genomics",
       "doi": "10.1093/bfgp/elac020",
-      "pubmed": "36271860",
-      "annotation": "Describes the broader ResScan-style design logic that informs the mutation-screening workflow used in this project.",
-      "tags": ["computational-methods", "protein-design", "foundational"]
+      "pubmed": "35851634",
+      "annotation": "Describes a high-throughput computational protein design protocol for identifying hotspot residues, resistance mutations and signatures of adaptation in pathogen proteins.",
+      "tags": [
+        "computational-methods",
+        "protein-design",
+        "foundational"
+      ]
     },
     {
       "id": "sauer-2016",
-      "authors": "Sauer MM, Jakob RP",
+      "authors": "Maximilian M. Sauer, Roman P. Jakob, Jonathan Eras, Sefer Baday, Deniz Eriş, Giulio Navarra, Simon Bernèche, Beat Ernst, Timm Maier, Rudi Glockshuber",
       "year": 2016,
       "title": "Catch-bond mechanism of the bacterial adhesin FimH",
       "journal": "Nature Communications",
       "doi": "10.1038/ncomms10738",
       "pubmed": "26948702",
-      "annotation": "Defines the force-dependent conformational logic behind FimH catch-bond behavior and is central to interpreting shear-enhanced adhesion.",
-      "tags": ["structural", "catch-bond", "foundational"]
-    },
-    {
-      "id": "hung-2002",
-      "authors": "Hung CS, Bouckaert J",
-      "year": 2002,
-      "title": "Structural basis of tropism of Escherichia coli to the bladder during urinary tract infection",
-      "journal": "Molecular Microbiology",
-      "doi": "10.1046/j.1365-2958.2002.02915.x",
-      "pubmed": "12010488",
-      "annotation": "Explains bladder-specific mannose recognition and highlights several core mannose-binding-pocket residues used as anchors for later mutation analysis.",
-      "tags": ["structural", "binding-pocket", "foundational"]
+      "annotation": "Defines the force-dependent conformational mechanism of FimH catch-bond formation using crystal structures, kinetic analysis and molecular dynamics simulations.",
+      "tags": [
+        "structural",
+        "catch-bond",
+        "foundational",
+        "molecular-dynamics"
+      ]
     },
     {
       "id": "wellens-2008",
-      "authors": "Wellens A, Garofalo C",
+      "authors": "Adinda Wellens, Corinne Garofalo, Hien Nguyen, Nani Van Gerven, Rikard Slättegård, Jean-Pierre Hernalsteens, Lode Wyns, Stefan Oscarson, Henri De Greve, Scott Hultgren, Julie Bouckaert",
       "year": 2008,
       "title": "Intervening with Urinary Tract Infections Using Anti-Adhesives Based on the Crystal Structure of the FimH–Oligomannose-3 Complex",
       "journal": "PLoS ONE",
       "doi": "10.1371/journal.pone.0002040",
-      "pubmed": "18446219",
-      "annotation": "Provides the OM3-bound FimH structural template that underpins the human OM3 modeling workflow used in this platform.",
-      "tags": ["structural", "OM3", "anti-adhesion"]
-    },
-    {
-      "id": "krammer-2023",
-      "authors": "Krammer EM, Bridot C",
-      "year": 2023,
-      "title": "Structural insights into a cooperative switch between one and two FimH bacterial adhesins binding pauci- and high-mannose type N-glycan receptors",
-      "journal": "Journal of Biological Chemistry",
-      "doi": "10.1016/j.jbc.2023.104627",
-      "pubmed": "36944399",
-      "annotation": "Introduces a key OM6 structural reference and clarifies how extended high-mannose glycans change the FimH binding landscape.",
-      "tags": ["structural", "OM6", "glycan"]
-    },
-    {
-      "id": "bouckaert-2006",
-      "authors": "Bouckaert J, Mackenzie J",
-      "year": 2006,
-      "title": "The affinity of the FimH fimbrial adhesin is receptor-driven and quasi-independent of Escherichia coli pathotypes",
-      "journal": "Molecular Microbiology",
-      "doi": "10.1111/j.1365-2958.2006.05352.x",
-      "pubmed": "16925558",
-      "annotation": "A key reference for naturally occurring FimH variation, including the N135K loss-of-binding state used as an important comparison point.",
-      "tags": ["structural", "clinical-variants", "N135K"]
+      "pubmed": "18446213",
+      "annotation": "Provides the FimH–oligomannose-3 structural basis for anti-adhesive design and discusses blocking UPEC adhesion, invasion and intracellular persistence.",
+      "tags": [
+        "structural",
+        "OM3",
+        "anti-adhesion"
+      ]
     },
     {
       "id": "yanagisawa-2023",
-      "authors": "Yanagisawa H, Suzuki T",
+      "authors": "Haruaki Yanagisawa, Yoshihiro Kita, Toshiyuki Oda, Masahide Kikkawa",
       "year": 2023,
       "title": "Cryo-EM elucidates the uroplakin complex structure within liquid-crystalline lipids in the porcine urothelial membrane",
       "journal": "Communications Biology",
       "doi": "10.1038/s42003-023-05393-x",
       "pubmed": "37872531",
-      "annotation": "Supplies the porcine uroplakin structural scaffold and the membrane-context framing for host-side receptor architecture.",
-      "tags": ["uroplakin", "cryo-em", "foundational"]
+      "annotation": "Provides a cryo-EM structural scaffold for the porcine uroplakin complex in a membrane context.",
+      "tags": [
+        "uroplakin",
+        "cryo-em",
+        "foundational",
+        "membrane"
+      ]
     },
     {
       "id": "zhou-2001",
-      "authors": "Zhou G, Mo W",
+      "authors": "G Zhou, W J Mo, P Sebbel, G Min, T A Neubert, R Glockshuber, X R Wu, T T Sun, X P Kong",
       "year": 2001,
       "title": "Uroplakin Ia is the urothelial receptor for uropathogenic Escherichia coli: evidence from in vitro FimH binding",
       "journal": "Journal of Cell Science",
       "doi": "10.1242/jcs.114.22.4095",
-      "pubmed": "11739658",
-      "annotation": "One of the foundational receptor studies linking UPK1A directly to FimH-mediated attachment at the urothelial surface.",
-      "tags": ["uroplakin", "receptor", "foundational"]
+      "pubmed": "11739641",
+      "annotation": "Foundational receptor study demonstrating the role of uroplakin Ia in FimH-mediated attachment of UPEC to the urothelial surface.",
+      "tags": [
+        "uroplakin",
+        "receptor",
+        "foundational"
+      ]
     },
     {
       "id": "justice-2003",
-      "authors": "Justice SS, Hung C",
-      "year": 2003,
+      "authors": "Sheryl S. Justice, Chia Hung, et al.",
+      "year": 2004,
       "title": "Differentiation and developmental pathways of uropathogenic Escherichia coli in urinary tract pathogenesis",
       "journal": "Proceedings of the National Academy of Sciences USA",
       "doi": "10.1073/pnas.0308125100",
       "pubmed": "14739341",
-      "annotation": "Defines the intracellular bacterial community program that underlies persistence and recurrence in UPEC infection.",
-      "tags": ["pathogenesis", "IBC", "foundational"]
+      "annotation": "Defines the intracellular bacterial community developmental program underlying UPEC persistence and recurrence.",
+      "tags": [
+        "pathogenesis",
+        "IBC",
+        "foundational"
+      ]
     },
     {
       "id": "zeng-2022",
-      "authors": "Zeng Z, Zhan J",
+      "authors": "Zhilin Zeng, Juan Zhan, Kaimin Zhang, Huilong Chen, Sheng Cheng",
       "year": 2022,
-      "title": "Global, regional, and national burden of urinary tract infections from 1990 to 2019: an analysis of the Global Burden of Disease study 2019",
+      "title": "Global, regional, and national burden of urinary tract infections from 1990 to 2019: an analysis of the global burden of disease study 2019",
       "journal": "World Journal of Urology",
       "doi": "10.1007/s00345-021-03913-0",
       "pubmed": "35066637",
-      "annotation": "Provides the recent epidemiological basis for the global UTI burden figures used across the site.",
-      "tags": ["epidemiology", "global-burden", "statistics"]
+      "annotation": "Provides the epidemiological basis for global, regional and national UTI burden estimates using Global Burden of Disease 2019 data.",
+      "tags": [
+        "epidemiology",
+        "global-burden",
+        "statistics"
+      ]
+    },
+    {
+      "id": "capitani-2006",
+      "authors": "Capitani G, Eidam O, Glockshuber R, Grütter MG",
+      "year": 2006,
+      "title": "Structural and functional insights into the assembly of type 1 pili from Escherichia coli",
+      "journal": "Microbes and Infection",
+      "doi": "10.1016/j.micinf.2006.03.013",
+      "pubmed": null,
+      "annotation": "Review of type 1 pilus biogenesis covering the donor-strand complementation/exchange mechanism, FimC as a protein-folding catalyst that accelerates subunit folding over 100-fold, and the FimD N-terminal domain as a flexible 'cargo sensor' that discriminates chaperone-subunit complexes via its disordered N-terminal tail.",
+      "tags": [
+        "type-1-pili",
+        "chaperone-usher",
+        "FimC",
+        "FimD",
+        "donor-strand-exchange",
+        "review"
+      ]
+    },
+    {
+      "id": "qin-2022",
+      "authors": "Qin J, Wilson KA, Sarkar S, Heras B, O'Mara ML, Totsika M",
+      "year": 2022,
+      "title": "Conserved FimH mutations in the global Escherichia coli ST131 multi-drug resistant lineage weaken interdomain interactions and alter adhesin function",
+      "journal": "Computational and Structural Biotechnology Journal",
+      "doi": "10.1016/j.csbj.2022.08.040",
+      "pubmed": null,
+      "annotation": "MD simulations plus isogenic ST131 EC958 allelic-exchange assays showing that the R166H mutation in FimH30 (Clade C) weakens lectin-pilin interdomain hydrogen bonds, enriches pre-existing relaxed high-affinity conformations, and confers enhanced intestinal adhesion, bladder invasion and biofilm formation.",
+      "tags": [
+        "FimH30",
+        "ST131",
+        "pathoadaptive",
+        "allostery",
+        "molecular-dynamics",
+        "R166H"
+      ]
+    },
+    {
+      "id": "luthje-2014",
+      "authors": "Lüthje P, Brauner A",
+      "year": 2014,
+      "title": "Virulence Factors of Uropathogenic E. coli and Their Interaction with the Host",
+      "journal": "Advances in Microbial Physiology",
+      "doi": "10.1016/bs.ampbs.2014.08.006",
+      "pubmed": null,
+      "annotation": "Comprehensive review of UPEC virulence and fitness factors: type 1/P/curli/Afa-Dr/S/F1C fimbriae, toxins (α-haemolysin, CNF1, SPATEs), iron-acquisition systems (siderophores, ChuA/Hma), and immune-evasion strategies including immune suppression, serum resistance and biofilm/IBC formation.",
+      "tags": [
+        "review",
+        "virulence-factors",
+        "adhesins",
+        "toxins",
+        "siderophores",
+        "immune-evasion"
+      ]
+    },
+    {
+      "id": "dhakal-2008",
+      "authors": "Dhakal BK, Kulesus RR, Mulvey MA",
+      "year": 2008,
+      "title": "Mechanisms and consequences of bladder cell invasion by uropathogenic Escherichia coli",
+      "journal": "European Journal of Clinical Investigation",
+      "doi": "10.1111/j.1365-2362.2008.01986.x",
+      "pubmed": null,
+      "annotation": "Review establishing UPEC as an opportunistic intracellular pathogen: FimH-mediated invasion via α3β1 integrins, lipid rafts and uroplakin zippering; IBC development in superficial facet cells; efflux via cAMP; quiescent intracellular reservoirs; and Afa/Dr-mediated, microtubule-dependent invasion routes.",
+      "tags": [
+        "review",
+        "invasion",
+        "IBC",
+        "integrins",
+        "uroplakin",
+        "QIR"
+      ]
+    },
+    {
+      "id": "feenstra-2017",
+      "authors": "Feenstra T, Thøgersen MS, Wieser E, Peschel A, Ball MJ, Brandes R, Satchell SC, Stockner T, Aarestrup FM, Rees AJ, Kain R",
+      "year": 2017,
+      "title": "Adhesion of Escherichia coli under flow conditions reveals potential novel effects of FimH mutations",
+      "journal": "European Journal of Clinical Microbiology & Infectious Diseases",
+      "doi": "10.1007/s10096-016-2820-8",
+      "pubmed": null,
+      "annotation": "A 12-alanine-scan mutagenesis panel of the FimH mannose-binding pocket tested under physiological shear stress on endothelial biochips; identifies E50 and T53 as residues dispensable in static assays but crucial for adhesion under flow, highlighting assay-dependent phenotypes of FimH mutants.",
+      "tags": [
+        "FimH-mutations",
+        "shear-stress",
+        "adhesion-assays",
+        "endothelium",
+        "E50",
+        "T53"
+      ]
+    },
+    {
+      "id": "katnik-prastowska-2014",
+      "authors": "Kątnik-Prastowska I, Lis J, Matejuk A",
+      "year": 2014,
+      "title": "Glycosylation of uroplakins. Implications for bladder physiopathology",
+      "journal": "Glycoconjugate Journal",
+      "doi": "10.1007/s10719-014-9564-4",
+      "pubmed": null,
+      "annotation": "Review of uroplakin structure, assembly into the asymmetric unit membrane and differentiation-dependent glycosylation; UPIa carries high-mannose N-glycans (Asn169) that serve as the FimH receptor, whereas UPIb carries complex fucosylated glycans; covers UPIa/b, pro-UPII maturation, UPIII signalling and glycosylation changes in UTI, IC and cancer.",
+      "tags": [
+        "uroplakin",
+        "glycosylation",
+        "UPIa",
+        "FimH-receptor",
+        "review",
+        "high-mannose"
+      ]
+    },
+    {
+      "id": "neamati-2020",
+      "authors": "Neamati F, Moniri R, Khorshidi A, Saffari M",
+      "year": 2020,
+      "title": "Structural and Functional Characterization of the FimH Adhesin of Uropathogenic Escherichia coli and Its Novel Applications",
+      "journal": "Journal of Bacteriology and Mycology",
+      "doi": null,
+      "pubmed": null,
+      "annotation": "Review covering FimH two-domain architecture, the tyrosine gate, low/high-affinity conformational switching and catch-bond mechanics, pathoadaptive mutations, FimH-based molecular typing of UPEC, and therapeutic applications including mannosides, pilicides, anti-FimH vaccines and FimH display/adjuvant systems.",
+      "tags": [
+        "review",
+        "FimH",
+        "catch-bond",
+        "pathoadaptive",
+        "FimH-typing",
+        "antagonists"
+      ]
+    },
+    {
+      "id": "busch-2015",
+      "authors": "Busch A, Phan G, Waksman G",
+      "year": 2015,
+      "title": "Molecular mechanism of bacterial type 1 and P pili assembly",
+      "journal": "Philosophical Transactions of the Royal Society A",
+      "doi": "10.1098/rsta.2013.0153",
+      "pubmed": null,
+      "annotation": "Review integrating structural, kinetic and thermodynamic data on chaperone-usher pilus assembly: donor-strand complementation and zip-in/zip-out exchange, usher NTD/CTD handover and gating, FimD-FimC-FimF-FimG-FimH tip assembly snapshots, and pilicide design targeting chaperone-usher interactions.",
+      "tags": [
+        "review",
+        "chaperone-usher",
+        "pilus-assembly",
+        "donor-strand-exchange",
+        "usher",
+        "pilicides"
+      ]
+    },
+    {
+      "id": "matuszewski-2016",
+      "authors": "Matuszewski MA, Tupikowski K, Dołowy Ł, Szymańska B, Dembowski J, Zdrojowy R",
+      "year": 2016,
+      "title": "Uroplakins and their potential applications in urology",
+      "journal": "Central European Journal of Urology",
+      "doi": null,
+      "pubmed": null,
+      "annotation": "Clinical review of uroplakin biology and applications: UPIa high-mannose glycans as the FimH-binding entry point for UPEC, IBC-linked recurrent UTI, uroplakins as specific diagnostic markers for urothelial cancer (tissue, urine ELISA, blood), urine UPIII mRNA as a potential VUR screening test, and uroplakin involvement in interstitial cystitis.",
+      "tags": [
+        "uroplakin",
+        "clinical",
+        "urothelial-cancer",
+        "VUR",
+        "interstitial-cystitis",
+        "review"
+      ]
+    },
+    {
+      "id": "schembri-2000",
+      "authors": "Schembri MA, Sokurenko EV, Klemm P",
+      "year": 2000,
+      "title": "Functional Flexibility of the FimH Adhesin: Insights from a Random Mutant Library",
+      "journal": "Infection and Immunity",
+      "doi": "10.1128/IAI.68.5.2638-2646.2000",
+      "pubmed": null,
+      "annotation": "Error-prone PCR mutant library of the FimH receptor-binding domain showing monomannose binding is highly mutation-sensitive while oligomannose binding is conserved; identifies P49 as critical, A25P as an oligomannose-enhancing variant, and demonstrates that pathoadaptive-like phenotypes arise readily outside the binding pocket via conformational effects.",
+      "tags": [
+        "FimH",
+        "random-mutagenesis",
+        "monomannose",
+        "oligomannose",
+        "pathoadaptive",
+        "P49"
+      ]
+    },
+    {
+      "id": "rabbani-2017",
+      "authors": "Rabbani S, Krammer EM, Roos G, Zalewski A, Preston R, Eid S, Zihlmann P, Prévost M, Lensink MF, Thompson A, Ernst B, Bouckaert J",
+      "year": 2017,
+      "title": "Mutation of Tyr137 of the universal Escherichia coli fimbrial adhesin FimH relaxes the tyrosine gate prior to mannose binding",
+      "journal": "IUCrJ",
+      "doi": "10.1107/S2052252516016675",
+      "pubmed": null,
+      "annotation": "Crystal structures, ITC, QM calculations and MD of Y48A/Y137A tyrosine-gate mutants show Tyr137 maintains backbone strain that is released upon ligand binding; the Y137A mutation prematurely relaxes the gate, uncouples Tyr48-Ile52 dynamics, collapses affinity for alkyl/aryl mannosides and exposes an adjacent EDTA-binding surface pocket.",
+      "tags": [
+        "structural",
+        "tyrosine-gate",
+        "Y137A",
+        "ITC",
+        "molecular-dynamics",
+        "antagonist-design"
+      ]
+    },
+    {
+      "id": "whelan-2023",
+      "authors": "Whelan S, Lucey B, Finn K",
+      "year": 2023,
+      "title": "Uropathogenic Escherichia coli (UPEC)-Associated Urinary Tract Infections: The Molecular Basis for Challenges to Effective Treatment",
+      "journal": "Microorganisms",
+      "doi": "10.3390/microorganisms11092169",
+      "pubmed": null,
+      "annotation": "Broad review of UPEC pathogenesis and treatment challenges: adhesin systems (type 1, P, S, Afa/Dr, TosA), curli and biofilm regulation, toxin and iron-acquisition virulence factors, chromosomal/enzymatic/efflux antibiotic-resistance mechanisms, the role of plasmids, integrons and insertion sequences, and alternatives such as vaccines, phage therapy, antipathogenic agents and nano-formulations.",
+      "tags": [
+        "review",
+        "UPEC",
+        "antibiotic-resistance",
+        "mobile-genetic-elements",
+        "biofilm",
+        "alternative-therapies"
+      ]
+    },
+    {
+      "id": "mysorekar-2006",
+      "authors": "Mysorekar IU, Hultgren SJ",
+      "year": 2006,
+      "title": "Mechanisms of uropathogenic Escherichia coli persistence and eradication from the urinary tract",
+      "journal": "Proceedings of the National Academy of Sciences USA",
+      "doi": "10.1073/pnas.0602136103",
+      "pubmed": "16966607",
+      "annotation": "Mouse UTI model demonstrating quiescent intracellular reservoirs (QIRs) of UPEC in Lamp1-positive endosomes persisting up to 12 weeks; protamine-sulfate exfoliation eradicates superficial facet-cell QIRs but reactivation from underlying transitional-cell QIRs upon epithelial turnover seeds recurrent bacteriuria.",
+      "tags": [
+        "pathogenesis",
+        "QIR",
+        "persistence",
+        "recurrence",
+        "IBC",
+        "foundational"
+      ]
+    },
+    {
+      "id": "waksman-2009",
+      "authors": "Waksman G, Hultgren SJ",
+      "year": 2009,
+      "title": "Structural biology of the chaperone-usher pathway of pilus biogenesis",
+      "journal": "Nature Reviews Microbiology",
+      "doi": "10.1038/nrmicro2220",
+      "pubmed": "19820722",
+      "annotation": "Landmark review of chaperone-usher structural biology: donor-strand complementation/exchange via P1-P5 pockets, zip-in zip-out exchange initiated at the P5 pocket, usher dimer function and subunit handover, adhesin-receptor structures (FimH-mannose, PapG-globoside), and anti-adhesive therapeutic strategies including pilicides and mannosides.",
+      "tags": [
+        "review",
+        "chaperone-usher",
+        "structural",
+        "donor-strand-exchange",
+        "usher",
+        "foundational"
+      ]
+    },
+    {
+      "id": "nasi-2023",
+      "authors": "Nasi GI, Georgakopoulou KI, Theodoropoulou MK, Papandreou NC, Chrysina ED, Tsiolaki PL, Iconomidou VA",
+      "year": 2023,
+      "title": "Bacterial Lectin FimH and Its Aggregation Hot-Spots: An Alternative Strategy against Uropathogenic Escherichia coli",
+      "journal": "Pharmaceutics",
+      "doi": "10.3390/pharmaceutics15031018",
+      "pubmed": null,
+      "annotation": "Computational prediction (AMYLPRED2) of aggregation-prone regions in FimH followed by peptide synthesis, TEM/X-ray/FT-IR/Congo Red amyloid characterization and MD docking; peptide 125LIAVLILRQT134 self-assembles into amyloid-like fibrils, binds the FimH mannose pocket displacing mannose, and is unique to the E. coli proteome, proposing an anti-folding/anti-adhesion therapeutic strategy.",
+      "tags": [
+        "FimH",
+        "aggregation-prone-regions",
+        "amyloid",
+        "peptide-therapeutics",
+        "molecular-dynamics",
+        "anti-adhesion"
+      ]
+    },
+    {
+      "id": "schwartz-2013",
+      "authors": "Schwartz DJ, Kalas V, Pinkner JS, Chen SL, Spaulding CN, Dodson KW, Hultgren SJ",
+      "year": 2013,
+      "title": "Positively selected FimH residues enhance virulence during urinary tract infection by altering FimH conformation",
+      "journal": "Proceedings of the National Academy of Sciences USA",
+      "doi": "10.1073/pnas.1315203110",
+      "pubmed": "24003146",
+      "annotation": "fimH allelic swaps in UTI89 and CFT073 show positively selected residues 27/62/163 tune the elongated-versus-compact conformational equilibrium of FimH in the pilus tip; intermediate-affinity alleles outcompete high-affinity-locked or low-affinity variants during chronic cystitis, demonstrating that conformational switching, not maximal affinity, drives virulence.",
+      "tags": [
+        "pathoadaptive",
+        "positive-selection",
+        "FimH-conformation",
+        "UTI89",
+        "CFT073",
+        "chronic-cystitis"
+      ]
+    },
+    {
+      "id": "sauer-2019",
+      "authors": "Sauer MM, Jakob RP, Luber T, Canonica F, Navarra G, Ernst B, Unverzagt C, Maier T, Glockshuber R",
+      "year": 2019,
+      "title": "Binding of the Bacterial Adhesin FimH to Its Natural, Multivalent High-Mannose Type Glycan Targets",
+      "journal": "Journal of the American Chemical Society",
+      "doi": "10.1021/jacs.8b10736",
+      "pubmed": "30543482",
+      "annotation": "Kinetic and structural dissection of FimH binding to natural α2/α3/α6-linked dimannosides: the S-state binds ~2000-fold tighter than the A-state via ~70,000-fold slower dissociation consistent with a ligand-shifted domain-separation thermodynamic cycle; analytical gel filtration shows up to three FimH molecules bind one N-glycan with negative cooperativity imposed by the chitobiose core.",
+      "tags": [
+        "catch-bond",
+        "kinetics",
+        "high-mannose",
+        "multivalency",
+        "thermodynamic-cycle",
+        "A-state"
+      ]
+    },
+    {
+      "id": "sokurenko-2016",
+      "authors": "Sokurenko E",
+      "year": 2016,
+      "title": "Pathoadaptive Mutations in Uropathogenic Escherichia coli",
+      "journal": "Microbiology Spectrum",
+      "doi": "10.1128/microbiolspec.UTI-0020-2015",
+      "pubmed": null,
+      "annotation": "Eco-evo review of UPEC pathoadaptation contrasting horizontal gene transfer with gene inactivation, amplification and variation; catalogs mutator phenotypes, LPS/flagellum loss, FimH/DraE/PapG adhesin hotspot mutations under positive selection, genome-wide screens of core genes under selection, and strategies to detect pathoadaptive mutations in clinical isolates.",
+      "tags": [
+        "pathoadaptive",
+        "review",
+        "positive-selection",
+        "FimH",
+        "mutator",
+        "evolution"
+      ]
     }
   ]
 }

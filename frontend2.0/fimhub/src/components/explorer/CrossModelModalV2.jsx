@@ -95,7 +95,6 @@ export default function CrossModelModalV2({
                         textAlign: ['Affinity', 'dAffinity', 'Stability', 'dStability'].includes(h) ? 'right' : 'left',
                         fontSize: '11px',
                         fontWeight: 600,
-                        textTransform: 'uppercase',
                         letterSpacing: '0.08em',
                         color: '#94a3b8',
                       }}

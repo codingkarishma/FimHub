@@ -84,7 +84,7 @@ export default function GuidePageV2() {
                   fontWeight: 600,
                   textTransform: 'uppercase',
                   letterSpacing: '0.08em',
-                  color: '#64748b',
+                  color: '#000000',
                   marginBottom: '10px',
                 }}
               >
@@ -133,9 +133,9 @@ export default function GuidePageV2() {
                 >
                   <div
                     style={{
-                      fontSize: '24px',
-                      fontWeight: 700,
-                      color: '#e2e8f0',
+                      fontSize: '22px',
+                      fontWeight: 500,
+                      color: '#000000',
                       fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
                       lineHeight: 1,
                       paddingTop: '2px',
@@ -159,7 +159,7 @@ export default function GuidePageV2() {
                         fontSize: '14px',
                         lineHeight: 1.6,
                         color: '#475569',
-                        maxWidth: '560px',
+                        maxWidth: '90%',
                       }}
                     >
                       {step.text}

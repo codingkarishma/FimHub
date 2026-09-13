@@ -3,46 +3,13 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Button from '../components/ui/Button';
 import Reveal from '../components/site/Reveal';
-import side2 from '../assets/manuscript/glycan.jpeg';
-import type1PilusImage from '../assets/manuscript/fimH_labelled.jpeg';
-import uroplakinComplexImage from '../assets/manuscript/AUM_with_po_UPK_HiDef.png';
-import fimhUpkOmOverviewImage from '../assets/manuscript/fimh-upk-om3-om6-overview.png';
+import side2 from '../assets/manuscript/glycan.webp';
+import type1PilusImage from '../assets/manuscript/fimH_labelled.webp';
+import uroplakinComplexImage from '../assets/manuscript/AUM_with_po_UPK_HiDef.webp';
+import fimhUpkOmOverviewImage from '../assets/manuscript/fimh-upk-om3-om6-overview.webp';
 
 // ============================================================
-// 1. BACKGROUND PARTICLES COMPONENT (inline for simplicity)
-// ============================================================
-function ParticlesBackground() {
-  useEffect(() => {
-    const container = document.getElementById('particles-container');
-    if (!container) return;
-
-    const particleCount = 35;
-    const particles = [];
-
-    for (let i = 0; i < particleCount; i++) {
-      const el = document.createElement('div');
-      el.className = 'particle';
-      el.style.left = `${Math.random() * 100}%`;
-      const size = Math.random() * 4 + 1;
-      el.style.width = `${size}px`;
-      el.style.height = `${size}px`;
-      el.style.animationDuration = `${Math.random() * 25 + 15}s`;
-      el.style.animationDelay = `${Math.random() * 25}s`;
-      el.style.opacity = Math.random() * 0.4 + 0.05;
-      container.appendChild(el);
-      particles.push(el);
-    }
-
-    return () => {
-      particles.forEach((p) => p.remove());
-    };
-  }, []);
-
-  return <div id="particles-container" className="particles-container" />;
-}
-
-// ============================================================
-// 2. DATA
+// 1. DATA
 // ============================================================
 const problemStats = [
   {
@@ -120,7 +87,7 @@ const playerSlides = [
 ];
 
 // ============================================================
-// 3. PLAYER CAROUSEL COMPONENT
+// 2. PLAYER CAROUSEL COMPONENT
 // ============================================================
 function PlayerCarousel({ hero = false }) {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -138,7 +105,7 @@ function PlayerCarousel({ hero = false }) {
       setActiveIndex(
         (currentIndex) => (currentIndex + 1) % playerSlides.length,
       );
-    }, 10000);
+    }, 7500);
 
     return () => window.clearInterval(timer);
   }, []);
@@ -163,31 +130,38 @@ function PlayerCarousel({ hero = false }) {
         ‹
       </button>
 
-      <motion.article
-        key={activeSlide.title}
+      <article
         className="carousel-slide-card"
-        initial={{ opacity: 0, x: 24 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.28, ease: 'easeOut' }}
         onTouchStart={(event) => setTouchStart(event.touches[0].clientX)}
         onTouchEnd={handleTouchEnd}
       >
         <div className="carousel-slide-image">
-          <img
+          <motion.img
+            key={activeSlide.title}
             src={activeSlide.image}
             alt={activeSlide.subtitle}
             loading="lazy"
+            initial={{ opacity: 0, scale: 1.02 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
           />
         </div>
         <div className="carousel-slide-copy">
-          <p className="eyebrow text-[color:var(--fh-accent)]">
-            {String(activeIndex + 1).padStart(2, '0')} / 04
-          </p>
-          <h3>{activeSlide.title}</h3>
-          <strong>{activeSlide.subtitle}</strong>
-          <p>{activeSlide.text}</p>
+          <motion.div
+            key={`${activeSlide.title}-copy`}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <p className="eyebrow text-[color:var(--fh-accent)]">
+              {String(activeIndex + 1).padStart(2, '0')} / 04
+            </p>
+            <h3>{activeSlide.title}</h3>
+            <strong>{activeSlide.subtitle}</strong>
+            <p>{activeSlide.text}</p>
+          </motion.div>
         </div>
-      </motion.article>
+      </article>
 
       <button
         type="button"
@@ -214,7 +188,7 @@ function PlayerCarousel({ hero = false }) {
 }
 
 // ============================================================
-// 4. METHOD GRAPHIC COMPONENT
+// 3. METHOD GRAPHIC COMPONENT
 // ============================================================
 function MethodGraphic() {
   return (
@@ -236,13 +210,11 @@ function MethodGraphic() {
 }
 
 // ============================================================
-// 5. MAIN HOMEPAGE COMPONENT
+// 4. MAIN HOMEPAGE COMPONENT
 // ============================================================
 export default function HomePageV2() {
   return (
     <div className="page-surface clean-home-page">
-      {/* Animated Background Particles */}
-      <ParticlesBackground />
 
       {/* ===== HERO SECTION ===== */}
       <section className="home-hero-carousel">
