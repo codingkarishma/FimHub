@@ -100,15 +100,15 @@ function PlayerCarousel({ hero = false }) {
     setActiveIndex(normalizedIndex);
   };
 
-  useEffect(() => {
-    const timer = window.setInterval(() => {
-      setActiveIndex(
-        (currentIndex) => (currentIndex + 1) % playerSlides.length,
-      );
-    }, 7500);
+  // useEffect(() => {
+  //   const timer = window.setInterval(() => {
+  //     setActiveIndex(
+  //       (currentIndex) => (currentIndex + 1) % playerSlides.length,
+  //     );
+  //   }, 7500);
 
-    return () => window.clearInterval(timer);
-  }, []);
+  //   return () => window.clearInterval(timer);
+  // }, []);
 
   const handleTouchEnd = (event) => {
     if (touchStart === null) return;
@@ -218,10 +218,24 @@ export default function HomePageV2() {
 
       {/* ===== HERO SECTION ===== */}
       <section className="home-hero-carousel">
+        {/* Looping background video */}
+        <video
+          className="hero-background-video"
+          src="/fimhub_background_video.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+        />
+        {/* Dark overlay so text stays readable over the video */}
+        <div className="hero-background-overlay" aria-hidden="true" />
+
         <div className="container-max home-hero-carousel-grid">
           <Reveal>
             <div className="hero-copy-rail">
-              {/* NEW: Brand + FimHub title */}
+              {/* Brand + FimHub title */}
               <div className="hero-brand">
                 <h2 className="hero-title">FimHub</h2>
                 <p className="hero-tagline">
@@ -229,7 +243,7 @@ export default function HomePageV2() {
                 </p>
               </div>
 
-              {/* NEW: 3-line FimHub description */}
+              {/* 3-line FimHub description */}
               <p className="hero-description">
                 We studied how over 545 single point mutations in the FimH binding pocket alter glycan recognition.
                 This resource helps researchers understand bacterial adhesion and design better anti adhesion therapies.
@@ -315,7 +329,7 @@ export default function HomePageV2() {
                   FimH pocket mutations were compared against Wild Type FimH in complex with Uroplakin-attached-Glycan
                 </p>
               </div>
-              <MethodGraphic/>
+              <MethodGraphic />
             </div>
           </Reveal>
         </div>

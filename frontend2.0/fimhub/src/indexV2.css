@@ -217,7 +217,8 @@
   .home-hero-carousel {
     position: relative;
     isolation: isolate;
-    background: var(--fh-bg);
+    overflow: hidden;                 /* clips the background video to hero bounds */
+    background: var(--fh-bg);         /* fallback color behind video */
     border-bottom: 1px solid var(--fh-border);
   }
 
@@ -226,9 +227,42 @@
     display: none;
   }
 
+  /* ------------------------------------------------------------
+     HERO BACKGROUND VIDEO
+     - sits at z-index 0, behind everything in the hero
+     - class selectors here override the base `video { height: auto }`
+       rule so the video truly fills the section
+     ------------------------------------------------------------ */
+  .hero-background-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;                     /* overrides base `height: auto` */
+    max-width: none;                  /* overrides base `max-width: 100%` */
+    object-fit: cover;
+    object-position: center;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Light warm scrim so dark hero text stays readable over the video.
+     Tuned to the site's --fh-bg cream palette. */
+  .hero-background-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+      105deg,
+      rgba(250, 248, 244, 0.92) 0%,
+      rgba(250, 248, 244, 0.78) 45%,
+      rgba(250, 248, 244, 0.55) 100%
+    );
+  }
+
   .home-hero-carousel .container-max {
     position: relative;
-    z-index: 1;
+    z-index: 1;                       /* above video + overlay (same level, later in DOM) */
   }
 
   .home-hero-carousel-grid {
@@ -243,6 +277,15 @@
     max-width: 38rem;
     padding-left: clamp(1rem, 2.5vw, 1.75rem);
     border-left: 3px solid var(--fh-accent);
+    /* Solid-ish backdrop for the text column so it stays readable
+       even over busy parts of the video */
+    background: rgba(250, 248, 244, 0.72);
+    border-radius: 0 12px 12px 0;
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+    padding-right: 1.25rem;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
   }
 
   .hero-brand h1 {
@@ -2429,7 +2472,7 @@
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.14em;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
 }
 
 .scatter-pair-title {

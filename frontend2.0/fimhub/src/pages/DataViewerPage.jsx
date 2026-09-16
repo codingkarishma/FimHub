@@ -123,9 +123,9 @@ export default function DataViewerPage() {
     { key: 'wt', label: 'WT' },
     { key: 'mut', label: 'Mut' },
     { key: 'affinity', label: 'Affinity' },
-    { key: 'ddg_binding', label: 'DeltaDeltaG Binding' },
+    { key: 'ddg_binding', label: 'dAffinity' },
     { key: 'stability', label: 'Stability' },
-    { key: 'ddg_stability', label: 'DeltaDeltaG Stability' },
+    { key: 'ddg_stability', label: 'dStability' },
   ];
 
   const getCellValue = (row, key) => {
@@ -259,7 +259,7 @@ export default function DataViewerPage() {
                       {columns.map((column) => (
                         <th
                           key={column.key}
-                          className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-[0.08em] text-[color:var(--fh-text)]"
+                          className="px-4 py-3 text-left text-xs font-semibold tracking-[0.08em] text-[color:var(--fh-text)]"
                         >
                           {column.label}
                         </th>
