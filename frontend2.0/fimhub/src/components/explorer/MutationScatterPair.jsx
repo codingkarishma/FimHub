@@ -149,14 +149,9 @@ export default function MutationScatterPair({ records = [], residueLabel = '' })
   return (
     <div className="scatter-pair">
       <div className="scatter-pair-header">
-        <p className="scatter-pair-kicker">Position scan</p>
         <h3 className="scatter-pair-title">
           Effect of mutations at {residueLabel || 'this residue'}
         </h3>
-        <p className="scatter-pair-subtitle">
-          Each point is one amino acid substitution at this position.
-          The X axis shows the letter of the new amino acid.
-        </p>
       </div>
 
       <div className="scatter-pair-grid">
