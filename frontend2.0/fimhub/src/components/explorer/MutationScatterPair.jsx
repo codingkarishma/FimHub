@@ -42,11 +42,11 @@ function buildRows(records) {
         dStability: Number.isFinite(dStability) ? dStability : null,
       };
     })
-    // Sort by mutant letter so points are in a nice A→Y order
+    // Sort by mutant letter so bars are in a nice A→Y order
     .sort((a, b) => a.mutantLetter.localeCompare(b.mutantLetter));
 }
 
-function ScatterPanel({
+function BarPanel({
   rows,
   valueKey,
   yAxisTitle,
@@ -74,12 +74,11 @@ function ScatterPanel({
             customdata: points.map((r) => [
               AA_NAME[r.mutantLetter] || r.mutantLetter,
             ]),
-            mode: 'markers',
-            type: 'scatter',
+            type: 'bar',
             marker: {
-              size: 14,
               color: accentColor,
-              line: { width: 1.5, color: '#ffffff' },
+              opacity: 0.85,
+              line: { width: 1, color: accentColor },
             },
             hovertemplate:
               '<b>%{text}</b> · %{customdata[0]}<br>' +
@@ -88,6 +87,7 @@ function ScatterPanel({
         ]}
         layout={{
           margin: { t: 16, r: 20, b: 55, l: 70 },
+          bargap: 0.25,
           xaxis: {
             title: {
               text: 'Mutated residue',
@@ -155,7 +155,7 @@ export default function MutationScatterPair({ records = [], residueLabel = '' })
       </div>
 
       <div className="scatter-pair-grid">
-        <ScatterPanel
+        <BarPanel
           rows={rows}
           valueKey="dAffinity"
           yAxisTitle="dAffinity (kcal/mol)"
@@ -166,7 +166,7 @@ export default function MutationScatterPair({ records = [], residueLabel = '' })
               : 'ΔAffinity data not available for these mutations.'
           }
         />
-        <ScatterPanel
+        <BarPanel
           rows={rows}
           valueKey="dStability"
           yAxisTitle="dStability (kcal/mol)"
